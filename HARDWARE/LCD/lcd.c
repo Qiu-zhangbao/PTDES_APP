@@ -155,19 +155,16 @@ void LCD_DrawPoint(u16 x,u16 y)
 //******************************************************************
 void LCD_Clear(u16 Color)
 {	
-	//u32 index=0; 
-	   u32 index=0,i=0,j=0;   
+	u32 index=0,i=0,j=0;   
 	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);	
 
 	for(i=0;i<960;i++)
 	{
-
-	for(index=0;index<160;index++)
-	{
-		LCD->LCD_RAM=Color;		
+		for(index=0;index<160;index++)
+		{
+			LCD->LCD_RAM=Color;		
+		}
 	}
-	delay_ms(100);	
-}
 } 
 
 //******************************************************************
@@ -194,10 +191,6 @@ void LCD_GPIOInit(void)
  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;				 //PC5复液晶屏位
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
  	//PORTD复用推挽输出  
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_14|GPIO_Pin_15;				 //	//PORTD复用推挽输出  
@@ -256,22 +249,7 @@ void LCD_GPIOInit(void)
    	FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);  // 使能BANK1 
 }
 
-//******************************************************************
-//函数名：  LCD_Reset
-//作者：    xiao冯@全动电子
-//日期：    2013-02-22
-//功能：    LCD复位函数，液晶初始化前要调用此函数
-//输入参数：无
-//返回值：  无
-//修改记录：无
-//******************************************************************
-void LCD_RESET(void)
-{
-	LCD_RST_CLR;
-	delay_ms(100);	
-	LCD_RST_SET;
-	delay_ms(50);
-}
+
  	 
 //******************************************************************
 //函数名：  LCD_Init
@@ -283,11 +261,8 @@ void LCD_RESET(void)
 //修改记录：无
 //******************************************************************
 void LCD_Init(void)
-{  
-     										 
+{  							 
 	LCD_GPIOInit();
- 	LCD_RESET();
-
 	//液晶屏初始化
 	LCD_WR_REG(0XF1);
 	LCD_WR_DATA(0x36);
@@ -436,7 +411,7 @@ void LCD_SetParam(void)
 	lcddev.setxcmd=0x2A;
 	lcddev.setycmd=0x2B;
 	lcddev.wramcmd=0x2C;
-#if USE_HORIZONTAL==1	//使用横屏	  
+#if USE_HORIZONTAL==0	//使用横屏	  
 	lcddev.dir=1;//横屏
 	lcddev.width=480;
 	lcddev.height=320;			

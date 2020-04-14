@@ -468,24 +468,38 @@ u8 TP_Init(void)
  	
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOF, ENABLE);	 //使能PB,PF端口时钟
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;				 // PB1,PB2端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;				 // PB1,SCK
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOB, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOB,GPIO_Pin_1|GPIO_Pin_2);//上拉
+ 	GPIO_SetBits(GPIOB,GPIO_Pin_1);//上拉
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;				// PF11,CS
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
+ 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 	GPIO_Init(GPIOF, &GPIO_InitStructure);
+ 	GPIO_SetBits(GPIOF,GPIO_Pin_11);//上拉
 
-
-  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				 // PF9端口配置	推挽输出
+  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				// PF9,MOSI
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
  	GPIO_Init(GPIOF, &GPIO_InitStructure);
     GPIO_SetBits(GPIOF,GPIO_Pin_9);//P9 上拉
 
- 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_10;	// PF8.PF10端口配置
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		 //	上拉输入
+ 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;				// PF10,PEN
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		
  	GPIO_Init(GPIOF, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;				// PB2,MISO
+ 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		
+ 	GPIO_Init(GPIOB, &GPIO_InitStructure);
  	   
 
   	TP_Read_XY(&tp_dev.x,&tp_dev.y);//第一次读取初始化	 
+	
+	
+	
  	AT24CXX_Init();//初始化24CXX
+	
 	if(TP_Get_Adjdata())return 0;//已经校准
 	else			   //未校准?
 	{ 										    

@@ -63,10 +63,10 @@ extern _m_tp_dev tp_dev;	 	//触屏控制器在touch.c里面定义
 //与触摸屏芯片连接引脚	   
 //与触摸屏芯片连接引脚	   
 #define PEN  	PFin(10)  	//PF10 INT
-#define DOUT 	PFin(8)   	//PF8  MISO
+#define DOUT 	PBin(2)   	//PB2  MISO
 #define TDIN 	PFout(9)  	//PF9  MOSI
 #define TCLK 	PBout(1)  	//PB1  SCLK
-#define TCS  	PBout(2)  	//PB2  CS   
+#define TCS  	PFout(11)  	//PB2  CS   
      
 
 void TP_Write_Byte(u8 num);						//向控制芯片写入一个数据
