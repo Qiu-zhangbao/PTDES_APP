@@ -1,25 +1,11 @@
 #include "24cxx.h" 
-#include "delay.h" 										 
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//测试硬件：单片机STM32F103ZET6,主频72M  单片机工作电压3.3V
-//QDtech-TFT液晶驱动 for STM32 FSMC
-//xiao冯@ShenZhen QDtech co.,LTD
-//公司网站:www.qdtech.net
-//淘宝网站：http://qdtech.taobao.com
-//我司提供技术支持，任何技术问题欢迎随时交流学习
-//固话(传真) :+86 0755-23594567 
-//手机:15989313508（冯工） 
-//邮箱:QDtech2008@gmail.com 
-//Skype:QDtech2008
-//技术交流QQ群:324828016
-//创建日期:2013/5/13
-//版本：V1.1
-//版权所有，盗版必究。
-//Copyright(C) 深圳市全动电子技术有限公司 2009-2019
-//All rights reserved
-//////////////////////////////////////////////////////////////////////////////////	
-
+//#include "delay.h" 
+#include "delay.h"
+//Mini STM32开发板
+//24CXX驱动函数(适合24C01~24C16,24C32~256未经过测试!有待验证!)
+//正点原子@ALIENTEK
+//2010/6/10
+//V1.2
 
 //初始化IIC接口
 void AT24CXX_Init(void)
@@ -37,8 +23,10 @@ u8 AT24CXX_ReadOneByte(u16 ReadAddr)
 	{
 		IIC_Send_Byte(0XA0);	   //发送写命令
 		IIC_Wait_Ack();
-		IIC_Send_Byte(ReadAddr>>8);//发送高地址	    
-	}else IIC_Send_Byte(0XA0+((ReadAddr/256)<<1));   //发送器件地址0XA0,写数据 	   
+		IIC_Send_Byte(ReadAddr>>8);//发送高地址
+		IIC_Wait_Ack();		 
+	}else IIC_Send_Byte(0XA0+((ReadAddr/256)<<1));   //发送器件地址0XA0,写数据 	 
+
 	IIC_Wait_Ack(); 
     IIC_Send_Byte(ReadAddr%256);   //发送低地址
 	IIC_Wait_Ack();	    
@@ -59,15 +47,18 @@ void AT24CXX_WriteOneByte(u16 WriteAddr,u8 DataToWrite)
 	{
 		IIC_Send_Byte(0XA0);	    //发送写命令
 		IIC_Wait_Ack();
-		IIC_Send_Byte(WriteAddr>>8);//发送高地址	  
-	}else IIC_Send_Byte(0XA0+((WriteAddr/256)<<1));   //发送器件地址0XA0,写数据 	 
+		IIC_Send_Byte(WriteAddr>>8);//发送高地址
+ 	}else
+	{
+		IIC_Send_Byte(0XA0+((WriteAddr/256)<<1));   //发送器件地址0XA0,写数据 
+	}	 
 	IIC_Wait_Ack();	   
     IIC_Send_Byte(WriteAddr%256);   //发送低地址
 	IIC_Wait_Ack(); 	 										  		   
 	IIC_Send_Byte(DataToWrite);     //发送字节							   
 	IIC_Wait_Ack();  		    	   
     IIC_Stop();//产生一个停止条件 
-	delay_us(10*1000);//针对综合实验做出的改动，原来为delay_ms(10)		 
+	delay_ms(10);	 
 }
 //在AT24CXX里面的指定地址开始写入长度为Len的数据
 //该函数用于写入16bit或者32bit的数据.
@@ -143,6 +134,10 @@ void AT24CXX_Write(u16 WriteAddr,u8 *pBuffer,u16 NumToWrite)
 		pBuffer++;
 	}
 }
+ 
+
+
+
 
 
 

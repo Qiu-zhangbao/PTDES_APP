@@ -1,28 +1,20 @@
 #include "touch.h" 
-#include "lcd.h"
+#include "ILI93xx.h"
 #include "delay.h"
 #include "stdlib.h"
 #include "math.h"
-#include "24cxx.h"
-#include "gui.h"	    
+#include "24cxx.h" 
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//测试硬件：单片机STM32F103RBT6,主频72M  单片机工作电压3.3V
-//QDtech-TFT液晶驱动 for STM32 IO模拟
-//xiao冯@ShenZhen QDtech co.,LTD
-//公司网站:www.qdtech.net
-//淘宝网站：http://qdtech.taobao.com
-//我司提供技术支持，任何技术问题欢迎随时交流学习
-//固话(传真) :+86 0755-23594567 
-//手机:15989313508（冯工） 
-//邮箱:QDtech2008@gmail.com 
-//Skype:QDtech2008
-//技术交流QQ群:324828016
-//创建日期:2013/5/13
-//版本：V1.1
+//ALIENTEK STM32开发板
+//触摸屏驱动(支持ADS7843/7846/UH7843/7846/XPT2046/TSC2046/OTT2001A/GT9147/FT5206等)代码	   
+//正点原子@ALIENTEK
+//技术论坛:www.openedv.com
+//创建日期:2015/1/15
+//版本：V1.0
 //版权所有，盗版必究。
-//Copyright(C) 深圳市全动电子技术有限公司 2009-2019
-//All rights reserved
+//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
+//All rights reserved						 
 //////////////////////////////////////////////////////////////////////////////////
 
 _m_tp_dev tp_dev=
@@ -31,9 +23,7 @@ _m_tp_dev tp_dev=
 	TP_Scan,
 	TP_Adjust,
 	0,
-	0,
- 	0,
-	0,
+	0, 
 	0,
 	0,
 	0,
@@ -56,7 +46,8 @@ void TP_Write_Byte(u8 num)
 		if(num&0x80)TDIN=1;  
 		else TDIN=0;   
 		num<<=1;    
-		TCLK=0; 	 
+		TCLK=0; 
+		delay_us(1);
 		TCLK=1;		//上升沿有效	        
 	}		 			    
 } 		 
@@ -75,14 +66,16 @@ u16 TP_Read_AD(u8 CMD)
 	delay_us(6);//ADS7846的转换时间最长为6us
 	TCLK=0; 	     	    
 	delay_us(1);    	   
-	TCLK=1;		//给1个时钟，清除BUSY	    	    
+	TCLK=1;		//给1个时钟，清除BUSY
+	delay_us(1);    
 	TCLK=0; 	     	    
 	for(count=0;count<16;count++)//读出16位数据,只有高12位有效 
 	{ 				  
 		Num<<=1; 	 
 		TCLK=0;	//下降沿有效  	    	   
-		TCLK=1;
-		if(DOUT)Num++; 		 
+		delay_us(1);    
+ 		TCLK=1;
+ 		if(DOUT)Num++; 		 
 	}  	
 	Num>>=4;   	//只有高12位有效.
 	TCS=1;		//释放片选	 
@@ -171,7 +164,7 @@ void TP_Drow_Touch_Point(u16 x,u16 y,u16 color)
 	LCD_DrawPoint(x-1,y+1);
 	LCD_DrawPoint(x+1,y-1);
 	LCD_DrawPoint(x-1,y-1);
-	gui_circle(x,y,POINT_COLOR,6,0);//画中心圈
+	LCD_Draw_Circle(x,y,6);//画中心圈
 }	  
 //画一个大点(2*2的点)		   
 //x,y:坐标
@@ -193,17 +186,17 @@ u8 TP_Scan(u8 tp)
 {			   
 	if(PEN==0)//有按键按下
 	{
-		if(tp)TP_Read_XY2(&tp_dev.x,&tp_dev.y);//读取物理坐标
-		else if(TP_Read_XY2(&tp_dev.x,&tp_dev.y))//读取屏幕坐标
+		if(tp)TP_Read_XY2(&tp_dev.x[0],&tp_dev.y[0]);//读取物理坐标
+		else if(TP_Read_XY2(&tp_dev.x[0],&tp_dev.y[0]))//读取屏幕坐标
 		{
-	 		tp_dev.x=tp_dev.xfac*tp_dev.x+tp_dev.xoff;//将结果转换为屏幕坐标
-			tp_dev.y=tp_dev.yfac*tp_dev.y+tp_dev.yoff;  
+	 		tp_dev.x[0]=tp_dev.xfac*tp_dev.x[0]+tp_dev.xoff;//将结果转换为屏幕坐标
+			tp_dev.y[0]=tp_dev.yfac*tp_dev.y[0]+tp_dev.yoff;  
 	 	} 
 		if((tp_dev.sta&TP_PRES_DOWN)==0)//之前没有被按下
 		{		 
 			tp_dev.sta=TP_PRES_DOWN|TP_CATH_PRES;//按键按下  
-			tp_dev.x0=tp_dev.x;//记录第一次按下时的坐标
-			tp_dev.y0=tp_dev.y;  	   			 
+			tp_dev.x[4]=tp_dev.x[0];//记录第一次按下时的坐标
+			tp_dev.y[4]=tp_dev.y[0];  	   			 
 		}			   
 	}else
 	{
@@ -212,53 +205,33 @@ u8 TP_Scan(u8 tp)
 			tp_dev.sta&=~(1<<7);//标记按键松开	
 		}else//之前就没有被按下
 		{
-			tp_dev.x0=0;
-			tp_dev.y0=0;
-			tp_dev.x=0xffff;
-			tp_dev.y=0xffff;
+			tp_dev.x[4]=0;
+			tp_dev.y[4]=0;
+			tp_dev.x[0]=0xffff;
+			tp_dev.y[0]=0xffff;
 		}	    
 	}
 	return tp_dev.sta&TP_PRES_DOWN;//返回当前的触屏状态
 }	  
 //////////////////////////////////////////////////////////////////////////	 
-//保存在EEPROM里面的地址区间基址,占用13个字节(RANGE:SAVE_ADDR_BASE~SAVE_ADDR_BASE+12)
+//保存在EEPROM里面的地址区间基址,占用14个字节(RANGE:SAVE_ADDR_BASE~SAVE_ADDR_BASE+13)
 #define SAVE_ADDR_BASE 40
 //保存校准参数										    
 void TP_Save_Adjdata(void)
 {
-	s32 temp;			 
-	//保存校正结果!		   							  
-	temp=tp_dev.xfac*100000000;//保存x校正因素      
-    AT24CXX_WriteLenByte(SAVE_ADDR_BASE,temp,4);   
-	temp=tp_dev.yfac*100000000;//保存y校正因素    
-    AT24CXX_WriteLenByte(SAVE_ADDR_BASE+4,temp,4);
-	//保存x偏移量
-    AT24CXX_WriteLenByte(SAVE_ADDR_BASE+8,tp_dev.xoff,2);		    
-	//保存y偏移量
-	AT24CXX_WriteLenByte(SAVE_ADDR_BASE+10,tp_dev.yoff,2);	
-	//保存触屏类型
-	AT24CXX_WriteOneByte(SAVE_ADDR_BASE+12,tp_dev.touchtype);	
-	temp=0X0A;//标记校准过了
-	AT24CXX_WriteOneByte(SAVE_ADDR_BASE+13,temp); 
+	AT24CXX_Write(SAVE_ADDR_BASE,(u8*)&tp_dev.xfac,14);	//强制保存&tp_dev.xfac地址开始的14个字节数据，即保存到tp_dev.touchtype
+ 	AT24CXX_WriteOneByte(SAVE_ADDR_BASE+14,0X0A);		//在最后，写0X0A标记校准过了
 }
 //得到保存在EEPROM里面的校准值
 //返回值：1，成功获取数据
 //        0，获取失败，要重新校准
 u8 TP_Get_Adjdata(void)
 {					  
-	s32 tempfac;
-	tempfac=AT24CXX_ReadOneByte(SAVE_ADDR_BASE+13);//读取标记字,看是否校准过！ 		 
-	if(tempfac==0X0A)//触摸屏已经校准过了			   
-	{    												 
-		tempfac=AT24CXX_ReadLenByte(SAVE_ADDR_BASE,4);		   
-		tp_dev.xfac=(float)tempfac/100000000;//得到x校准参数
-		tempfac=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+4,4);			          
-		tp_dev.yfac=(float)tempfac/100000000;//得到y校准参数
-	    //得到x偏移量
-		tp_dev.xoff=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+8,2);			   	  
- 	    //得到y偏移量
-		tp_dev.yoff=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+10,2);				 	  
- 		tp_dev.touchtype=AT24CXX_ReadOneByte(SAVE_ADDR_BASE+12);//读取触屏类型标记
+	u8 temp;
+	temp=AT24CXX_ReadOneByte(SAVE_ADDR_BASE+14);//读取标记字,看是否校准过！ 		 
+	if(temp==0X0A)//触摸屏已经校准过了			   
+ 	{ 
+		AT24CXX_Read(SAVE_ADDR_BASE,(u8*)&tp_dev.xfac,14);//读取之前保存的校准数据 
 		if(tp_dev.touchtype)//X,Y方向与屏幕相反
 		{
 			CMD_RDX=0X90;
@@ -273,21 +246,21 @@ u8 TP_Get_Adjdata(void)
 	return 0;
 }	 
 //提示字符串
-const u8* TP_REMIND_MSG_TBL="Please use the stylus click the cross on the screen.The cross will always move until the screen adjustment is completed.";
+u8* const TP_REMIND_MSG_TBL="Please use the stylus click the cross on the screen.The cross will always move until the screen adjustment is completed.";
  					  
 //提示校准结果(各个参数)
 void TP_Adj_Info_Show(u16 x0,u16 y0,u16 x1,u16 y1,u16 x2,u16 y2,u16 x3,u16 y3,u16 fac)
 {	  
 	POINT_COLOR=RED;
-	LCD_ShowString(40,160,16,"x1:",1);
- 	LCD_ShowString(40+80,160,16,"y1:",1);
- 	LCD_ShowString(40,180,16,"x2:",1);
- 	LCD_ShowString(40+80,180, 16,"y2:",1);
-	LCD_ShowString(40,200, 16,"x3:",1);
- 	LCD_ShowString(40+80,200, 16,"y3:",1);
-	LCD_ShowString(40,220, 16,"x4:",1);
- 	LCD_ShowString(40+80,220, 16,"y4:",1);  
- 	LCD_ShowString(40,240, 16,"fac is:",1);     
+	LCD_ShowString(40,160,lcddev.width,lcddev.height,16,"x1:");
+ 	LCD_ShowString(40+80,160,lcddev.width,lcddev.height,16,"y1:");
+ 	LCD_ShowString(40,180,lcddev.width,lcddev.height,16,"x2:");
+ 	LCD_ShowString(40+80,180,lcddev.width,lcddev.height,16,"y2:");
+	LCD_ShowString(40,200,lcddev.width,lcddev.height,16,"x3:");
+ 	LCD_ShowString(40+80,200,lcddev.width,lcddev.height,16,"y3:");
+	LCD_ShowString(40,220,lcddev.width,lcddev.height,16,"x4:");
+ 	LCD_ShowString(40+80,220,lcddev.width,lcddev.height,16,"y4:");  
+ 	LCD_ShowString(40,240,lcddev.width,lcddev.height,16,"fac is:");     
 	LCD_ShowNum(40+24,160,x0,4,16);		//显示数值
 	LCD_ShowNum(40+24+80,160,y0,4,16);	//显示数值
 	LCD_ShowNum(40+24,180,x1,4,16);		//显示数值
@@ -296,7 +269,7 @@ void TP_Adj_Info_Show(u16 x0,u16 y0,u16 x1,u16 y1,u16 x2,u16 y2,u16 x3,u16 y3,u1
 	LCD_ShowNum(40+24+80,200,y2,4,16);	//显示数值
 	LCD_ShowNum(40+24,220,x3,4,16);		//显示数值
 	LCD_ShowNum(40+24+80,220,y3,4,16);	//显示数值
- 	LCD_ShowNum(40+56,lcddev.width,fac,3,16); 	//显示数值,该数值必须在95~105范围之内.
+ 	LCD_ShowNum(40+56,240,fac,3,16); 	//显示数值,该数值必须在95~105范围之内.
 
 }
 		 
@@ -308,7 +281,7 @@ void TP_Adjust(void)
 	u8  cnt=0;	
 	u16 d1,d2;
 	u32 tem1,tem2;
-	float fac; 	
+	double fac; 	
 	u16 outtime=0;
  	cnt=0;				
 	POINT_COLOR=BLUE;
@@ -317,11 +290,7 @@ void TP_Adjust(void)
 	POINT_COLOR=RED;//红色 
 	LCD_Clear(WHITE);//清屏 	   
 	POINT_COLOR=BLACK;
-	LCD_ShowString(10,40,16,"Please use the stylus click the",1);//显示提示信息
-	LCD_ShowString(10,56,16,"cross on the screen.The cross will",1);//显示提示信息
-	LCD_ShowString(10,72,16,"always move until the screen ",1);//显示提示信息
-	LCD_ShowString(10,88,16,"adjustment is completed.",1);//显示提示信息
-
+	LCD_ShowString(40,40,160,100,16,(u8*)TP_REMIND_MSG_TBL);//显示提示信息
 	TP_Drow_Touch_Point(20,20,RED);//画点1 
 	tp_dev.sta=0;//消除触发信号 
 	tp_dev.xfac=0;//xfac用来标记是否校准过,所以校准之前必须清掉!以免错误	 
@@ -333,8 +302,8 @@ void TP_Adjust(void)
 			outtime=0;		
 			tp_dev.sta&=~(1<<6);//标记按键已经被处理过了.
 						   			   
-			pos_temp[cnt][0]=tp_dev.x;
-			pos_temp[cnt][1]=tp_dev.y;
+			pos_temp[cnt][0]=tp_dev.x[0];
+			pos_temp[cnt][1]=tp_dev.y[0];
 			cnt++;	  
 			switch(cnt)
 			{			   
@@ -425,7 +394,7 @@ void TP_Adjust(void)
 						cnt=0;
  				    	TP_Drow_Touch_Point(lcddev.width-20,lcddev.height-20,WHITE);	//清除点4
    	 					TP_Drow_Touch_Point(20,20,RED);								//画点1
-						LCD_ShowString(40,26, 16,"TP Need readjust!",1);
+						LCD_ShowString(40,26,lcddev.width,lcddev.height,16,"TP Need readjust!");
 						tp_dev.touchtype=!tp_dev.touchtype;//修改触屏类型.
 						if(tp_dev.touchtype)//X,Y方向与屏幕相反
 						{
@@ -440,7 +409,7 @@ void TP_Adjust(void)
 					}		
 					POINT_COLOR=BLUE;
 					LCD_Clear(WHITE);//清屏
-					LCD_ShowString(35,110, 16,"Touch Screen Adjust OK!",1);//校正完成
+					LCD_ShowString(35,110,lcddev.width,lcddev.height,16,"Touch Screen Adjust OK!");//校正完成
 					delay_ms(1000);
 					TP_Save_Adjdata();  
  					LCD_Clear(WHITE);//清屏   
@@ -455,60 +424,55 @@ void TP_Adjust(void)
 			break;
 	 	} 
  	}
-}		  
-//触摸屏初始化  		    
-//返回值:0,没有进行校准
-//       1,进行过校准	  
+}	 
 //触摸屏初始化  		    
 //返回值:0,没有进行校准
 //       1,进行过校准
 u8 TP_Init(void)
-{			    		   
-	GPIO_InitTypeDef  GPIO_InitStructure;
- 	
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOF, ENABLE);	 //使能PB,PF端口时钟
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;				 // PB1,SCK
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOB,GPIO_Pin_1);//上拉
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;				// PF11,CS
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
- 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
- 	GPIO_Init(GPIOF, &GPIO_InitStructure);
- 	GPIO_SetBits(GPIOF,GPIO_Pin_11);//上拉
-
-  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				// PF9,MOSI
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		
- 	GPIO_Init(GPIOF, &GPIO_InitStructure);
-    GPIO_SetBits(GPIOF,GPIO_Pin_9);//P9 上拉
-
- 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;				// PF10,PEN
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		
- 	GPIO_Init(GPIOF, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;				// PB2,MISO
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 		
- 	GPIO_Init(GPIOB, &GPIO_InitStructure);
- 	   
-
-  	TP_Read_XY(&tp_dev.x,&tp_dev.y);//第一次读取初始化	 
-	
-	
-	
- 	AT24CXX_Init();//初始化24CXX
-	
-	if(TP_Get_Adjdata())return 0;//已经校准
-	else			   //未校准?
-	{ 										    
-		LCD_Clear(WHITE);//清屏
-	    TP_Adjust();  //屏幕校准 
-		TP_Save_Adjdata();	 
-	}			
-	TP_Get_Adjdata();	
+{	
+	if(lcddev.id==0X5510)				//4.3寸电容触摸屏
+	{
+		if(GT9147_Init()==0)			//是GT9147
+		{ 
+			tp_dev.scan=GT9147_Scan;	//扫描函数指向GT9147触摸屏扫描
+		}else
+		{
+			OTT2001A_Init();
+			tp_dev.scan=OTT2001A_Scan;	//扫描函数指向OTT2001A触摸屏扫描
+		}
+		tp_dev.touchtype|=0X80;			//电容屏 
+		tp_dev.touchtype|=lcddev.dir&0X01;//横屏还是竖屏 
+		return 0;
+	}else if(lcddev.id==0X1963)			//7寸电容触摸屏
+	{
+		FT5206_Init();
+		tp_dev.scan=FT5206_Scan;		//扫描函数指向GT9147触摸屏扫描		
+		tp_dev.touchtype|=0X80;			//电容屏 
+		tp_dev.touchtype|=lcddev.dir&0X01;//横屏还是竖屏 
+		return 0;
+	}else
+	{
+		//注意,时钟使能之后,对GPIO的操作才有效
+		//所以上拉之前,必须使能时钟.才能实现真正的上拉输出
+		RCC->APB2ENR|=1<<3;    	//PB时钟使能	   
+		RCC->APB2ENR|=1<<7;    	//PF时钟使能	   
+		
+		GPIOB->CRL&=0XFFFFF00F;	//PB1/2设置
+		GPIOB->CRL|=0X00000830;	//PB1推挽输出,PB2上拉输入
+		GPIOB->ODR|=3<<1;      	//PB1/2上拉	 
+		GPIOF->CRH&=0XFFFF000F;	//PF9/10/11设置
+		GPIOF->CRH|=0X00003830;	//PF10上拉输入,PF9/11推挽输出
+		GPIOF->ODR|=7<<9;      	//PF9,10,11 全部上拉 
+		TP_Read_XY(&tp_dev.x[0],&tp_dev.y[0]);//第一次读取初始化	 
+		AT24CXX_Init();			//初始化24CXX
+		if(TP_Get_Adjdata())return 0;//已经校准
+		else			  		//未校准?
+		{ 										    
+			LCD_Clear(WHITE);	//清屏
+//			TP_Adjust();  		//屏幕校准  
+		}			
+		TP_Get_Adjdata();	
+	}
 	return 1; 									 
 }
-
 

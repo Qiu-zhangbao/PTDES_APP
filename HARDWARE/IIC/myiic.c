@@ -2,23 +2,16 @@
 #include "delay.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//测试硬件：单片机STM32F103ZET6,主频72M  单片机工作电压3.3V
-//QDtech-TFT液晶驱动 for STM32 FSMC
-//xiao冯@ShenZhen QDtech co.,LTD
-//公司网站:www.qdtech.net
-//淘宝网站：http://qdtech.taobao.com
-//我司提供技术支持，任何技术问题欢迎随时交流学习
-//固话(传真) :+86 0755-23594567 
-//手机:15989313508（冯工） 
-//邮箱:QDtech2008@gmail.com 
-//Skype:QDtech2008
-//技术交流QQ群:324828016
-//创建日期:2013/5/13
-//版本：V1.1
+//ALIENTEK战舰STM32开发板
+//IIC驱动 代码	   
+//正点原子@ALIENTEK
+//技术论坛:www.openedv.com
+//修改日期:2012/9/9
+//版本：V1.0
 //版权所有，盗版必究。
-//Copyright(C) 深圳市全动电子技术有限公司 2009-2019
-//All rights reserved
-//////////////////////////////////////////////////////////////////////////////////	
+//Copyright(C) 广州市星翼电子科技有限公司 2009-2019
+//All rights reserved									  
+//////////////////////////////////////////////////////////////////////////////////
  
 //初始化IIC
 void IIC_Init(void)
@@ -26,11 +19,11 @@ void IIC_Init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOB, ENABLE );	
 	   
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10|GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP ;   //推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOB,GPIO_Pin_10|GPIO_Pin_11); 	//PB10,PB11 输出高
+	GPIO_SetBits(GPIOB,GPIO_Pin_6|GPIO_Pin_7); 	//PB6,PB7 输出高
 }
 //产生IIC起始信号
 void IIC_Start(void)
