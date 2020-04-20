@@ -74,13 +74,13 @@ void LCD_X_Config(void) {
 	{
 		if(lcddev.dir == 0) //竖屏 	
 		{							
-			GUI_TOUCH_Calibrate(GUI_COORD_X,0,320,220,3931);
-			GUI_TOUCH_Calibrate(GUI_COORD_Y,0,480,3812,196);
+			GUI_TOUCH_Calibrate(GUI_COORD_X,0,320,200,4000);
+			GUI_TOUCH_Calibrate(GUI_COORD_Y,0,480,4000,250);
 		}else //横屏
 		{
 			GUI_TOUCH_SetOrientation(GUI_SWAP_XY|GUI_MIRROR_Y); 
-			GUI_TOUCH_Calibrate(GUI_COORD_X,0,320,220,3931);
-			GUI_TOUCH_Calibrate(GUI_COORD_Y,0,480,3812,196); 	
+			GUI_TOUCH_Calibrate(GUI_COORD_X,0,320,200,4000);
+			GUI_TOUCH_Calibrate(GUI_COORD_Y,0,480,4000,250); 	
 		}
 	}
 	else             //其他屏幕全部默认为2.8寸 320X240
