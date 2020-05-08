@@ -155,7 +155,7 @@ void LCD_DrawPoint(u16 x,u16 y)
 //******************************************************************
 void LCD_Clear(u16 Color)
 {	
-	u32 index=0,i=0,j=0;   
+	u32 index=0,i=0;   
 	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);	
 
 	for(i=0;i<960;i++)
