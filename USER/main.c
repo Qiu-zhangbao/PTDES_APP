@@ -4,6 +4,7 @@
 #include "touch.h"
 #include "gui.h"
 #include "test.h"
+#include "led.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,正点原子MiniSTM32开发板,主频72MHZ
@@ -50,10 +51,11 @@
 
 int main(void)
 {	
-	SCB->VTOR = SRAM_BASE | 0x1000;	
+	//SCB->VTOR = SRAM_BASE | 0x1000;	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
 	delay_init();	     //延时初始化
 	LCD_Init();	   //液晶屏初始化 
+	LED_Init();
 	while(1)
 	{	
 //		main_test(); 		//测试主界面

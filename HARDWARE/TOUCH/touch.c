@@ -241,36 +241,29 @@ void TP_Save_Adjdata(void)
 	temp=0X0A;//标记校准过了
 	AT24CXX_WriteOneByte(SAVE_ADDR_BASE+13,temp); 
 }
-//得到保存在EEPROM里面的校准值
+
 //返回值：1，成功获取数据
 //        0，获取失败，要重新校准
 u8 TP_Get_Adjdata(void)
-{					  
-	s32 tempfac;
-	tempfac=AT24CXX_ReadOneByte(SAVE_ADDR_BASE+13);//读取标记字,看是否校准过！ 		 
-	if(tempfac==0X0A)//触摸屏已经校准过了			   
-	{    												 
-		tempfac=AT24CXX_ReadLenByte(SAVE_ADDR_BASE,4);		   
-		tp_dev.xfac=(float)tempfac/100000000;//得到x校准参数
-		tempfac=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+4,4);			          
-		tp_dev.yfac=(float)tempfac/100000000;//得到y校准参数
-	    //得到x偏移量
-		tp_dev.xoff=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+8,2);			   	  
- 	    //得到y偏移量
-		tp_dev.yoff=AT24CXX_ReadLenByte(SAVE_ADDR_BASE+10,2);				 	  
- 		tp_dev.touchtype=AT24CXX_ReadOneByte(SAVE_ADDR_BASE+12);//读取触屏类型标记
-		if(tp_dev.touchtype)//X,Y方向与屏幕相反
-		{
-			CMD_RDX=0X90;
-			CMD_RDY=0XD0;	 
-		}else				   //X,Y方向与屏幕相同
-		{
-			CMD_RDX=0XD0;
-			CMD_RDY=0X90;	 
-		}		 
-		return 1;	 
-	}
-	return 0;
+{					  										 
+	tp_dev.xfac=(float)0.129259691f;//得到x校准参数
+			  
+	tp_dev.yfac=(float)0.0857580379f;//得到y校准参数
+	//得到x偏移量
+	tp_dev.xoff=0xFFE1;			   	  
+	//得到y偏移量
+	tp_dev.yoff=0xFFED;				 	  
+	tp_dev.touchtype=0x01;//读取触屏类型标记
+	if(tp_dev.touchtype)//X,Y方向与屏幕相反
+	{
+		CMD_RDX=0X90;
+		CMD_RDY=0XD0;	 
+	}else				   //X,Y方向与屏幕相同
+	{
+		CMD_RDX=0XD0;
+		CMD_RDY=0X90;	 
+	}		 
+	return 1;	 
 }	 
 //提示字符串
 const u8* TP_REMIND_MSG_TBL="Please use the stylus click the cross on the screen.The cross will always move until the screen adjustment is completed.";
@@ -495,18 +488,7 @@ u8 TP_Init(void)
  	   
 
   	TP_Read_XY(&tp_dev.x,&tp_dev.y);//第一次读取初始化	 
-	
-	
-	
- 	AT24CXX_Init();//初始化24CXX
-	
-	if(TP_Get_Adjdata())return 0;//已经校准
-	else			   //未校准?
-	{ 										    
-		LCD_Clear(WHITE);//清屏
-	    TP_Adjust();  //屏幕校准 
-		TP_Save_Adjdata();	 
-	}			
+		
 	TP_Get_Adjdata();	
 	return 1; 									 
 }

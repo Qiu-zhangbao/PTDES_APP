@@ -6,6 +6,7 @@
 #include "key.h" 
 #include "led.h"
 #include "pic.h"
+#include "led.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,主频72M  单片机工作电压3.3V
@@ -226,23 +227,23 @@ void Pic_test(void)
 //******************************************************************
 void Touch_Test(void)
 {
-u8 key;
+	u8 key=0;
 	u8 i=0;
 	u16 j=0;
 	u16 colorTemp=0;
-TP_Init();
-KEY_Init();
-DrawTestPage("测试7:Touch测试");
-LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
-LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,RED); 
-POINT_COLOR=RED;
-		while(1)
+	TP_Init();
+	KEY_Init();
+	DrawTestPage("测试7:Touch测试");
+	LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
+	LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,RED); 
+	POINT_COLOR=RED;
+	while(1)
 	{
-	 	key=KEY_Scan();
+		key=KEY_Scan();
 		tp_dev.scan(0); 		 
 		if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
 		{	
-		 	if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
+			if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
 			{	
 				if(tp_dev.x>(lcddev.width-24)&&tp_dev.y<16)
 				{
@@ -253,28 +254,21 @@ POINT_COLOR=RED;
 				}
 				else if((tp_dev.x>(lcddev.width-60)&&tp_dev.x<(lcddev.width-50+20))&&tp_dev.y<20)
 				{
-				LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,ColorTab[j%5]); 
-				POINT_COLOR=ColorTab[(j++)%5];
-				colorTemp=POINT_COLOR;
-				delay_ms(10);
+					LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,ColorTab[j%5]); 
+					POINT_COLOR=ColorTab[(j++)%5];
+					colorTemp=POINT_COLOR;
+					delay_ms(10);
 				}
 
-				else TP_Draw_Big_Point(tp_dev.x,tp_dev.y,POINT_COLOR);		//画图	  			   
+				else TP_Draw_Big_Point(tp_dev.x,tp_dev.y,POINT_COLOR);		//画图	 	 			   
 			}
 		}else delay_ms(10);	//没有按键按下的时候 	    
-		if(key==1)	//KEY_RIGHT按下,则执行校准程序
-		{
-
-			LCD_Clear(WHITE);//清屏
-		    TP_Adjust();  //屏幕校准 
-			TP_Save_Adjdata();	 
-			DrawTestPage("测试7:Touch测试");
-		}
 		i++;
-		if(i==20)
+		if(i==100)
 		{
 			i=0;
 			LED0=!LED0;
+			LED1=!LED1;
 		}
 	}   
 }
