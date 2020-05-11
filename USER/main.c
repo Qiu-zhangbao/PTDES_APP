@@ -5,7 +5,8 @@
 #include "gui.h"
 #include "test.h"
 #include "led.h"
-#include "sx670.h"[
+#include "sx670.h"
+#include "timer.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,正点原子MiniSTM32开发板,主频72MHZ
@@ -59,6 +60,7 @@ int main(void)
 	LCD_Init();	   //液晶屏初始化 
 	LED_Init();
 	EE_SX670_INIT();
+	TIM3_Int_Init(71,1000);
 	while(1)
 	{	
 //		main_test(); 		//测试主界面
