@@ -5,6 +5,7 @@
 #include "gui.h"
 #include "test.h"
 #include "led.h"
+#include "sx670.h"[
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,正点原子MiniSTM32开发板,主频72MHZ
@@ -54,8 +55,10 @@ int main(void)
 	//SCB->VTOR = SRAM_BASE | 0x1000;	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
 	delay_init();	     //延时初始化
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	LCD_Init();	   //液晶屏初始化 
 	LED_Init();
+	EE_SX670_INIT();
 	while(1)
 	{	
 //		main_test(); 		//测试主界面

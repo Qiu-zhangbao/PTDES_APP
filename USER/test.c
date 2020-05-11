@@ -267,8 +267,8 @@ void Touch_Test(void)
 		if(i==100)
 		{
 			i=0;
-			LED0=!LED0;
-			LED1=!LED1;
+//			LED0=!LED0;
+//			LED1=!LED1;
 		}
 	}   
 }
