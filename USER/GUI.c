@@ -356,7 +356,25 @@ void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len,u8 size)
 	 	LCD_ShowChar(x+(size/2)*t,y,POINT_COLOR,BACK_COLOR,temp+'0',size,0); 
 	}
 } 
-
+void LCD_ShowNum_Cover(u16 x,u16 y,u32 num,u8 len,u8 size)
+{         	
+	u8 t,temp;
+	u8 enshow=0;						   
+	for(t=0;t<len;t++)
+	{
+		temp=(num/mypow(10,len-t-1))%10;
+		if(enshow==0&&t<(len-1))
+		{
+			if(temp==0)
+			{
+				LCD_ShowChar(x+(size/2)*t,y,WHITE,BLACK,' ',size,0);
+				continue;
+			}else enshow=1; 
+		 	 
+		}
+	 	LCD_ShowChar(x+(size/2)*t,y,WHITE,BLACK,temp+'0',size,0); 
+	}
+} 
 //******************************************************************
 //函数名：  GUI_DrawFont16
 //作者：    xiao冯@全动电子

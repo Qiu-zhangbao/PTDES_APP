@@ -7,25 +7,7 @@
 #include "led.h"
 #include "pic.h"
 #include "led.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//测试硬件：单片机STM32F103RBT6,主频72M  单片机工作电压3.3V
-//QDtech-TFT液晶驱动 for STM32 IO模拟
-//xiao冯@ShenZhen QDtech co.,LTD
-//公司网站:www.qdtech.net
-//淘宝网站：http://qdtech.taobao.com
-//我司提供技术支持，任何技术问题欢迎随时交流学习
-//固话(传真) :+86 0755-23594567 
-//手机:15989313508（冯工） 
-//邮箱:QDtech2008@gmail.com 
-//Skype:QDtech2008
-//技术交流QQ群:324828016
-//创建日期:2013/5/13
-//版本：V1.1
-//版权所有，盗版必究。
-//Copyright(C) 深圳市全动电子技术有限公司 2009-2019
-//All rights reserved
-//////////////////////////////////////////////////////////////////////////////////
+
 //========================variable==========================//
 u16 ColorTab[5]={BRED,YELLOW,RED,GREEN,BLUE};//定义颜色数组
 //=====================end of variable======================//
@@ -47,7 +29,7 @@ LCD_Fill(0,0,lcddev.width,20,BLUE);
 LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
 POINT_COLOR=WHITE;
 Gui_StrCenter(0,2,WHITE,BLUE,str,16,1);//居中显示
-Gui_StrCenter(0,lcddev.height-18,WHITE,BLUE,"QDtech版权所有 www.qdtech.net",16,1);//居中显示
+Gui_StrCenter(0,lcddev.height-18,WHITE,BLUE,"实验一：测量挡光时间",16,1);//居中显示
 //绘制测试区域
 LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
 }
@@ -225,51 +207,54 @@ void Pic_test(void)
 //返回值：  无
 //修改记录：
 //******************************************************************
+
+
+
+
 void Touch_Test(void)
 {
 	u8 key=0;
 	u8 i=0;
 	u16 j=0;
 	u16 colorTemp=0;
-	TP_Init();
-	KEY_Init();
 	DrawTestPage("测试7:Touch测试");
 	LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
 	LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,RED); 
 	POINT_COLOR=RED;
 	while(1)
 	{
-		key=KEY_Scan();
-		tp_dev.scan(0); 		 
-		if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
-		{	
-			if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
-			{	
-				if(tp_dev.x>(lcddev.width-24)&&tp_dev.y<16)
-				{
-					DrawTestPage("测试7:Touch测试");//清除
-					LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
-					POINT_COLOR=colorTemp;
-					LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,POINT_COLOR); 
-				}
-				else if((tp_dev.x>(lcddev.width-60)&&tp_dev.x<(lcddev.width-50+20))&&tp_dev.y<20)
-				{
-					LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,ColorTab[j%5]); 
-					POINT_COLOR=ColorTab[(j++)%5];
-					colorTemp=POINT_COLOR;
-					delay_ms(10);
-				}
+//		LCD_ShowNum(100,100,time_us,12,16);
+//		key=KEY_Scan();
+//		tp_dev.scan(0); 		 
+//		if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
+//		{	
+//			if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
+//			{	
+//				if(tp_dev.x>(lcddev.width-24)&&tp_dev.y<16)
+//				{
+//					DrawTestPage("测试7:Touch测试");//清除
+//					LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
+//					POINT_COLOR=colorTemp;
+//					LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,POINT_COLOR); 
+//				}
+//				else if((tp_dev.x>(lcddev.width-60)&&tp_dev.x<(lcddev.width-50+20))&&tp_dev.y<20)
+//				{
+//					LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,ColorTab[j%5]); 
+//					POINT_COLOR=ColorTab[(j++)%5];
+//					colorTemp=POINT_COLOR;
+//					delay_ms(10);
+//				}
 
-				else TP_Draw_Big_Point(tp_dev.x,tp_dev.y,POINT_COLOR);		//画图	 	 			   
-			}
-		}else delay_ms(10);	//没有按键按下的时候 	    
-		i++;
-		if(i==100)
-		{
-			i=0;
-//			LED0=!LED0;
-//			LED1=!LED1;
-		}
+//				else TP_Draw_Big_Point(tp_dev.x,tp_dev.y,POINT_COLOR);		//画图	 	 			   
+//			}
+//		}else delay_ms(10);	//没有按键按下的时候 	    
+//		i++;
+//		if(i==100)
+//		{
+//			i=0;
+////			LED0=!LED0;
+////			LED1=!LED1;
+//		}
 	}   
 }
 

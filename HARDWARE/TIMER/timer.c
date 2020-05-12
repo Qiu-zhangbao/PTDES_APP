@@ -18,6 +18,8 @@
 //arr：自动重装值。
 //psc：时钟预分频数
 //这里使用的是定时器3!
+
+extern uint32_t time_us;
 void TIM3_Int_Init(u16 arr,u16 psc)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -45,24 +47,14 @@ void TIM3_Int_Init(u16 arr,u16 psc)
 	TIM_Cmd(TIM3, ENABLE);  //使能TIMx					 
 }
 
-static u16 i=0;
+
 //定时器3中断服务程序
 void TIM3_IRQHandler(void)   //TIM3中断
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否
 		{
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx更新中断标志 
-			
-			
-			i++;
-			if(i==1000)
-			{
-				LED0=!LED0;
-				i=0;
-			
-			
-			}
-			
+		time_us++;	
 		}
 }
 

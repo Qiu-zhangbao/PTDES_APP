@@ -1,7 +1,9 @@
 #include "sx670.h"
 #include "led.h"
+#include "time.h"
 
-
+extern uint32_t time_us;
+extern SX670_t sx670_parm;
 
 void EE_SX670_INIT_PIN(void) //IO初始化
 { 
@@ -60,16 +62,28 @@ void EE_SX670_INIT(void)
  
 }
 
+uint8_t run_one=1;
+uint8_t num=0;
 //外部中断0服务程序 
 void EXTI2_IRQHandler(void)
 {
 	if(sensor1==1)	 //按键KEY0
 	{
 		LED0=0;
+		run_one=1;
+		TIM_Cmd(TIM3, DISABLE);
+		sx670_parm.sensor1_us=time_us*10+(time_us/3)%10;
+		
 	}		 
 	else if(sensor1==0)	 //按键KEY0
 	{
 		LED0=1;
+		TIM_Cmd(TIM3, ENABLE);
+		if(run_one)
+		{
+			run_one=0;
+			time_us=0;//从0开始计时
+		}
 	}	 
 	EXTI_ClearITPendingBit(EXTI_Line2);  //清除LINE3上的中断标志位  
 }
@@ -81,10 +95,20 @@ void EXTI3_IRQHandler(void)
 	if(sensor2==1)	 //按键KEY0
 	{
 		LED0=0;
+		run_one=1;
+		TIM_Cmd(TIM3, DISABLE);
+		sx670_parm.sensor2_us=time_us*10+(time_us/3)%10;
+		
 	}		 
 	else if(sensor2==0)	 //按键KEY0
 	{
 		LED0=1;
+		TIM_Cmd(TIM3, ENABLE);
+		if(run_one)
+		{
+			run_one=0;
+			time_us=0;//从0开始计时
+		}
 	}	 
 	EXTI_ClearITPendingBit(EXTI_Line3);  //清除LINE3上的中断标志位  
 }
@@ -94,11 +118,21 @@ void EXTI4_IRQHandler(void)
 	if(sensor3==1)	 //按键KEY0
 	{
 		LED0=0;
+		run_one=1;
+		TIM_Cmd(TIM3, DISABLE);
+		sx670_parm.sensor3_us=time_us*10+(time_us/3)%10;
+		
 	}		 
 	else if(sensor3==0)	 //按键KEY0
 	{
 		LED0=1;
-	}	 
+		TIM_Cmd(TIM3, ENABLE);
+		if(run_one)
+		{
+			run_one=0;
+			time_us=0;//从0开始计时
+		}
+	} 
 	EXTI_ClearITPendingBit(EXTI_Line4);  //清除LINE4上的中断标志位  
 }
 
@@ -107,10 +141,19 @@ void EXTI9_5_IRQHandler(void)
 	if(sensor4==1)	 //按键KEY0
 	{
 		LED0=0;
+		run_one=1;
+		TIM_Cmd(TIM3, DISABLE);
+		sx670_parm.sensor4_us=time_us*10+(time_us/3)%10;
 	}		 
 	else if(sensor4==0)	 //按键KEY0
 	{
 		LED0=1;
+		TIM_Cmd(TIM3, ENABLE);
+		if(run_one)
+		{
+			run_one=0;
+			time_us=0;//从0开始计时
+		}
 	}
 	
 	EXTI_ClearITPendingBit(EXTI_Line5);  //清除LINE4上的中断标志位  

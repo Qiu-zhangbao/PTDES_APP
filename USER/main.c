@@ -7,24 +7,10 @@
 #include "led.h"
 #include "sx670.h"
 #include "timer.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//测试硬件：单片机STM32F103RBT6,正点原子MiniSTM32开发板,主频72MHZ
-//QDtech-TFT液晶驱动 for STM32 IO模拟
-//xiao冯@ShenZhen QDtech co.,LTD
-//公司网站:www.qdtech.net
-//淘宝网站：http://qdtech.taobao.com
-//我司提供技术支持，任何技术问题欢迎随时交流学习
-//固话(传真) :+86 0755-23594567 
-//手机:15989313508（冯工） 
-//邮箱:QDtech2008@gmail.com 
-//Skype:QDtech2008
-//技术交流QQ群:324828016
-//创建日期:2013/5/13
-//版本：V1.1
-//版权所有，盗版必究。
-//Copyright(C) 深圳市全动电子技术有限公司 2009-2019
-//All rights reserved
+#include "key.h"
+#include "gui.h"
+
+
 /****************************************************************************************************
 //=======================================液晶屏数据线接线==========================================//
 //DB0       接PD14 
@@ -51,26 +37,100 @@
 //CLK		接PB1	//SPI总线时钟
 **************************************************************************************************/	
 
+
+//IAP配置
+//IROM1：0x20001000	0xC000
+//IRAM1：0x2000D000	0x3000
+//SCB->VTOR = SRAM_BASE | 0x1000;	这句话要放中断初始化之后
+
+//默认配置
+//IROM1：0x8000000	0x80000
+//IRAM1：0x20000000	0x10000
+
+
+vu8 key=0;	
+uint32_t time_us=0;
+SX670_t sx670_parm;
+
 int main(void)
 {	
-	//SCB->VTOR = SRAM_BASE | 0x1000;	
+	
+	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
 	delay_init();	     //延时初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	LCD_Init();	   //液晶屏初始化 
 	LED_Init();
 	EE_SX670_INIT();
-	TIM3_Int_Init(71,1000);
+	TIM3_Int_Init(71,9);
+	
+	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	
+	TP_Init();
+	KEY_Init();
+	
+	DrawTestPage("光电计时数字实验系统");
+	Show_Str(100,16+50,WHITE,BLACK,"传感器1:",16,1);
+	Show_Str(100,16+50+50,WHITE,BLACK,"传感器2:",16,1);
+	Show_Str(100,16+50+50+50,WHITE,BLACK,"传感器3:",16,1);
+	Show_Str(100,16+50+50+50+50,WHITE,BLACK,"传感器4:",16,1);
+	
+	Show_Str(280,16+50,WHITE,BLACK,"us",16,1);
+	Show_Str(280,16+50+50,WHITE,BLACK,"us",16,1);
+	Show_Str(280,16+50+50+50,WHITE,BLACK,"us",16,1);
+	Show_Str(280,16+50+50+50+50,WHITE,BLACK,"us",16,1);
+	
+	Show_Str(420,16+50+50+50+50+50,WHITE,RED,"清零",16,1);
+	
+	
+	POINT_COLOR=RED;
+	
+	
+	
+	time_us=0;
+	
 	while(1)
 	{	
-//		main_test(); 		//测试主界面
-//		Test_Color();  		//简单刷屏填充测试
-//		Test_FillRec();		//GUI矩形绘图测试
-//		Test_Circle(); 		//GUI画圆测试
-//		English_Font_test();//英文字体示例测试
-//		Chinese_Font_test();//中文字体示例测试
-//		Pic_test();			//图片显示示例测试
-		Touch_Test();		//触摸屏手写测试  
+
+		key = KEY_Scan(0);	
+		tp_dev.scan(0); 
+
+		LCD_ShowNum_Cover(0,0,time_us*10+(time_us/3)%10,12,16);
+
+		LCD_ShowNum(180,16+50,sx670_parm.sensor1_us,12,16);
+		LCD_ShowNum(180,16+50+50,sx670_parm.sensor2_us,12,16);
+		LCD_ShowNum(180,16+50+50+50,sx670_parm.sensor3_us,12,16);
+		LCD_ShowNum(180,16+50+50+50+50,sx670_parm.sensor4_us,12,16);
+
+		if(key==KEY0_PRES)
+		{
+			sx670_parm.sensor1_us=0;
+			sx670_parm.sensor2_us=0;
+			sx670_parm.sensor3_us=0;
+			sx670_parm.sensor4_us=0;
+			
+			LED1=!LED1;
+			TIM_Cmd(TIM3, DISABLE);
+			time_us=0;
+		}
+		 
+		if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
+		{	
+			if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
+			{	
+				if(tp_dev.x>420&&tp_dev.x<460&&tp_dev.y>(16+50+50+50+50+50)&&tp_dev.y<(16+50+50+50+50+50+40))
+				{
+					sx670_parm.sensor1_us=0;
+					sx670_parm.sensor2_us=0;
+					sx670_parm.sensor3_us=0;
+					sx670_parm.sensor4_us=0;
+					TIM_Cmd(TIM3, DISABLE);
+					time_us=0;
+					LED1=!LED1;				
+				}
+			}
+		}
+		
 	}				  
 	
  }

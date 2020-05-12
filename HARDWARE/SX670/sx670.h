@@ -3,6 +3,22 @@
 #include "stm32f10x.h"
 #include "sys.h"
 
+typedef struct
+{
+	uint32_t sensor1_us;
+	uint32_t sensor2_us;
+	uint32_t sensor3_us;
+	uint32_t sensor4_us;
+	
+	uint32_t sensor1_v;
+	uint32_t sensor2_v;
+	uint32_t sensor3_v;
+	uint32_t sensor4_v;
+
+}SX670_t;
+
+
+
 
 #define sensor1  GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2)//读取传感器1
 #define sensor2  GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)//读取传感器1
