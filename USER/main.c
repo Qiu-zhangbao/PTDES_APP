@@ -54,8 +54,6 @@ SX670_t sx670_parm;
 
 int main(void)
 {	
-	
-	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
 	delay_init();	     //延时初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
@@ -64,21 +62,24 @@ int main(void)
 	EE_SX670_INIT();
 	TIM3_Int_Init(71,9);
 	
-	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+//	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
 	
 	TP_Init();
 	KEY_Init();
 	
 	DrawTestPage("光电计时数字实验系统");
-	Show_Str(100,16+50,WHITE,BLACK,"传感器1:",16,1);
-	Show_Str(100,16+50+50,WHITE,BLACK,"传感器2:",16,1);
-	Show_Str(100,16+50+50+50,WHITE,BLACK,"传感器3:",16,1);
-	Show_Str(100,16+50+50+50+50,WHITE,BLACK,"传感器4:",16,1);
 	
-	Show_Str(280,16+50,WHITE,BLACK,"us",16,1);
-	Show_Str(280,16+50+50,WHITE,BLACK,"us",16,1);
-	Show_Str(280,16+50+50+50,WHITE,BLACK,"us",16,1);
-	Show_Str(280,16+50+50+50+50,WHITE,BLACK,"us",16,1);
+	Show_Str(20,40,WHITE,BLACK,"实验一：测量挡光时间",16,1);
+	
+	Show_Str(100+30,16+50+30,WHITE,BLACK,"传感器1:",16,1);
+	Show_Str(100+30,16+50+50+30,WHITE,BLACK,"传感器2:",16,1);
+	Show_Str(100+30,16+50+50+50+30,WHITE,BLACK,"传感器3:",16,1);
+	Show_Str(100+30,16+50+50+50+50+30,WHITE,BLACK,"传感器4:",16,1);
+	
+	Show_Str(280+30,16+50+30,WHITE,BLACK,"us",16,1);
+	Show_Str(280+30,16+50+50+30,WHITE,BLACK,"us",16,1);
+	Show_Str(280+30,16+50+50+50+30,WHITE,BLACK,"us",16,1);
+	Show_Str(280+30,16+50+50+50+50+30,WHITE,BLACK,"us",16,1);
 	
 	Show_Str(420,16+50+50+50+50+50,WHITE,RED,"清零",16,1);
 	
@@ -97,10 +98,10 @@ int main(void)
 
 		LCD_ShowNum_Cover(0,0,time_us*10+(time_us/3)%10,12,16);
 
-		LCD_ShowNum(180,16+50,sx670_parm.sensor1_us,12,16);
-		LCD_ShowNum(180,16+50+50,sx670_parm.sensor2_us,12,16);
-		LCD_ShowNum(180,16+50+50+50,sx670_parm.sensor3_us,12,16);
-		LCD_ShowNum(180,16+50+50+50+50,sx670_parm.sensor4_us,12,16);
+		LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
+		LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
+		LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
+		LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
 
 		if(key==KEY0_PRES)
 		{

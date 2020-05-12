@@ -23,15 +23,15 @@ u16 ColorTab[5]={BRED,YELLOW,RED,GREEN,BLUE};//定义颜色数组
 //******************************************************************
 void DrawTestPage(u8 *str)
 {
-//绘制固定栏up
-LCD_Fill(0,0,lcddev.width,20,BLUE);
-//绘制固定栏down
-LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
-POINT_COLOR=WHITE;
-Gui_StrCenter(0,2,WHITE,BLUE,str,16,1);//居中显示
-Gui_StrCenter(0,lcddev.height-18,WHITE,BLUE,"实验一：测量挡光时间",16,1);//居中显示
-//绘制测试区域
-LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
+	//绘制固定栏up
+	LCD_Fill(0,0,lcddev.width,20,BLUE);
+//	//绘制固定栏down
+//	LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
+	POINT_COLOR=WHITE;
+	Gui_StrCenter(0,2,WHITE,BLUE,str,16,1);//居中显示
+	
+	//绘制测试区域
+	LCD_Fill(0,20,lcddev.width,lcddev.height,BLACK);
 }
 
 //******************************************************************
@@ -213,10 +213,10 @@ void Pic_test(void)
 
 void Touch_Test(void)
 {
-	u8 key=0;
-	u8 i=0;
-	u16 j=0;
-	u16 colorTemp=0;
+//	u8 key=0;
+//	u8 i=0;
+//	u16 j=0;
+//	u16 colorTemp=0;
 	DrawTestPage("测试7:Touch测试");
 	LCD_ShowString(lcddev.width-24,0,16,"RST",1);//显示清屏区域
 	LCD_Fill(lcddev.width-52,2,lcddev.width-50+20,18,RED); 
