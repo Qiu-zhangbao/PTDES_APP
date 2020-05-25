@@ -5,9 +5,8 @@
 #include "touch.h"
 #include "key.h" 
 #include "led.h"
-#include "pic.h"
 #include "led.h"
-
+//#include "pic.h"
 //========================variable==========================//
 u16 ColorTab[5]={BRED,YELLOW,RED,GREEN,BLUE};//定义颜色数组
 //=====================end of variable======================//
@@ -31,7 +30,7 @@ void DrawTestPage(u8 *str)
 	Gui_StrCenter(0,2,WHITE,BLUE,str,16,1);//居中显示
 	
 	//绘制测试区域
-	LCD_Fill(0,20,lcddev.width,lcddev.height,BLACK);
+//	LCD_Fill(0,20,lcddev.width,lcddev.height,BLACK);
 }
 
 //******************************************************************
@@ -97,17 +96,17 @@ void Test_FillRec(void)
 	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
 	for (i=0; i<5; i++) 
 	{
-		LCD_DrawRectangle(lcddev.width/2-80+(i*15),lcddev.height/2-80+(i*15),lcddev.width/2-80+(i*15)+60,lcddev.height/2-80+(i*15)+60); 
+		LCD_DrawRectangle(lcddev.width/2-200+(i*15),lcddev.height/2-200+(i*15),lcddev.width/2-80+(i*15)+60,lcddev.height/2-80+(i*15)+60); 
 		POINT_COLOR=ColorTab[i];
 	}
-	delay_ms(1500);	
-	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE); 
-	for (i=0; i<5; i++) 
-	{
-		LCD_DrawFillRectangle(lcddev.width/2-80+(i*15),lcddev.height/2-80+(i*15),lcddev.width/2-80+(i*15)+60,lcddev.height/2-80+(i*15)+60); 
-		POINT_COLOR=ColorTab[i];
-	}
-	delay_ms(1500);
+//	delay_ms(1500);	
+//	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE); 
+//	for (i=0; i<5; i++) 
+//	{
+//		LCD_DrawFillRectangle(lcddev.width/2-80+(i*15),lcddev.height/2-80+(i*15),lcddev.width/2-80+(i*15)+60,lcddev.height/2-80+(i*15)+60); 
+//		POINT_COLOR=ColorTab[i];
+//	}
+//	delay_ms(1500);
 }
 
 //******************************************************************
@@ -185,18 +184,18 @@ void Chinese_Font_test(void)
 //返回值：  无
 //修改记录：
 //******************************************************************
-void Pic_test(void)
-{
-	DrawTestPage("测试6:图片显示测试");
-	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
-	Gui_Drawbmp16(30,30,gImage_qq);
-	Show_Str(30+12,75,BLUE,YELLOW,"QQ",16,1);
-	Gui_Drawbmp16(90,30,gImage_qq);
-	Show_Str(90+12,75,BLUE,YELLOW,"QQ",16,1);
-	Gui_Drawbmp16(150,30,gImage_qq);
-	Show_Str(150+12,75,BLUE,YELLOW,"QQ",16,1);
-	delay_ms(1200);
-}
+//void Pic_test(void)
+//{
+//	DrawTestPage("测试6:图片显示测试");
+//	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
+//	Gui_Drawbmp16(30,30,gImage_3);
+//	Show_Str(30+12,75,BLUE,YELLOW,"QQ",16,1);
+//	Gui_Drawbmp16(90,30,gImage_2);
+//	Show_Str(90+12,75,BLUE,YELLOW,"QQ",16,1);
+//	Gui_Drawbmp16(150,30,gImage_qq);
+//	Show_Str(150+12,75,BLUE,YELLOW,"QQ",16,1);
+//	delay_ms(1200);
+//}
 
 //******************************************************************
 //函数名：  Touch_Test

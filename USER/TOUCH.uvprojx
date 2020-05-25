@@ -393,19 +393,54 @@
               <FilePath>.\test.c</FilePath>
             </File>
             <File>
-              <FileName>GUI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\GUI.c</FilePath>
-            </File>
-            <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\delay\delay.c</FilePath>
             </File>
             <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\control.c</FilePath>
+            </File>
+            <File>
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LAB</GroupName>
+          <Files>
+            <File>
+              <FileName>lab1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab1.c</FilePath>
+            </File>
+            <File>
+              <FileName>lab2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab2.c</FilePath>
+            </File>
+            <File>
+              <FileName>lab3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab3.c</FilePath>
+            </File>
+            <File>
+              <FileName>lab4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab4.c</FilePath>
+            </File>
+            <File>
+              <FileName>lab5.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab5.c</FilePath>
+            </File>
+            <File>
+              <FileName>lab6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lab6.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -441,6 +476,11 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>GUI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\GUI.c</FilePath>
             </File>
           </Files>
         </Group>

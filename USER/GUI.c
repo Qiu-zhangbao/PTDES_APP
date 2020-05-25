@@ -650,8 +650,8 @@ void Gui_Drawbmp16(u16 x,u16 y,const unsigned char *p) //显示40*40 QQ图片
 {
   	int i; 
 	unsigned char picH,picL; 
-	LCD_SetWindows(x,y,x+40-1,y+40-1);//窗口设置
-    for(i=0;i<40*40;i++)
+	LCD_SetWindows(x,y,x+80-1,y+80-1);//窗口设置
+    for(i=0;i<80*80;i++)
 	{	
 	 	picL=*(p+i*2);	//数据低位在前
 		picH=*(p+i*2+1);				
@@ -660,3 +660,19 @@ void Gui_Drawbmp16(u16 x,u16 y,const unsigned char *p) //显示40*40 QQ图片
 	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);//恢复显示窗口为全屏	
 
 }
+
+void Gui_Drawbmp16_320X480(u16 x,u16 y,const unsigned char *p) 
+{
+  	int i; 
+	unsigned char picH,picL; 
+	LCD_SetWindows(x,y,x+480-1,y+320-1);//窗口设置
+    for(i=0;i<320*480;i++)
+	{	
+	 	picL=*(p+i*2);	//数据低位在前
+		picH=*(p+i*2+1);				
+		LCD_WR_DATA(picH<<8|picL);  						
+	}	
+	LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);//恢复显示窗口为全屏	
+
+}
+
