@@ -11,6 +11,9 @@
 #include "gui.h"
 #include "control.h"
 #include "event_queue.h"
+#include "main_page.h"
+
+
 /****************************************************************************************************
 //=======================================液晶屏数据线接线==========================================//
 //DB0       接PD14 
@@ -50,28 +53,26 @@
 
 
 uint32_t time_us=0;
-
+uint32_t num_test=0;
 
 int main(void)
 {	
 	u16 led0pwmval=0;
 	u8 dir=1;	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
-	delay_init();	     //延时初始化
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-	LCD_Init();	   //液晶屏初始化 
+	delay_init();//延时初始化
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置NVIC中断分组2:2位抢占优先级，2位响应优先级
+	LCD_Init();//液晶屏初始化 
 	LED_Init();
 	EE_SX670_INIT();
-	TIM2_Int_Init(71,9);
-	TIM3_PWM_Init(899,0); 		//不分频。PWM频率=72000/(899+1)=80Khz
-	TIM4_Int_Init(7199,99);
+	TIM2_Int_Init(9,71);
+	TIM3_PWM_Init(899,0);//不分频。PWM频率=72000/(899+1)=80Khz
+	TIM4_Int_Init(99,7199);
 	//SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
-
-
 	TP_Init();
 	KEY_Init();
 	Init_event_queue();
-	main_page_init();
+	Apc_InitFunCtrlSM();
 	
 	while(1)
 	{	
@@ -81,8 +82,12 @@ int main(void)
 
  		if(led0pwmval>200)dir=0;
 		if(led0pwmval==0)dir=1;										 
-		TIM_SetCompare2(TIM3,led0pwmval);		 
+		TIM_SetCompare2(TIM3,led0pwmval);	
 
+		
+//		LCD_ShowNum(100,100,num_test,12,16);
+		
+		
 //		key = KEY_Scan(0);	
 //		tp_dev.scan(0); 
 

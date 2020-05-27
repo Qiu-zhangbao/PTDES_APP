@@ -18,7 +18,6 @@ const unsigned char flush_period = FLUSH_PERIOD;							/**< 点亮周期 */
 uint8_t is_screen_show = 0;													/**< 是否在显示标志位 */
 uint8_t want_screen_mgr_work = 0;											/**< 需要显示管理工作标志位 */
 
-static void Bsl_FlushScreen(void* p_context);								/**< 点亮屏幕 */
 static void Bsl_WakeupScreenTimeout(void *p_context);						/**< 唤醒屏幕 */
 static event_type_t Bsl_ScreenMgrEventHandle(event_type_t event);	/**< 处理显示事件 */
 
@@ -215,42 +214,42 @@ void Bsl_CloseScreen(void (*paint)(uint16_t,void *))
 	Bsl_FlushScreen(NULL);
 }
 
-/**@brief 弹窗超时
- *
- * @param[in] *p_context 备用指针，当前无意义
- */
-static void Bsl_TipMessageTimeout(void *p_context)
-{
-	unsigned char vaild_message_cnt = 0;
-	unsigned char invaild_message_cnt = 0;
-	for(int i= 0;i<SCREEN_LIST_CNT;++i)
-	{
-		if(screen_list[i].type == SCREEN_TYPE_MSSAGE)
-		{
-			screen_list[i].show_time -= MESSAGE_TIP_UPDATE_TIME;
-			if(screen_list[i].show_time<MESSAGE_TIP_UPDATE_TIME)
-			{
-				memset(&screen_list[i],0,sizeof(screen_list[i]));
-				invaild_message_cnt ++;
-			}
-			else
-				vaild_message_cnt ++;
-		}
-	}
-	//停止
-	if(vaild_message_cnt == 0)
-//		app_timer_stop(m_tip_message_timer);
-	if(invaild_message_cnt)
-		Bsl_ReSortScreen(0);
-	Bsl_FlushScreen(NULL);
-}
+///**@brief 弹窗超时
+// *
+// * @param[in] *p_context 备用指针，当前无意义
+// */
+//static void Bsl_TipMessageTimeout(void *p_context)
+//{
+//	unsigned char vaild_message_cnt = 0;
+//	unsigned char invaild_message_cnt = 0;
+//	for(int i= 0;i<SCREEN_LIST_CNT;++i)
+//	{
+//		if(screen_list[i].type == SCREEN_TYPE_MSSAGE)
+//		{
+//			screen_list[i].show_time -= MESSAGE_TIP_UPDATE_TIME;
+//			if(screen_list[i].show_time<MESSAGE_TIP_UPDATE_TIME)
+//			{
+//				memset(&screen_list[i],0,sizeof(screen_list[i]));
+//				invaild_message_cnt ++;
+//			}
+//			else
+//				vaild_message_cnt ++;
+//		}
+//	}
+//	//停止
+//	if(vaild_message_cnt == 0)
+////		app_timer_stop(m_tip_message_timer);
+//	if(invaild_message_cnt)
+//		Bsl_ReSortScreen(0);
+//	Bsl_FlushScreen(NULL);
+//}
 
 
 /**@brief 初始化屏幕管理
  */
 void Bsl_InitScreenMgr(void)
 {
-	uint32_t  err_code;
+
 //	err_code = app_timer_create(&m_drawScreenTime, APP_TIMER_MODE_REPEATED, Bsl_FlushScreen);
 //	APP_ERROR_CHECK(err_code);
 //	
@@ -260,14 +259,14 @@ void Bsl_InitScreenMgr(void)
 //	err_code = app_timer_create(&m_tip_message_timer,APP_TIMER_MODE_REPEATED, Bsl_TipMessageTimeout);
 //	APP_ERROR_CHECK(err_code);
 	
-	resgister_event_handle(Bsl_ScreenMgrEventHandle,	EVENT_KEY_PRESSED);
+	resgister_event_handle(Bsl_ScreenMgrEventHandle,	EVENT_KEY0_PRESSED);
 }
 
 /**@brief 点亮屏幕
  *
  * @param[in] *p_context 备用指针，当前无意义
  */
-static void Bsl_FlushScreen(void* p_context)
+void Bsl_FlushScreen(void* p_context)
 {
 	LCD_Clear(WHITE);
 	if(screen_list[0].paint && screen_list[0].show_time != 0)
@@ -321,7 +320,7 @@ void Bsl_WakeupScreen(uint16_t time)
 {
 	if(want_screen_mgr_work == 0)
 		return;
-	uint32_t  err_code;
+	
 	
 //	Hdl_ReInitSH1107();
 //	
@@ -364,7 +363,7 @@ static void Bsl_WakeupScreenTimeout(void *p_context)
 //	app_timer_stop(m_drawScreenTime);
 //	Hdl_DisableSH1107();
 	is_screen_show = 0;
-	event_establish(0);
+	event_establish(EVENT_KEY0_PRESSED);
 }
 
 /**@brief 处理显示事件
@@ -373,30 +372,30 @@ static void Bsl_WakeupScreenTimeout(void *p_context)
  */
 static event_type_t Bsl_ScreenMgrEventHandle(event_type_t event)
 {
-	if(want_screen_mgr_work == 0)
-		return event;
-	switch(event)
-	{
-		case EVENT_KEY_PRESSED:
-			if(is_screen_show == 0)
-			{
-				#ifdef ENABLE_IQS211
-				Hdl_DiscardKeyThisTime();
-				#endif
-			}
-			else if(screen_list[0].paint && screen_list[0].show_time != 0 && screen_list[0].type == SCREEN_TYPE_DIALOG)//点击退出弹屏
-			{
-				Bsl_CloseScreen(screen_list[0].paint);
-				#ifdef ENABLE_IQS211
-				Hdl_DiscardKeyThisTime();
-				#endif
-			}
-			//fun_close_sendentary();
-			Bsl_WakeupScreen(10);
-			break;
-		default:
-			break;
-	}
+//	if(want_screen_mgr_work == 0)
+//		return event;
+//	switch(event)
+//	{
+//		case EVENT_KEY0_PRESSED:
+//			if(is_screen_show == 0)
+//			{
+//				#ifdef ENABLE_IQS211
+//				Hdl_DiscardKeyThisTime();
+//				#endif
+//			}
+//			else if(screen_list[0].paint && screen_list[0].show_time != 0 && screen_list[0].type == SCREEN_TYPE_DIALOG)//点击退出弹屏
+//			{
+//				Bsl_CloseScreen(screen_list[0].paint);
+//				#ifdef ENABLE_IQS211
+//				Hdl_DiscardKeyThisTime();
+//				#endif
+//			}
+//			//fun_close_sendentary();
+//			Bsl_WakeupScreen(10);
+//			break;
+//		default:
+//			break;
+//	}
 	return event;
 }
 

@@ -24,17 +24,20 @@ typedef struct
 	uint16_t show_time;						///<显示时间
 }S_SCREEN;									///<屏幕显示列表结构体数组 
 
-extern void Bsl_InitScreenMgr(void);
-extern void Bsl_WakeupScreen(uint16_t time);
-extern void Bsl_TurnOffScreen(void);
-extern void Bsl_TurnOnScreen(void);
+void Bsl_InitScreenMgr(void);
+void Bsl_WakeupScreen(uint16_t time);
+void Bsl_TurnOffScreen(void);
+void Bsl_TurnOnScreen(void);
+void Bsl_FlushScreen(void* p_context);
+void Bsl_TipMessage(void (*paint)(uint16_t,void *),void *p,unsigned short tip_time,SCREEN_PRI pri);
+void Bsl_CreateScreen(void (*paint)(uint16_t,void *),SCREEN_TYPE type,SCREEN_PRI pri);
+void Bsl_ShowScreen(void (*paint)(uint16_t,void *),void *p);
+void Bsl_CloseScreen(void (*paint)(uint16_t,void *));
+unsigned char Bsl_IsScreenShowing(void (*paint)(uint16_t,void *));
+unsigned char Bsl_IsShowingMainScreen(void);
+uint8_t bsl_get_screen_show(void);
+void bsl_turn_off_screen(void);
 
-extern void Bsl_TipMessage(void (*paint)(uint16_t,void *),void *p,unsigned short tip_time,SCREEN_PRI pri);
-extern void Bsl_CreateScreen(void (*paint)(uint16_t,void *),SCREEN_TYPE type,SCREEN_PRI pri);
-extern void Bsl_ShowScreen(void (*paint)(uint16_t,void *),void *p);
-extern void Bsl_CloseScreen(void (*paint)(uint16_t,void *));
-extern unsigned char Bsl_IsScreenShowing(void (*paint)(uint16_t,void *));
-extern unsigned char Bsl_IsShowingMainScreen(void);
-extern uint8_t bsl_get_screen_show(void);
-extern void bsl_turn_off_screen(void);
 #endif
+
+

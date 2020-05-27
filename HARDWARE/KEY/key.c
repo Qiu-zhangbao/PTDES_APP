@@ -2,6 +2,7 @@
 #include "key.h"
 #include "sys.h" 
 #include "delay.h"
+#include "event_queue.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK精英STM32开发板
@@ -40,7 +41,7 @@ void KEY_Init(void) //IO初始化
 //2，KEY1按下
 //3，KEY3按下 WK_UP
 //注意此函数有响应优先级,KEY0>KEY1>KEY_UP!!
-u8 KEY_Scan(u8 mode)
+void KEY_Scan(u8 mode)
 {	 
 	static u8 key_up=1;//按键按松开标志
 	if(mode)key_up=1;  //支持连按		  
@@ -48,9 +49,13 @@ u8 KEY_Scan(u8 mode)
 	{
 		delay_ms(10);//去抖动 
 		key_up=0;
-		if(KEY0==0)return KEY0_PRES;
-		else if(KEY1==0)return KEY1_PRES;
-		else if(WK_UP==1)return WKUP_PRES;
-	}else if(KEY0==1&&KEY1==1&&WK_UP==0)key_up=1; 	    
- 	return 0;// 无按键按下
+		if(KEY0==0)
+			event_establish(EVENT_KEY0_PRESSED);
+		else if(KEY1==0)
+			event_establish(EVENT_KEY1_PRESSED);
+		else if(WK_UP==1)
+			event_establish(EVENT_KEY_UP_PRESSED);
+	}
+	else if(KEY0==1&&KEY1==1&&WK_UP==0)
+		key_up=1; 	    
 }

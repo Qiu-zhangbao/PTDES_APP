@@ -1,117 +1,44 @@
 #include "control.h"
-#include "gui.h"
-#include "lcd.h"
-#include "test.h"
-#include "pic.h"
 #include "key.h"
 #include "touch.h"
-#include "delay.h"
-#include "led.h"
-
+#include "main_page.h"
 #include "lab1.h"
 #include "lab2.h"
 #include "lab3.h"
 #include "lab4.h"
 #include "lab5.h"
 #include "lab6.h"
-vu8 key=0;	
+#include "Bsl_ScreenMgr.h"
 
-static uint8_t x=130,y=40,line=40,mode=1;
-uint8_t xiankuangjiange=10;
-
-static uint16_t color1=BLUE,color2=BLACK;
-
-uint8_t lab_list=0,lab_list_last=0; 
-
+<<<<<<< Updated upstream
 uint8_t text_num_last;
 uint8_t ones=1;
 uint8_t labrary=0xff;
 	
-lab_list_t page_last;	
+lab_list_t page_last=main_page;	
 	
-lab_list_t page_now;	
+lab_list_t page_now=main_page;	
 	
 void main_page_init(void)
+=======
+page_list_t page_state=close;	
+		
+void Apc_InitFunCtrlSM(void)
+>>>>>>> Stashed changes
 {
-
-	//Gu_Drawbmp16_320X480(0,0,gImage_480X320);
-	//Gui_Drawbmp16(0,0,gImage_80X80);
-
-	LCD_Fill(0,0,lcddev.width,20,BLUE+200);
-
-	Gui_StrCenter(0,2,WHITE,BLUE,"光电计时数字实验系统",16,mode);//居中显示
-	
-	LCD_Fill(0,20,lcddev.width,lcddev.height,WHITE);
-	
-	Show_Str(x,y,color2,color1,"实验1：测量挡光时间",16,mode);
-	Show_Str(x,y+line,color2,color1,"实验2：测量瞬时速度",16,mode);
-	Show_Str(x,y+line+line,color2,color1,"实验3：测量匀变速运动的加速度",16,mode);
-	Show_Str(x,y+line+line+line,color2,color1,"实验4：测量碰撞中的动量",16,mode);
-	Show_Str(x,y+line+line+line+line,color2,color1,"实验5：计数",16,mode);
-	Show_Str(x,y+line+line+line+line+line,color2,color1,"实验6：测量周期和频率",16,mode);
-	
-	Show_Str(420,y+line+line+line+line+line,color2,color1,"设置",16,mode);
-	
-	Show_Str(420,y+line+line+line+line+line+line,color2,color1,"退出",16,mode);
-
-
+	Fun_Init_main_page();
+	Fun_Init_lab1_page();
+	Fun_Init_lab2_page();
+	Fun_Init_lab3_page();
+	Fun_Init_lab4_page();
+	Fun_Init_lab5_page();
+	Fun_Init_lab6_page();
 }
 
 
-void main_page_refresh(void)
+
+void Control_Init(void)
 {
-	uint8_t list=0;
-	uint8_t list_text_num[6]={6,6,11,8,2,7};
-	
-	if(!(tp_dev.sta&TP_PRES_DOWN))	ones=1;
-	if(tp_dev.sta&TP_PRES_DOWN)			//触摸屏被按下
-	{	
-		for(list=0;list<6;list++)
-		{	
-			if(tp_dev.x>(x-xiankuangjiange)&&tp_dev.x<(x+56+16*list_text_num[list]+xiankuangjiange))
-			{	
-				if(tp_dev.y>(y+line*list-xiankuangjiange)&&tp_dev.y<(y+line*list+xiankuangjiange+16))
-				{
-					lab_list=list;
-					if(ones==1)
-					{
-						LCD_Clear(WHITE);
-						main_page_init();
-						ones=0;
-					}
-					if(lab_list_last==lab_list)
-					{
-						LED1=0;
-						labrary=lab_list;
-					}
-					else
-					{
-						LED1=1;
-
-					}
-					
-					
-					
-					POINT_COLOR=RED;
-					LCD_DrawRectangle(x-xiankuangjiange,y+line*list-xiankuangjiange,x+56+16*list_text_num[list]+xiankuangjiange,y+line*list+xiankuangjiange+16);
-					lab_list_last=lab_list;
-					text_num_last=list_text_num[list];
-					
-				}
-			}
-		}
-	}
-
-
-}
-
-void main_page_close(void)
-{
-
-
-
-
-
 
 
 
@@ -119,44 +46,104 @@ void main_page_close(void)
 
 }
 
-void main_work_turn_sm(lab_list_t state)
+void Control_state_machine(page_list_t state)
 {
-	if(state == page_last)
+	if(state == page_state)
 		return;
 	
-	switch(page_last)
+	switch(page_state)
 	{
-		case lab1:
-			
+		case main_page:
+			Fun_Close_main_page();
 			break;
+		
+		case lab1:
+<<<<<<< Updated upstream
+			
+		
+=======
+			Fun_Close_lab1_page();
+			break;
+				
+		case lab2:
+			Fun_Close_lab2_page();
+			break;
+		
+		case lab3:
+			Fun_Close_lab3_page();
+>>>>>>> Stashed changes
+			break;
+
+		case lab4:
+			Fun_Close_lab4_page();
+			break;
+		
+		case lab5:
+			Fun_Close_lab5_page();
+			break;		
+		
+		case lab6:
+			Fun_Close_lab6_page();
+			break;		
+		case close:
+			
+			break;			
 	}
 	
 	switch(state)
 	{
-		case lab1:
-			lab1_page_init();	
+		case main_page:
+			Fun_Show_main_page();
 			break;
+		
+		case lab1:
+			Fun_Show_lab1_page();
+			break;
+		
+		case lab2:
+			Fun_Show_lab2_page();
+			break;
+		
+		case lab3:
+			Fun_Show_lab3_page();
+			break;
+
+		case lab4:
+			Fun_Show_lab4_page();
+			break;
+		
+		case lab5:
+			Fun_Show_lab5_page();
+			break;		
+		
+		case lab6:
+			Fun_Show_lab6_page();
+			break;	
+		
+		case close:
+			
+			break;	
 	}
-
-
-
-	page_last=state;
-
-
+	page_state=state;
 }
 
 
 
 void main_control(void)
 {
-	
-	key = KEY_Scan(0);	
+	static uint16_t period=0;
+	KEY_Scan(0);	
 	tp_dev.scan(0); 
-	main_work_turn_sm(page_now);
+	Control_state_machine(main_page);
 	
-
-	//main_work_turn_sm();
 	
+	period++;
+	if(period==10)
+	{
+		period=0;
+		Bsl_FlushScreen(0);
+	}
+		
 }
 
 

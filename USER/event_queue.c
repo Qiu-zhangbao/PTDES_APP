@@ -3,7 +3,7 @@
 
 #define EVENT_HANDLE_LIST_CNT	50
 
-u8 Event_HandlerCnt;
+uint8_t Event_HandlerCnt;
 
 typedef struct
 {
@@ -21,7 +21,7 @@ void Init_event_queue(void)
 
 void resgister_event_handle(event_handle handle,int	interest_event_mask)
 {
-	for(int i=0;i<EVENT_HANDLE_LIST_CNT;i++)
+	for(uint8_t i=0;i<EVENT_HANDLE_LIST_CNT;i++)
 	{
 		if(Event_HandlerList[i].Event_Handle == 0 )
 		{
