@@ -487,6 +487,11 @@
               <FileType>1</FileType>
               <FilePath>.\GUI.c</FilePath>
             </File>
+            <File>
+              <FileName>Bsl_ScreenMgr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LCD\Bsl_ScreenMgr.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

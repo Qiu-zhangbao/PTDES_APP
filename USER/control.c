@@ -27,9 +27,9 @@ uint8_t text_num_last;
 uint8_t ones=1;
 uint8_t labrary=0xff;
 	
-lab_list_t page_last=main_page;	
+lab_list_t page_last;	
 	
-lab_list_t page_now=main_page;	
+lab_list_t page_now;	
 	
 void main_page_init(void)
 {
@@ -128,7 +128,6 @@ void main_work_turn_sm(lab_list_t state)
 	{
 		case lab1:
 			
-		
 			break;
 	}
 	

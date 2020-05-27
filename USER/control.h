@@ -10,11 +10,12 @@ typedef enum
 	lab4,
 	lab5,
 	lab6,
-	main_page
-
 }lab_list_t;
  
-
+typedef enum
+{
+	index=0,
+}index_list_t;
 
 void main_page_init(void);
 
