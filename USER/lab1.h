@@ -3,7 +3,7 @@
 #include "sys.h"
 
 
-void lab1_page(void);
+void lab1_page_init(void);
 
 
 #endif

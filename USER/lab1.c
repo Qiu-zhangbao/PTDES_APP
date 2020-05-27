@@ -7,7 +7,9 @@
 static uint16_t color1=BLUE,color2=BLACK;
 static uint8_t x=130,y=40,line=40,mode=1;
 SX670_t sx670_parm;
-void lab1_page(void)
+
+
+void lab1_page_init(void)
 {
 
 	LCD_Fill(0,0,lcddev.width,20,BLUE+200);

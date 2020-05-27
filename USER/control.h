@@ -9,7 +9,8 @@ typedef enum
 	lab3,
 	lab4,
 	lab5,
-	lab6
+	lab6,
+	main_page
 
 }lab_list_t;
  

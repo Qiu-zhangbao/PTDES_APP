@@ -27,7 +27,9 @@ uint8_t text_num_last;
 uint8_t ones=1;
 uint8_t labrary=0xff;
 	
+lab_list_t page_last=main_page;	
 	
+lab_list_t page_now=main_page;	
 	
 void main_page_init(void)
 {
@@ -56,16 +58,11 @@ void main_page_init(void)
 }
 
 
-
-
-void main_control(void)
+void main_page_refresh(void)
 {
 	uint8_t list=0;
 	uint8_t list_text_num[6]={6,6,11,8,2,7};
 	
-	key = KEY_Scan(0);	
-	tp_dev.scan(0); 
-
 	if(!(tp_dev.sta&TP_PRES_DOWN))	ones=1;
 	if(tp_dev.sta&TP_PRES_DOWN)			//´¥ÃþÆÁ±»°´ÏÂ
 	{	
@@ -104,23 +101,62 @@ void main_control(void)
 			}
 		}
 	}
-	switch(labrary)
+
+
+}
+
+void main_page_close(void)
+{
+
+
+
+
+
+
+
+
+
+
+}
+
+void main_work_turn_sm(lab_list_t state)
+{
+	if(state == page_last)
+		return;
+	
+	switch(page_last)
 	{
-		case lab1 : 
+		case lab1:
 			
-		LCD_Clear(WHITE);
-		lab1_page();
-		labrary=0xff;
-		break;
-	
-	
-	
+		
+			break;
 	}
 	
+	switch(state)
+	{
+		case lab1:
+			lab1_page_init();	
+			break;
+	}
 
+
+
+	page_last=state;
+
+
+}
+
+
+
+void main_control(void)
+{
 	
+	key = KEY_Scan(0);	
+	tp_dev.scan(0); 
+	main_work_turn_sm(page_now);
 	
-	
+
+	//main_work_turn_sm();
 	
 }
 

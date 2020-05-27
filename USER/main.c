@@ -10,7 +10,7 @@
 #include "key.h"
 #include "gui.h"
 #include "control.h"
-
+#include "event_queue.h"
 /****************************************************************************************************
 //=======================================液晶屏数据线接线==========================================//
 //DB0       接PD14 
@@ -65,13 +65,13 @@ int main(void)
 	TIM2_Int_Init(71,9);
 	TIM3_PWM_Init(899,0); 		//不分频。PWM频率=72000/(899+1)=80Khz
 	TIM4_Int_Init(7199,99);
-//	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
-	main_page_init();
+	//SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+
 
 	TP_Init();
 	KEY_Init();
-	
-	time_us=0;
+	Init_event_queue();
+	main_page_init();
 	
 	while(1)
 	{	
