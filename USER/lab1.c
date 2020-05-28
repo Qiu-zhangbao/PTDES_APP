@@ -38,11 +38,11 @@ void Fun_lab1_page_init(void)
 	Show_Str(420,16+50+50+50+50,color2,RED,"«Â¡„",16,mode);
 	Show_Str(420,16+50+50+50+50+50,color2,RED,"∑µªÿ",16,mode);
 
-		POINT_COLOR=RED;
-		LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
-		LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
-		LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
-		LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
+	POINT_COLOR=RED;
+	LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
+	LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
+	LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
+	LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
 }
 
 static void Fun_lab1_page_Screen(uint16_t period,void* p)

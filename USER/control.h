@@ -11,20 +11,13 @@ typedef enum
 	lab4,
 	lab5,
 	lab6,
-<<<<<<< Updated upstream
-	main_page
+	close,
 
 }lab_list_t;
  
 
 
 void main_page_init(void);
-
-=======
-	close,
-}page_list_t;
- 
->>>>>>> Stashed changes
 
 void Control_Init(void);
 

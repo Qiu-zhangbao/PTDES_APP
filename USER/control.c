@@ -10,21 +10,9 @@
 #include "lab6.h"
 #include "Bsl_ScreenMgr.h"
 
-<<<<<<< Updated upstream
-uint8_t text_num_last;
-uint8_t ones=1;
-uint8_t labrary=0xff;
-	
-lab_list_t page_last=main_page;	
-	
-lab_list_t page_now=main_page;	
-	
-void main_page_init(void)
-=======
-page_list_t page_state=close;	
+lab_list_t page_state=close;	
 		
 void Apc_InitFunCtrlSM(void)
->>>>>>> Stashed changes
 {
 	Fun_Init_main_page();
 	Fun_Init_lab1_page();
@@ -46,7 +34,7 @@ void Control_Init(void)
 
 }
 
-void Control_state_machine(page_list_t state)
+void Control_state_machine(lab_list_t state)
 {
 	if(state == page_state)
 		return;
@@ -58,10 +46,6 @@ void Control_state_machine(page_list_t state)
 			break;
 		
 		case lab1:
-<<<<<<< Updated upstream
-			
-		
-=======
 			Fun_Close_lab1_page();
 			break;
 				
@@ -71,7 +55,7 @@ void Control_state_machine(page_list_t state)
 		
 		case lab3:
 			Fun_Close_lab3_page();
->>>>>>> Stashed changes
+		
 			break;
 
 		case lab4:

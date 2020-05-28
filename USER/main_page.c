@@ -15,8 +15,6 @@ static uint16_t color1=BLUE,color2=BLACK;
 	
 void main_page_init(void)
 {
-
-
 	//Gu_Drawbmp16_320X480(0,0,gImage_480X320);
 	//Gui_Drawbmp16(0,0,gImage_80X80);
 

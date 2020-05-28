@@ -249,8 +249,6 @@ void LCD_GPIOInit(void)
    	FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);  // 使能BANK1 
 }
 
-
- 	 
 //******************************************************************
 //函数名：  LCD_Init
 //作者：    xiao冯@全动电子
