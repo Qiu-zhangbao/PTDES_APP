@@ -4,6 +4,8 @@
 #include "stdlib.h"
 #include "math.h"
 #include "gui.h"	    
+#include "event_queue.h"
+#include "control.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,主频72M  单片机工作电压3.3V
@@ -209,7 +211,8 @@ u8 TP_Scan(u8 tp)
 		if(tp_dev.sta&TP_PRES_DOWN)//之前是被按下的
 		{
 			tp_dev.sta&=~(1<<7);//标记按键松开	
-		}else//之前就没有被按下
+		}
+		else//之前就没有被按下
 		{
 			tp_dev.x0=0;
 			tp_dev.y0=0;
@@ -282,5 +285,109 @@ u8 TP_Init(void)
 	TP_Get_Adjdata();	
 	return 1; 									 
 }
+
+
+
+void touch_main_page(void)
+{
+
+
+}
+
+void touch_lab1_page(void)
+{
+	
+	
+}
+
+void touch_lab2_page(void)
+{
+	
+	
+}
+
+void touch_lab3_page(void)
+{
+	
+	
+}
+
+void touch_lab4_page(void)
+{
+	
+	
+}
+
+void touch_lab5_page(void)
+{
+	
+	
+}
+
+void touch_lab6_page(void)
+{
+
+
+}
+
+
+
+
+
+void Control_touch(void)
+{
+	switch(page_state_now)
+	{
+		case main_page:
+			touch_main_page();
+			break;
+		
+		case lab1:
+			touch_lab1_page();
+			break;
+		
+		case lab2:
+			touch_lab2_page();
+			break;
+		
+		case lab3:
+			touch_lab3_page();
+			break;
+
+		case lab4:
+			touch_lab4_page();
+			break;
+		
+		case lab5:
+			touch_lab5_page();
+			break;		
+		
+		case lab6:
+			touch_lab6_page();
+			break;	
+		
+		case close:
+			
+			break;	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

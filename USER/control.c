@@ -22,6 +22,8 @@ void Apc_InitFunCtrlSM(void)
 	Fun_Init_lab4_page();
 	Fun_Init_lab5_page();
 	Fun_Init_lab6_page();
+	
+	
 }
 
 
@@ -115,6 +117,7 @@ void main_control(void)
 	KEY_Scan(0);	
 	tp_dev.scan(0); 
 	Control_state_machine(page_state_now);	
+	Control_touch();
 }
 
 
