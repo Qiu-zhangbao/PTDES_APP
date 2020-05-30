@@ -4,7 +4,8 @@
 #include "Bsl_ScreenMgr.h"
 #include "gui.h"
 #include "sx670.h"
-
+#include "control.h"
+#include "led.h"
 
 
 void Fun_lab4_page_init(void)

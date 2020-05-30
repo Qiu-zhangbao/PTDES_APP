@@ -15,13 +15,15 @@ typedef enum
 
 }lab_list_t;
  
-
+extern lab_list_t page_state_now;
 
 void main_page_init(void);
 
 void Control_Init(void);
 
 void main_control(void);
+
+void Control_state_machine(lab_list_t state);
 
 #endif
 

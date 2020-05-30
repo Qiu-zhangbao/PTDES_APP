@@ -73,7 +73,7 @@ int main(void)
 	KEY_Init();
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
-	
+	Control_Init();
 	while(1)
 	{	
 		delay_ms(10);	 

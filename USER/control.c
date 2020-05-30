@@ -11,6 +11,7 @@
 #include "Bsl_ScreenMgr.h"
 
 lab_list_t page_state=close;	
+lab_list_t page_state_now=close;	
 		
 void Apc_InitFunCtrlSM(void)
 {
@@ -27,11 +28,7 @@ void Apc_InitFunCtrlSM(void)
 
 void Control_Init(void)
 {
-
-
-
-
-
+	page_state_now=main_page;
 }
 
 void Control_state_machine(lab_list_t state)
@@ -115,19 +112,9 @@ void Control_state_machine(lab_list_t state)
 
 void main_control(void)
 {
-	static uint16_t period=0;
 	KEY_Scan(0);	
 	tp_dev.scan(0); 
-	Control_state_machine(main_page);
-	
-	
-	period++;
-	if(period==10)
-	{
-		period=0;
-		Bsl_FlushScreen(0);
-	}
-		
+	Control_state_machine(page_state_now);	
 }
 
 

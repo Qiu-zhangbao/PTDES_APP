@@ -338,8 +338,8 @@ void LCD_Init(void)
 	LCD_WR_REG(0x29);
 
 	LCD_SetParam();//设置LCD参数	 
-	LCD_LED=1;//点亮背光	 
 	LCD_Clear(WHITE);
+	
 }
   		  
 //******************************************************************
@@ -422,5 +422,5 @@ void LCD_SetParam(void)
 #endif
 }	  
 
- 
+
 

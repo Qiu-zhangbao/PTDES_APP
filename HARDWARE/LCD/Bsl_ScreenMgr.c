@@ -194,7 +194,12 @@ void Bsl_ShowScreen(void (*paint)(uint16_t,void *),void *p)
 	screen->paint_p = p;
 	screen->show_time = 0xFFFF;
 	Bsl_ReSortScreen(paint);
-	Bsl_FlushScreen(NULL);
+//	for(uint8_t i=0;i<100;i++)
+//	{
+//	Bsl_FlushScreen(NULL);
+//	
+//	}
+	
 }
 
 /**@brief ¹Ø±ÕÆÁÄ»
@@ -268,8 +273,8 @@ void Bsl_InitScreenMgr(void)
  */
 void Bsl_FlushScreen(void* p_context)
 {
-	LCD_Clear(WHITE);
-	if(screen_list[0].paint && screen_list[0].show_time != 0)
+//	LCD_Clear(WHITE);
+	if(screen_list[0].paint /*&& screen_list[0].show_time != 0*/)
 	{
 		if(p_context)
 			screen_list[0].paint(*(uint16_t*)p_context,screen_list[0].paint_p);
@@ -320,7 +325,7 @@ void Bsl_WakeupScreen(uint16_t time)
 {
 	if(want_screen_mgr_work == 0)
 		return;
-	
+	LCD_LED=1;
 	
 //	Hdl_ReInitSH1107();
 //	
