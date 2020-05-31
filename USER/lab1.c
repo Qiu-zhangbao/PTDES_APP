@@ -18,7 +18,7 @@ static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | STOP ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
 
 static uint8_t start=1,stop=1,back=1;//按键标志
 
@@ -235,6 +235,7 @@ void Fun_Close_lab1_page(void)
 {
 	LCD_Clear(WHITE);
 	EE_SX670_DISENABLE();
+	start=stop=back=1;//按键标志
 }
 
 

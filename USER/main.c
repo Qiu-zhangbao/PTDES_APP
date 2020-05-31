@@ -101,26 +101,42 @@ int main(void)
 		}
 		else if(page_state_now == lab2  )
 		{
-		
-		
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
+
+			
+			
 		}
 		else if(page_state_now == lab3  )
 		{
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
 		
 		
 		}
 		else if(page_state_now == lab4  )
 		{
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
 		
 		
 		}
 		else if(page_state_now == lab5  )
 		{
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
 		
 		
 		}		
 		else if(page_state_now == lab6  )
 		{
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
 		
 		
 		}			

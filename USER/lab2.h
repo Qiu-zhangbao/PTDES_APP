@@ -7,7 +7,7 @@ void Fun_Close_lab2_page(void);
 void Fun_Show_lab2_page(void);
 void Fun_Init_lab2_page(void);
 void touch_lab2_page(void);
-
+void Fun_lab2_show_text(void);
 
 #endif
 
