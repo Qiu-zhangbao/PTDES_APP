@@ -52,8 +52,8 @@
 
 
 
-uint32_t time_us=0;
-uint32_t num_test=0;
+
+
 
 int main(void)
 {	
@@ -74,6 +74,7 @@ int main(void)
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
 	Control_Init();
+	time_us=0;
 	while(1)
 	{	
 		delay_ms(10);	 
@@ -88,7 +89,41 @@ int main(void)
 //		if(PEN)LED1=1;
 //		else LED1=0;
 		
-//		LCD_ShowNum(100,100,num_test,12,16);
+		if(page_state_now == lab1  )
+		{
+			POINT_COLOR=WHITE;
+			BACK_COLOR=MY_DARKBLUE;
+			LCD_ShowNum_Cover(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
+			LCD_ShowNum_Cover(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
+			LCD_ShowNum_Cover(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
+			LCD_ShowNum_Cover(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
+			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
+		}
+		else if(page_state_now == lab2  )
+		{
+		
+		
+		}
+		else if(page_state_now == lab3  )
+		{
+		
+		
+		}
+		else if(page_state_now == lab4  )
+		{
+		
+		
+		}
+		else if(page_state_now == lab5  )
+		{
+		
+		
+		}		
+		else if(page_state_now == lab6  )
+		{
+		
+		
+		}			
 		
 		
 //		key = KEY_Scan(0);	

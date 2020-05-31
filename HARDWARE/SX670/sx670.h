@@ -17,7 +17,7 @@ typedef struct
 
 }SX670_t;
 
-
+extern SX670_t sx670_parm;
 
 
 #define sensor1  GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2)//读取传感器1
@@ -30,6 +30,8 @@ typedef struct
  
 
 void EE_SX670_INIT(void);//初始化
+void EE_SX670_ENABLE(void);
+void EE_SX670_DISENABLE(void);
 
-		 				    
+
 #endif

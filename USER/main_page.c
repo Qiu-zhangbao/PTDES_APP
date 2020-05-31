@@ -25,7 +25,7 @@ static uint8_t LAB1=1,LAB2=1,LAB3=1,LAB4=1,LAB5=1,LAB6=1,SETING=1,EXIT=1;//°´¼ü±
 static int8_t page_key=0;
 static uint8_t page_key_one=1;
 
-void Fun_show_text(void)
+void Fun_main_page_show_text(void)
 {
 	Show_Str(x,y,color2,color1,"ÊµÑé1£º²âÁ¿µ²¹âÊ±¼ä",16,mode);
 	Show_Str(x,y+line,color2,color1,"ÊµÑé2£º²âÁ¿Ë²Ê±ËÙ¶È",16,mode);
@@ -49,7 +49,7 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 	Show_Str(400,8,WHITE,BLACK,VERSION_NUMBER,12,1);//°æ±¾ºÅ
 	
 	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
-	Fun_show_text();
+	Fun_main_page_show_text();
 	for(uint8_t list=0;list<6;list++)
 	{	
 		
@@ -70,7 +70,7 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 void Fun_show_refsh_touch_key(lab_list_t res)
 {
 	page_state_select=res;
-	Fun_show_text();
+	Fun_main_page_show_text();
 	
 	
 	if(page_state_select == lab1)
@@ -348,7 +348,10 @@ void Fun_Close_main_page(void)
 	LAB6=1;
 	SETING=1;
 	EXIT=1;//°´¼ü±êÖ¾
-    page_key=0;
-    page_key_one=1;
+	page_key=0;
+	page_key_one=1;
+	page_state_select=close;
+	page_state_select_last=close;
+	
 }
 

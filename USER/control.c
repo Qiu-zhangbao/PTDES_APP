@@ -30,7 +30,7 @@ void Apc_InitFunCtrlSM(void)
 
 void Control_Init(void)
 {
-	page_state_now=main_page;
+	page_state_now=lab1;
 }
 
 void Control_state_machine(lab_list_t state)
@@ -70,7 +70,13 @@ void Control_state_machine(lab_list_t state)
 			break;		
 		case close:
 			
-			break;			
+			break;
+		case seting:
+			
+			break;	
+		case exiting:
+			
+			break;	
 	}
 	
 	switch(state)
@@ -104,6 +110,12 @@ void Control_state_machine(lab_list_t state)
 			break;	
 		
 		case close:
+			
+			break;	
+		case seting:
+			
+			break;	
+		case exiting:
 			
 			break;	
 	}
@@ -145,6 +157,12 @@ void Control_touch(void)
 			break;	
 		
 		case close:
+			
+			break;	
+		case seting:
+			
+			break;	
+		case exiting:
 			
 			break;	
 	}

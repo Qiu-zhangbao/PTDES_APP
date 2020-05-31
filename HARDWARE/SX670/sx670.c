@@ -1,9 +1,11 @@
 #include "sx670.h"
 #include "led.h"
-#include "time.h"
+#include "timer.h"
+#include "event_queue.h"
 
-extern uint32_t time_us;
-extern SX670_t sx670_parm;
+SX670_t sx670_parm;
+static uint8_t sx670_enable=0;
+
 
 void EE_SX670_INIT_PIN(void) //IO初始化
 { 
@@ -17,12 +19,27 @@ void EE_SX670_INIT_PIN(void) //IO初始化
 	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.0
 }
 
+void EE_SX670_ENABLE(void)
+{
+	TIM_Cmd(TIM2, ENABLE);  //使能TIMx
+	sx670_enable=1;
+}
+
+void EE_SX670_DISENABLE(void)
+{
+	TIM_Cmd(TIM2, DISABLE);  //使能TIMx
+	time_us=0;
+	sx670_enable=0;
+	sx670_parm.sensor1_us=0;
+	sx670_parm.sensor2_us=0;
+	sx670_parm.sensor3_us=0;
+	sx670_parm.sensor4_us=0;
+}
 
 
 //外部中断0服务程序
 void EE_SX670_INIT(void)
 {
- 
    	EXTI_InitTypeDef EXTI_InitStructure;
  	NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -37,25 +54,25 @@ void EE_SX670_INIT(void)
   	EXTI_Init(&EXTI_InitStructure);	  	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
 	
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI2_IRQn;			//使能按键WK_UP所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;	//抢占优先级2， 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2， 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;					//子优先级3
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure); 
 
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI3_IRQn;			//使能按键KEY1所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;					//子优先级1 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI4_IRQn;			//使能按键KEY0所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;					//子优先级0 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 	
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;			//使能按键KEY0所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x02;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x04;					//子优先级0 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
@@ -67,24 +84,18 @@ uint8_t num=0;
 //外部中断0服务程序 
 void EXTI2_IRQHandler(void)
 {
-	if(sensor1==1)	 //按键KEY0
+	if(sx670_enable)
 	{
-		LED0=0;
-		run_one=1;
-		TIM_Cmd(TIM3, DISABLE);
-		sx670_parm.sensor1_us=time_us*10+(time_us/3)%10;
-		
-	}		 
-	else if(sensor1==0)	 //按键KEY0
-	{
-		LED0=1;
-		TIM_Cmd(TIM3, ENABLE);
-		if(run_one)
+		if(sensor1==1)	 //按键KEY0
 		{
-			run_one=0;
-			time_us=0;//从0开始计时
-		}
-	}	 
+			event_establish(EVENT_SENER1_OUT);
+		}		 
+		else if(sensor1==0)	 //按键KEY0
+		{
+			event_establish(EVENT_SENER1_IN);
+		}	
+	
+	}
 	EXTI_ClearITPendingBit(EXTI_Line2);  //清除LINE3上的中断标志位  
 }
  
@@ -92,77 +103,52 @@ void EXTI2_IRQHandler(void)
 //外部中断3服务程序
 void EXTI3_IRQHandler(void)
 {
-	if(sensor2==1)	 //按键KEY0
+	if(sx670_enable)
 	{
-		LED0=0;
-		run_one=1;
-		TIM_Cmd(TIM3, DISABLE);
-		sx670_parm.sensor2_us=time_us*10+(time_us/3)%10;
-		
-	}		 
-	else if(sensor2==0)	 //按键KEY0
-	{
-		LED0=1;
-		TIM_Cmd(TIM3, ENABLE);
-		if(run_one)
+		if(sensor2==1)	 //按键KEY0
 		{
-			run_one=0;
-			time_us=0;//从0开始计时
+			event_establish(EVENT_SENER2_OUT);
+		}		 
+		else if(sensor2==0)	 //按键KEY0
+		{
+			event_establish(EVENT_SENER2_IN);
 		}
-	}	 
+	}		
 	EXTI_ClearITPendingBit(EXTI_Line3);  //清除LINE3上的中断标志位  
 }
 
 void EXTI4_IRQHandler(void)
 {
-	if(sensor3==1)	 //按键KEY0
+	if(sx670_enable)
 	{
-		LED0=0;
-		run_one=1;
-		TIM_Cmd(TIM3, DISABLE);
-		sx670_parm.sensor3_us=time_us*10+(time_us/3)%10;
-		
-	}		 
-	else if(sensor3==0)	 //按键KEY0
-	{
-		LED0=1;
-		TIM_Cmd(TIM3, ENABLE);
-		if(run_one)
+		if(sensor3==1)	 //按键KEY0
 		{
-			run_one=0;
-			time_us=0;//从0开始计时
+			event_establish(EVENT_SENER3_OUT);
+		}		 
+		else if(sensor3==0)	 //按键KEY0
+		{
+			event_establish(EVENT_SENER3_IN);
 		}
-	} 
+	}
 	EXTI_ClearITPendingBit(EXTI_Line4);  //清除LINE4上的中断标志位  
 }
 
 void EXTI9_5_IRQHandler(void)
 {
-	if(sensor4==1)	 //按键KEY0
+	if(sx670_enable)
 	{
-		LED0=0;
-		run_one=1;
-		TIM_Cmd(TIM3, DISABLE);
-		sx670_parm.sensor4_us=time_us*10+(time_us/3)%10;
-	}		 
-	else if(sensor4==0)	 //按键KEY0
-	{
-		LED0=1;
-		TIM_Cmd(TIM3, ENABLE);
-		if(run_one)
+		if(sensor4==1)	 //按键KEY0
 		{
-			run_one=0;
-			time_us=0;//从0开始计时
-		}
+			event_establish(EVENT_SENER4_OUT);
+			//sx670_parm.sensor3_us=time_us*10+(time_us/3)%10;
+			
+		}		 
+		else if(sensor4==0)	 //按键KEY0
+		{
+			event_establish(EVENT_SENER4_IN);
+		} 		
 	}
-	
 	EXTI_ClearITPendingBit(EXTI_Line5);  //清除LINE4上的中断标志位  
 }
-
-
- 
- 
- 
- 
 
 

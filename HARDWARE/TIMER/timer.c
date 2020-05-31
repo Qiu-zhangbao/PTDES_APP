@@ -20,7 +20,11 @@
 //psc：时钟预分频数
 //这里使用的是定时器3!
 
-extern uint32_t time_us;
+
+
+uint32_t time_us=0;
+
+
 void TIM2_Int_Init(u16 arr,u16 psc)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -43,9 +47,7 @@ void TIM2_Int_Init(u16 arr,u16 psc)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
 	NVIC_Init(&NVIC_InitStructure);  //初始化NVIC寄存器
-
-
-	TIM_Cmd(TIM2, ENABLE);  //使能TIMx					 
+					 
 }
 
 
@@ -54,8 +56,8 @@ void TIM2_IRQHandler(void)   //TIM2中断
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)  //检查TIM2更新中断发生与否
 		{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
-		time_us++;	
+			TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
+			time_us++;	
 		}
 }
 
@@ -133,16 +135,15 @@ void TIM4_Int_Init(u16 arr,u16 psc)
 
 	TIM_Cmd(TIM4, ENABLE);  //使能TIMx					 
 }
-extern uint32_t num_test;
+
 
 //定时器4中断服务程序
 void TIM4_IRQHandler(void)   //TIM4中断
 {
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)  //检查TIM4更新中断发生与否
 		{
-		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  //清除TIM4更新中断标志 
-		main_control();
-//			num_test++;
+			TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  //清除TIM4更新中断标志 
+			main_control();
 		}
 }
 
