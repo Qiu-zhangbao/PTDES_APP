@@ -13,6 +13,14 @@
 #include "event_queue.h"
 #include "main_page.h"
 
+#include "main_page.h"
+#include "lab1.h"
+#include "lab2.h"
+#include "lab3.h"
+#include "lab4.h"
+#include "lab5.h"
+#include "lab6.h"
+
 
 /****************************************************************************************************
 //=======================================液晶屏数据线接线==========================================//
@@ -50,7 +58,8 @@
 //IROM1：0x8000000	0x80000
 //IRAM1：0x20000000	0x10000
 
-
+extern int8_t width;
+extern  uint8_t Tips;
 
 
 
@@ -101,11 +110,11 @@ int main(void)
 		}
 		else if(page_state_now == lab2  )
 		{
+			static uint8_t hangju=32,x=50,y=80,x1=200;
+			
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
-			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
-
-			
+			LCD_ShowNum(376,22,time_us*10+(time_us/3)%10,9,16);
 			
 		}
 		else if(page_state_now == lab3  )

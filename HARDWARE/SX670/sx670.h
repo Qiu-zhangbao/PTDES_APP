@@ -14,6 +14,11 @@ typedef struct
 	uint32_t sensor2_v;
 	uint32_t sensor3_v;
 	uint32_t sensor4_v;
+	
+	uint32_t sensor12_us;
+	uint32_t sensor34_us;
+	uint32_t sensor12_v;
+	uint32_t sensor34_v;
 
 }SX670_t;
 

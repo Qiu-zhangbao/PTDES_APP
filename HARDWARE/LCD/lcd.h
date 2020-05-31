@@ -122,7 +122,7 @@ extern u16  BACK_COLOR; //背景颜色.默认为白色
 
 #define MY_DARKBLUE       0X00E7 //深蓝色
 #define MY_PURPLE       0X8010 //深蓝色
-
+#define MY_YELLOW       0XFc00 //深蓝色
 
 
 extern u16 BACK_COLOR, POINT_COLOR ;  
