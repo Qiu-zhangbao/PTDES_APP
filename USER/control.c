@@ -112,6 +112,45 @@ void Control_state_machine(lab_list_t state)
 
 
 
+void Control_touch(void)
+{
+	switch(page_state_now)
+	{
+		case main_page:
+			touch_main_page();
+			break;
+		
+		case lab1:
+			touch_lab1_page();
+			break;
+		
+		case lab2:
+			touch_lab2_page();
+			break;
+		
+		case lab3:
+			touch_lab3_page();
+			break;
+
+		case lab4:
+			touch_lab4_page();
+			break;
+		
+		case lab5:
+			touch_lab5_page();
+			break;		
+		
+		case lab6:
+			touch_lab6_page();
+			break;	
+		
+		case close:
+			
+			break;	
+	}
+}
+
+
 void main_control(void)
 {
 	KEY_Scan(0);	
@@ -119,6 +158,7 @@ void main_control(void)
 	Control_state_machine(page_state_now);	
 	Control_touch();
 }
+
 
 
 

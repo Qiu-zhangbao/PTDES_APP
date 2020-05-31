@@ -160,6 +160,11 @@
           <WinNumber>2</WinNumber>
           <ItemText>tp_dev,0x10</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>page_key</ItemText>
+        </Ww>
       </WatchWindow2>
       <Tracepoint>
         <THDelay>0</THDelay>

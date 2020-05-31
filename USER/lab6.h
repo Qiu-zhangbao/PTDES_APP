@@ -6,7 +6,7 @@
 void Fun_Close_lab6_page(void);
 void Fun_Show_lab6_page(void);
 void Fun_Init_lab6_page(void);
-
+void touch_lab6_page(void);
 
 
 #endif

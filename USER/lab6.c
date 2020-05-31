@@ -25,6 +25,13 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 }
 
 
+void touch_lab6_page(void)
+{
+
+
+
+}
+
 /**@brief 事件处理函数
  *
  * @param[in] event 事件

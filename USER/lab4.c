@@ -23,7 +23,10 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 
 
 }
+void touch_lab4_page(void)
+{
 
+}
 
 /**@brief 事件处理函数
  *

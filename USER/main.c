@@ -83,7 +83,10 @@ int main(void)
  		if(led0pwmval>200)dir=0;
 		if(led0pwmval==0)dir=1;										 
 		TIM_SetCompare2(TIM3,led0pwmval);	
-
+		
+		
+//		if(PEN)LED1=1;
+//		else LED1=0;
 		
 //		LCD_ShowNum(100,100,num_test,12,16);
 		

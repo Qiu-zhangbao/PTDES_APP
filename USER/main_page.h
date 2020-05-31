@@ -7,7 +7,7 @@
 void Fun_Init_main_page(void);
 void Fun_Show_main_page(void);
 void Fun_Close_main_page(void);
-
+void touch_main_page(void);
 
 void Apc_InitFunCtrlSM(void);
 

@@ -56,6 +56,11 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 
 }
 
+void touch_lab1_page(void)
+{
+	
+	
+}
 
 /**@brief 事件处理函数
  *
@@ -82,15 +87,11 @@ void Fun_Init_lab1_page(void)
 
 void Fun_Show_lab1_page(void)
 {
-//	Bsl_WakeupScreen(5);
-//	Bsl_ShowScreen(Fun_lab1_page_Screen,0);
 	Fun_lab1_page_Screen(0,0);
 }
 
 void Fun_Close_lab1_page(void)
 {
-//	Bsl_WakeupScreen(5);
-//	Bsl_CloseScreen(Fun_lab1_page_Screen);
 	LCD_Clear(WHITE);
 }
 

@@ -12,6 +12,8 @@ typedef enum
 	lab5,
 	lab6,
 	close,
+	seting,
+	exiting,
 
 }lab_list_t;
  
