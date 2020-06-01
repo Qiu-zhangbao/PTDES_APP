@@ -95,8 +95,8 @@ int main(void)
 		TIM_SetCompare2(TIM3,led0pwmval);	
 		
 		
-//		if(PEN)LED1=1;
-//		else LED1=0;
+		if(PEN)LED1=1;
+		else LED1=0;
 		
 		if(page_state_now == lab1  )
 		{
@@ -135,10 +135,9 @@ int main(void)
 		}
 		else if(page_state_now == lab5  )
 		{
-			POINT_COLOR=WHITE;
-			BACK_COLOR=MY_DARKBLUE;
-			LCD_ShowNum(376,40,time_us*10+(time_us/3)%10,9,16);
-		
+			POINT_COLOR=MY_DARKBLUE;
+			BACK_COLOR=WHITE;
+			LCD_ShowNum_32(50,80+64,time_us*10+(time_us/3)%10,9,16);
 		
 		}		
 		else if(page_state_now == lab6  )
@@ -149,46 +148,6 @@ int main(void)
 		
 		
 		}			
-		
-		
-//		key = KEY_Scan(0);	
-//		tp_dev.scan(0); 
-
-//		LCD_ShowNum_Cover(0,0,time_us*10+(time_us/3)%10,12,16);
-
-//		LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
-//		LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
-//		LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
-//		LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
-
-//		if(key==KEY0_PRES)
-//		{
-//			sx670_parm.sensor1_us=0;
-//			sx670_parm.sensor2_us=0;
-//			sx670_parm.sensor3_us=0;
-//			sx670_parm.sensor4_us=0;
-//			
-//			LED1=!LED1;
-//			TIM_Cmd(TIM2, DISABLE);
-//			time_us=0;
-//		}
-//		 
-//		if(tp_dev.sta&TP_PRES_DOWN)			//´¥ÃþÆÁ±»°´ÏÂ
-//		{	
-//			if(tp_dev.x<lcddev.width&&tp_dev.y<lcddev.height)
-//			{	
-//				if(tp_dev.x>420&&tp_dev.x<460&&tp_dev.y>(16+50+50+50+50+50)&&tp_dev.y<(16+50+50+50+50+50+40))
-//				{
-//					sx670_parm.sensor1_us=0;
-//					sx670_parm.sensor2_us=0;
-//					sx670_parm.sensor3_us=0;
-//					sx670_parm.sensor4_us=0;
-//					TIM_Cmd(TIM2, DISABLE);
-//					time_us=0;
-//					LED1=!LED1;				
-//				}
-//			}
-//		}
 		
 	}				  
 	

@@ -23,7 +23,10 @@ static uint8_t hangju=32,x=50,y=80,x1=200;
 
 static uint8_t key_t1=1,key_t2=1;
 
-int8_t width=0;
+int16_t width_s=0;
+int16_t dis=0;
+
+
 uint8_t Tips=1;
 
 
@@ -61,8 +64,7 @@ void Fun_lab2_show_text(void)
 		LCD_ShowNum_Cover(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
 		LCD_ShowNum_Cover(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
 		
-		Show_Str(x-20,y+hangju*4,color2,color1,"Please enter the width",16,mode);
-		Show_Str(x-20,y+hangju*5-8,color2,color1," of the shield:",16,mode);
+		Show_Str(x-20,y+hangju*5-8,color2,color1,"挡光片宽度:",16,mode);
 		Show_Str(230,y+hangju*5-8,color2,color1,"    mm",16,mode);
 		
 	}
@@ -90,6 +92,8 @@ void Fun_lab2_show_text(void)
 	
 		LCD_ShowNum_Cover(x1+28,y+hangju*2,sx670_parm.sensor34_v,9,16);
 
+		Show_Str(x-20,y+hangju*5-8,color2,color1,"传感器距离:",16,mode);
+		Show_Str(230,y+hangju*5-8,color2,color1,"    cm",16,mode);
 	
 	}
 
@@ -107,17 +111,7 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 	Show_Str(270,22,color2,color1,"系统计时时间:          us",16,mode);
 	
 
-	
-//	for(uint8_t i=0;i<4;i++)
-//	{
-//		LCD_DrawLine(80,86+50*i,376,86+50*i);
-//		LCD_DrawLine(80,122+50*i,376,122+50*i);
-//	}
-	
-	
-//	Show_Str(206,70,color2,color1,"|  s  |ms|us|",16,mode);
-//	LCD_DrawLine(210,70,210+12*8,70);
-	
+
 
 	Fun_lab2_show_text();
 	for(uint8_t i=0;i<5;i++)
@@ -129,8 +123,6 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 			LCD_DrawRectangle(420-xiankuangjiange,66+50*i-xiankuangjiange,420+16*2+xiankuangjiange,66+50*i+xiankuangjiange+16);
 		Show_Str(420-xiankuangjiange-16,66+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
-	
-
 	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
 }
 
@@ -178,15 +170,34 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_KEY1_PRESSED)
 		{
-			width++;
-			if(width>200)width=0;
-			LCD_ShowNum(230,y+40*5-8,width,3,16);
+			if(Tips==1)
+			{
+				width_s++;
+				if(width_s>200)width_s=200;
+				LCD_ShowNum(230,y+40*5-8,width_s,3,16);
+			}
+			else
+			{
+				dis++;
+				if(dis>200)dis=0;
+				LCD_ShowNum(230,y+40*5-8,dis,3,16);
+	
+			}
 		}
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
-			width--;
-			if(width<0)width=0;
-			LCD_ShowNum(230,y+40*5-8,width,3,16);
+			if(Tips==1)
+			{
+				width_s--;
+				if(width_s<0)width_s=0;
+				LCD_ShowNum(230,y+40*5-8,width_s,3,16);
+			}
+			else
+			{
+				dis++;
+				if(dis>200)dis=0;
+				LCD_ShowNum(230,y+40*5-8,dis,3,16);
+			}
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
@@ -216,7 +227,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			//2mm/1706us  0.001 706
 			sx670_parm.sensor1_us=time_us-times_us_old1;
 			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
-			sx670_parm.sensor1_v=(width/sx670_parm.sensor1_us)*1000;
+			sx670_parm.sensor1_v=(width_s/sx670_parm.sensor1_us)*1000;
 			LCD_ShowNum_Cover(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
 			//LCD_ShowNum_Cover(x1+28,y+sx670_parm.sensor1_v*0,9876,9,16);
 		}
@@ -228,10 +239,9 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			sx670_parm.sensor2_us=time_us-times_us_old2;
 			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
-			sx670_parm.sensor2_v=(width/sx670_parm.sensor2_us)*1000;
+			sx670_parm.sensor2_v=(width_s/sx670_parm.sensor2_us)*1000;
 			LCD_ShowNum_Cover(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
 			//LCD_ShowNum_Cover(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);
-			
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
@@ -241,7 +251,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			sx670_parm.sensor3_us=time_us-times_us_old3;
 			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
-			sx670_parm.sensor3_v=(width/sx670_parm.sensor3_us)*1000;
+			sx670_parm.sensor3_v=(width_s/sx670_parm.sensor3_us)*1000;
 			LCD_ShowNum_Cover(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
 			//LCD_ShowNum_Cover(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
 		}
@@ -253,11 +263,10 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			sx670_parm.sensor4_us=time_us-times_us_old4;
 			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
-			sx670_parm.sensor4_v=(width/sx670_parm.sensor4_us)*1000;
+			sx670_parm.sensor4_v=(width_s/sx670_parm.sensor4_us)*1000;
 			LCD_ShowNum_Cover(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
 			//LCD_ShowNum_Cover(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
 		}
-		
 		else if(event == EVENT_TUOCH_TIP1)
 		{
 			Tips=1;

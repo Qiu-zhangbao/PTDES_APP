@@ -30,7 +30,7 @@ void Apc_InitFunCtrlSM(void)
 
 void Control_Init(void)
 {
-	page_state_now=lab2;
+	page_state_now=lab5;
 }
 
 void Control_state_machine(lab_list_t state)

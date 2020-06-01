@@ -149,10 +149,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 			sx670_parm.sensor4_us=time_us-times_us_old4;
 			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
 		}
-		
-		
-		
-		
+
 	}
 	return event;
 }
@@ -166,15 +163,14 @@ void Fun_Init_lab5_page(void)
 	
 												|EVENT_SENER1_IN|EVENT_SENER2_IN | EVENT_SENER3_IN|EVENT_SENER4_IN\
 												|EVENT_SENER1_OUT| EVENT_SENER2_OUT|EVENT_SENER3_OUT|EVENT_SENER4_OUT);
-	                                          
-	                              
-												
+									
 }
 
 
 void Fun_Show_lab5_page(void)
 {
 	Fun_lab5_page_Screen(0,0);
+	EE_SX670_ENABLE();
 }
 
 void Fun_Close_lab5_page(void)

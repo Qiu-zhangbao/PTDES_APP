@@ -256,7 +256,7 @@ void touch_main_page(void)
 	}
 
 	
-		if((x-xiankuangjiange<tp_dev.x)&&(tp_dev.x<x+56+16*list_text_num[3]+xiankuangjiange)&&\
+	if((x-xiankuangjiange<tp_dev.x)&&(tp_dev.x<x+56+16*list_text_num[3]+xiankuangjiange)&&\
 		(y+line*3-xiankuangjiange<tp_dev.y)&&(tp_dev.y<y+line*3+xiankuangjiange+16)&&LAB4)
 	{
 		LAB4=0;
