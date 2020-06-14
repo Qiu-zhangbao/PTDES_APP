@@ -18,10 +18,15 @@ static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 static uint8_t lab4_x=13,lab4_y=100,lab4_line=40;
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | 1 TO 2 | 2 TO 1 ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | DIRECTION | DISTANCE+ ";
+
 lab4_param_v_t lab4_param_v;
-
-
+static uint8_t lab4_direct=0;
+static uint8_t lab4_distance=0;
+static uint8_t lab4_direct_v_1to2=0;
+static uint8_t lab4_direct_v_2to1=0;
+static uint8_t lab4_v_cnt_v12=0;
+static uint8_t lab4_v_cnt_v34=0;
 
 void Fun_lab4_show_text(void)
 {
@@ -64,14 +69,22 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 	Show_Str(lab4_x+260,lab4_y+lab4_line*3,color2,color1,"第3次:",16,mode);
 	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3,6,16);
 	
+	Show_Str(380,304,color2,color1,"距离：",16,mode);
+	LCD_ShowNum_Cover(380+16*3,304,lab4_distance,2,16);//传感器距离
+	Show_Str(380+16*4,304,color2,color1," cm",16,mode);
+	
 	POINT_COLOR=MY_DARKBLUE;
 	LCD_DrawRectangle(lab4_x-5,lab4_y-16-5,lab4_x+260+16*7+5,lab4_y+lab4_line*3+16+16+5);
 	
-	Show_Str(13,100+40*3+16+16+16+5,color2,color1,"通过按键 KEY_1 和 KEY_UP 切换速度的正方向",16,mode);
+	Show_Str(0,273,color2,color1,"按键KEY_1切换速度方向,按键KYE_UP增加传感器距离",16,mode);
+	
 	
 	Show_Str(400,166-80,color2,color1,"速度方向：",16,mode);
 
-	Show_Str(410,166-50,color2,color1,"12为正",16,mode);
+	if(lab4_direct)
+		Show_Str(410,166-50,color2,color1,"21为正",16,mode);
+	else
+		Show_Str(410,166-50,color2,color1,"12为正",16,mode);
 	
 	
 	Fun_lab4_show_text();
@@ -109,15 +122,28 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_KEY1_PRESSED)
 		{
-			Fun_lab4_show_text();
-			Show_Str(420,166,WHITE,MY_PURPLE,"开始",16,mode);
-			EE_SX670_ENABLE();
+		 static	uint8_t direct=0;
+			direct++;
+			if((direct%2)==0)
+			{
+				lab4_direct=0;
+				Show_Str(410,166-50,color2,color1,"12为正",16,mode);
+			
+			}
+			else
+			{
+				lab4_direct=1;
+				Show_Str(410,166-50,color2,color1,"21为正",16,mode);
+			}
+
 		}
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
-			Fun_lab4_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
-			EE_SX670_DISENABLE();
+			lab4_distance++;
+			if(lab4_distance>99)
+				lab4_distance=0;
+			LCD_ShowNum_Cover(380+16*3,304,lab4_distance,2,16);
+	
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
@@ -140,44 +166,91 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 ////////////////////////////////////////////////////////chuanganqi/////////////
 		else if(event == EVENT_SENER1_IN)
 		{
+			lab4_direct_v_1to2=1;
 			times_us_old1=time_us;
-		}
-		else if(event == EVENT_SENER1_OUT)
-		{
-			sx670_parm.sensor1_us=time_us-times_us_old1;
-			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+			if(lab4_direct_v_2to1)
+			{
+				lab4_direct_v_2to1=0;
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
+				sx670_parm.sensor12_us=time_us-times_us_old2;
+				sx670_parm.sensor12_v=(10000*lab4_distance)/sx670_parm.sensor12_us;
+				
+				
+//				lab4_v_cnt_v12++;
+//				if(lab4_v_cnt_v12>3)
+//					lab4_v_cnt_v12=3;
+//				if(lab4_v_cnt_v12==1)
+//				{
+					lab4_param_v.v12_times_1=sx670_parm.sensor12_v;
+					LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
+//				}
+//				else if(lab4_v_cnt_v12==2)
+//				{
+//					lab4_param_v.v12_times_2=sx670_parm.sensor12_v;
+//					LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
+//					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
+//				}
+//				else if(lab4_v_cnt_v12==3)
+//				{
+//					lab4_param_v.v12_times_3=sx670_parm.sensor12_v;
+//					LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
+//					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
+//				}
+				
+			}
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
+			lab4_direct_v_2to1=1;
 			times_us_old2=time_us;
+			if(lab4_direct_v_1to2)
+			{
+				lab4_direct_v_1to2=0;
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
+				sx670_parm.sensor12_us=time_us-times_us_old1;
+				sx670_parm.sensor12_v=(10000*lab4_distance)/sx670_parm.sensor12_us;
+				
+//				lab4_v_cnt_v12++;
+//				if(lab4_v_cnt_v12>3)
+//					lab4_v_cnt_v12=3;
+//				if(lab4_v_cnt_v12==1)
+//				{
+					lab4_param_v.v12_times_1=sx670_parm.sensor12_v;
+					LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
+//				}
+//				else if(lab4_v_cnt_v12==2)
+//				{
+//					lab4_param_v.v12_times_2=sx670_parm.sensor12_v;
+//					LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
+//					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
+//				}
+//				else if(lab4_v_cnt_v12==3)
+//				{
+//					lab4_param_v.v12_times_3=sx670_parm.sensor12_v;
+//					LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
+//					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
+//				}
+			}
+			
 		}
-		else if(event == EVENT_SENER2_OUT)
-		{
-			sx670_parm.sensor2_us=time_us-times_us_old2;
-			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
-		}
+		
+		
+		
+		
+		
+		
 		else if(event == EVENT_SENER4_IN)
 		{
 			times_us_old3=time_us;
 		}
-		else if(event == EVENT_SENER4_OUT)
-		{
-			sx670_parm.sensor3_us=time_us-times_us_old3;
-			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
-		}
 		else if(event == EVENT_SENER3_IN)
 		{
 			times_us_old4=time_us;
-		}
-		else if(event == EVENT_SENER3_OUT)
-		{
-			sx670_parm.sensor4_us=time_us-times_us_old4;
-			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
-		}
-		
-		
-		
-		
+		}	
 	}
 	return event;
 }
@@ -206,6 +279,10 @@ void Fun_Close_lab4_page(void)
 {
 	LCD_Clear(WHITE);
 	EE_SX670_DISENABLE();
+	lab4_distance=0;
+	lab4_direct=0;
+	lab4_v_cnt_v12=0;
+	lab4_v_cnt_v34=0;
 }
 
 
