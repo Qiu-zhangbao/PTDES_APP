@@ -16,10 +16,10 @@ static uint32_t times_us_old1=0;
 static uint32_t times_us_old2=0;
 static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
+static uint8_t lab4_x=13,lab4_y=100,lab4_line=40;
 
-
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
-
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | 1 TO 2 | 2 TO 1 ";
+lab4_param_v_t lab4_param_v;
 
 
 
@@ -39,17 +39,41 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 	Show_Str(20,40,color2,color1,"实验4：测量碰撞中的动量",16,mode);
 	Show_Str(270,40,color2,color1,"系统计时时间:          us",16,mode);
 	
-//	for(uint8_t i=0;i<4;i++)
-//	{
-//		LCD_DrawLine(80,86+50*i,376,86+50*i);
-//		LCD_DrawLine(80,122+50*i,376,122+50*i);
-//	}
+	POINT_COLOR=WHITE;
+	BACK_COLOR=MY_DARKBLUE;
+	Show_Str(lab4_x,lab4_y,color2,color1,"经过光电传感器的12的瞬时速度V12:(单位: m m/s)",16,mode);
+	Show_Str(lab4_x,lab4_y+lab4_line,color2,color1,"第1次:",16,mode);
+	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
+
+	Show_Str(lab4_x+130,lab4_y+lab4_line,color2,color1,"第2次:",16,mode);
+	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
 	
-	
-//	Show_Str(206,70,color2,color1,"|  s  |ms|us|",16,mode);
-//	LCD_DrawLine(210,70,210+12*8,70);
+	Show_Str(lab4_x+260,lab4_y+lab4_line,color2,color1,"第3次:",16,mode);
+	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
 	
 
+	
+	Show_Str(lab4_x,lab4_y+lab4_line*2,color2,color1,"经过光电传感器的34的瞬时速度V34:(单位: m m/s)",16,mode);
+	
+	Show_Str(lab4_x,lab4_y+lab4_line*3,color2,color1,"第1次:",16,mode);
+	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1,6,16);
+
+	Show_Str(lab4_x+130,lab4_y+lab4_line*3,color2,color1,"第2次:",16,mode);
+	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2,6,16);
+	
+	Show_Str(lab4_x+260,lab4_y+lab4_line*3,color2,color1,"第3次:",16,mode);
+	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3,6,16);
+	
+	POINT_COLOR=MY_DARKBLUE;
+	LCD_DrawRectangle(lab4_x-5,lab4_y-16-5,lab4_x+260+16*7+5,lab4_y+lab4_line*3+16+16+5);
+	
+	Show_Str(13,100+40*3+16+16+16+5,color2,color1,"通过按键 KEY_1 和 KEY_UP 切换速度的正方向",16,mode);
+	
+	Show_Str(400,166-80,color2,color1,"速度方向：",16,mode);
+
+	Show_Str(410,166-50,color2,color1,"12为正",16,mode);
+	
+	
 	Fun_lab4_show_text();
 	for(uint8_t i=0;i<3;i++)
 	{
@@ -57,6 +81,8 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 		LCD_DrawRectangle(420-xiankuangjiange,166+50*i-xiankuangjiange,420+16*2+xiankuangjiange,166+50*i+xiankuangjiange+16);
 		Show_Str(420-xiankuangjiange-16,166+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
+	
+	
 	
 
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明

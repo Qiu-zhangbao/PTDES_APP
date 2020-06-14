@@ -48,7 +48,7 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 		Show_Str(420-xiankuangjiange-16,166+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
 	
-
+	Show_Str(13,100+40*3+16+16+16+5,color2,color1,"通过按键 KEY_UP 暂停和继续",16,mode);
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
