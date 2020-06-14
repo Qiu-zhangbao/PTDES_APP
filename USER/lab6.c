@@ -12,14 +12,11 @@
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;
-static uint32_t times_us_old1=0;
-static uint32_t times_us_old2=0;
-static uint32_t times_us_old3=0;
-static uint32_t times_us_old4=0;
 
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | PAUSE/CONTINUE ";
 
+lab6_parm_t lab6_parm;
 
 
 void Fun_lab6_show_text(void)
@@ -36,19 +33,13 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 	LCD_Fill(0,20,lcddev.width,lcddev.height,WHITE);
 	
 	Show_Str(20,40,color2,color1,"实验6：测量周期和频率",16,mode);
-	Show_Str(270,40,color2,color1,"系统计时时间:          us",16,mode);
-	
-//	for(uint8_t i=0;i<4;i++)
-//	{
-//		LCD_DrawLine(80,86+50*i,376,86+50*i);
-//		LCD_DrawLine(80,122+50*i,376,122+50*i);
-//	}
 	
 	
-//	Show_Str(206,70,color2,color1,"|  s  |ms|us|",16,mode);
-//	LCD_DrawLine(210,70,210+12*8,70);
+	Show_Str(150,80,color2,color1,"周期数：       ",16,mode);
+	Show_Str(150,80+50,color2,color1,"时间 t=         ms",16,mode);
+	Show_Str(150,80+50+50,color2,color1,"周期 T=         ms",16,mode);
+	Show_Str(150,80+50+50+50,color2,color1,"频率 f=         Hz",16,mode);
 	
-
 	Fun_lab6_show_text();
 	for(uint8_t i=0;i<3;i++)
 	{
@@ -63,7 +54,7 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 
 void touch_lab6_page(void)
 {
-	touch_lab1_page();
+	touch_lab1_page();	
 }
 
 /**@brief 事件处理函数
@@ -88,9 +79,12 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
-			Fun_lab6_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
-			EE_SX670_DISENABLE();
+			static uint8_t tim=0;
+			tim++;
+			if(tim%2)
+				TIM_Cmd(TIM2, DISABLE); //暂停
+			else
+				TIM_Cmd(TIM2, ENABLE); //暂停
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
@@ -101,7 +95,8 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 		else if(event == EVENT_TUOCH_STOP)
 		{
 			Fun_lab6_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
+			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);	
+			lab6_parm.period_num=0;			
 			EE_SX670_DISENABLE();
 		}
 		else if(event == EVENT_TUOCH_BACK)
@@ -113,40 +108,40 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 ////////////////////////////////////////////////////////chuanganqi/////////////
 		else if(event == EVENT_SENER1_IN)
 		{
-			times_us_old1=time_us;
+			lab6_parm.period_num++;
 		}
-		else if(event == EVENT_SENER1_OUT)
-		{
-			sx670_parm.sensor1_us=time_us-times_us_old1;
-			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
-		}
-		else if(event == EVENT_SENER2_IN)
-		{
-			times_us_old2=time_us;
-		}
-		else if(event == EVENT_SENER2_OUT)
-		{
-			sx670_parm.sensor2_us=time_us-times_us_old2;
-			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
-		}
-		else if(event == EVENT_SENER4_IN)
-		{
-			times_us_old3=time_us;
-		}
-		else if(event == EVENT_SENER4_OUT)
-		{
-			sx670_parm.sensor3_us=time_us-times_us_old3;
-			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
-		}
-		else if(event == EVENT_SENER3_IN)
-		{
-			times_us_old4=time_us;
-		}
-		else if(event == EVENT_SENER3_OUT)
-		{
-			sx670_parm.sensor4_us=time_us-times_us_old4;
-			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
-		}
+//		else if(event == EVENT_SENER1_OUT)
+//		{
+//			sx670_parm.sensor1_us=time_us-times_us_old1;
+//			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+//		}
+//		else if(event == EVENT_SENER2_IN)
+//		{
+//			times_us_old2=time_us;
+//		}
+//		else if(event == EVENT_SENER2_OUT)
+//		{
+//			sx670_parm.sensor2_us=time_us-times_us_old2;
+//			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
+//		}
+//		else if(event == EVENT_SENER4_IN)
+//		{
+//			times_us_old3=time_us;
+//		}
+//		else if(event == EVENT_SENER4_OUT)
+//		{
+//			sx670_parm.sensor3_us=time_us-times_us_old3;
+//			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
+//		}
+//		else if(event == EVENT_SENER3_IN)
+//		{
+//			times_us_old4=time_us;
+//		}
+//		else if(event == EVENT_SENER3_OUT)
+//		{
+//			sx670_parm.sensor4_us=time_us-times_us_old4;
+//			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
+//		}
 		
 		
 		
@@ -178,9 +173,9 @@ void Fun_Show_lab6_page(void)
 void Fun_Close_lab6_page(void)
 {
 	LCD_Clear(WHITE);
+	lab6_parm.period_num=0;	
 	EE_SX670_DISENABLE();
 }
-
 
 
 

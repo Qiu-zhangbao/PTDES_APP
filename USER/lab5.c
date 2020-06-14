@@ -18,7 +18,7 @@ static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | PAUSE/CONTINUE ";
 
 
 
@@ -37,7 +37,7 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 	LCD_Fill(0,20,lcddev.width,lcddev.height,WHITE);
 	
 	Show_Str(20,40,color2,color1,"实验5：计数",16,mode);
-	Show_Str(270,40,color2,color1,"系统计时时间:          us",16,mode);
+	
 	
 //	for(uint8_t i=0;i<4;i++)
 //	{
@@ -64,6 +64,7 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 
 void touch_lab5_page(void)
 {
+	
 	touch_lab1_page();
 	
 }
@@ -90,9 +91,12 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
-			Fun_lab5_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
-			EE_SX670_DISENABLE();
+			static uint8_t tim=0;
+			tim++;
+			if(tim%2)
+				TIM_Cmd(TIM2, DISABLE); //暂停
+			else
+				TIM_Cmd(TIM2, ENABLE); //暂停
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
@@ -170,7 +174,6 @@ void Fun_Init_lab5_page(void)
 void Fun_Show_lab5_page(void)
 {
 	Fun_lab5_page_Screen(0,0);
-	EE_SX670_ENABLE();
 }
 
 void Fun_Close_lab5_page(void)

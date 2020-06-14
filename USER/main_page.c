@@ -8,7 +8,7 @@
 #include "touch.h" 
 
 
-static uint8_t VERSION_NUMBER[]="Vison:1.0";
+static uint8_t VERSION_NUMBER[]="Vison:1.7";
 
 static uint8_t KEY_MANUAL[]=" EXIT | BACK | UP | OK | DOWN ";
 
@@ -24,6 +24,8 @@ static uint8_t LAB1=1,LAB2=1,LAB3=1,LAB4=1,LAB5=1,LAB6=1,SETING=1,EXIT=1;//°´¼ü±
 
 static int8_t page_key=0;
 static uint8_t page_key_one=1;
+
+static uint8_t exit_cnt=0;
 
 void Fun_main_page_show_text(void)
 {
@@ -75,34 +77,42 @@ void Fun_show_refsh_touch_key(lab_list_t res)
 	
 	if(page_state_select == lab1)
 	{
+		exit_cnt=0;
 		Show_Str(x,y,WHITE,MY_DARKBLUE,"ÊµÑé1£º²âÁ¿µ²¹âÊ±¼ä",16,mode);
 	}
 	else if(page_state_select == lab2)
 	{
+		exit_cnt=0;
 		Show_Str(x,y+line,WHITE,MY_DARKBLUE,"ÊµÑé2£º²âÁ¿Ë²Ê±ËÙ¶È",16,mode);
 	}
 	else if(page_state_select == lab3)
 	{
+		exit_cnt=0;
 		Show_Str(x,y+line+line,WHITE,MY_DARKBLUE,"ÊµÑé3£º²âÁ¿ÔÈ±äËÙÔË¶¯µÄ¼ÓËÙ¶È",16,mode);
 	}
 	else if(page_state_select == lab4)
 	{
+		exit_cnt=0;
 		Show_Str(x,y+line+line+line,WHITE,MY_DARKBLUE,"ÊµÑé4£º²âÁ¿Åö×²ÖÐµÄ¶¯Á¿",16,mode);
 	}
 	else if(page_state_select == lab5)
 	{
+		exit_cnt=0;
 		Show_Str(x,y+line+line+line+line,WHITE,MY_DARKBLUE,"ÊµÑé5£º¼ÆÊý",16,mode);
 	}
 	else if(page_state_select == lab6)
 	{
+		exit_cnt=0;
 		Show_Str(x,y+line+line+line+line+line,WHITE,MY_DARKBLUE,"ÊµÑé6£º²âÁ¿ÖÜÆÚºÍÆµÂÊ",16,mode);
 	}
 	else if(page_state_select == seting)
 	{
+		exit_cnt=0;
 		Show_Str(420,y+line+line+line+line+line,WHITE,MY_DARKBLUE,"ÉèÖÃ",16,mode);
 	}
 	else if(page_state_select == exiting)
 	{
+		
 		Show_Str(420,y+line+line+line+line+line+line,WHITE,MY_DARKBLUE,"ÍË³ö",16,mode);
 	}
 		
@@ -111,8 +121,14 @@ void Fun_show_refsh_touch_key(lab_list_t res)
 	{
 		if(page_state_select==seting||page_state_select==exiting)
 		{
+			
 			if(page_state_select==exiting)
-				SCB->AIRCR =0X05FA0000|(u32)0x04;	
+			{
+				exit_cnt++;
+				if(exit_cnt==2)
+					SCB->AIRCR =0X05FA0000|(u32)0x04;	
+			}
+				
 		}
 		else
 		{

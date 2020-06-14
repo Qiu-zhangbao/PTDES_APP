@@ -22,5 +22,6 @@ void LCD_DrawFillRectangle(u16 x1, u16 y1, u16 x2, u16 y2);
 void LCD_ShowNum_Cover(u16 x,u16 y,u32 num,u8 len,u8 size);
 void Gui_Drawbmp16_320X480(u16 x,u16 y,const unsigned char *p) ;
 void LCD_ShowNum_32(u16 x,u16 y,u32 num,u8 len,u8 size);
+void LCD_ShowChar_32(u16 x,u16 y,u16 fc, u16 bc, u8 num);
 #endif
 

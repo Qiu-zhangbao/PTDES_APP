@@ -41,19 +41,19 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 	
 	Show_Str(20,40,color2,color1,"实验1：测量挡光时间",16,mode);
 	
-	Show_Str(270,40,color2,color1,"系统计时时间:          us",16,mode);
+	Show_Str(270,40,color2,color1,"系统计时时间:          ms",16,mode);
 	
 	Show_Str(100+30,16+50+30,color2,color1,"传感器1:",16,mode);
 	Show_Str(100+30,16+50+50+30,color2,color1,"传感器2:",16,mode);
 	Show_Str(100+30,16+50+50+50+30,color2,color1,"传感器3:",16,mode);
 	Show_Str(100+30,16+50+50+50+50+30,color2,color1,"传感器4:",16,mode);
 	
-	Show_Str(280+30,16+50+30,color2,color1,"us",16,mode);
-	Show_Str(280+30,16+50+50+30,color2,color1,"us",16,mode);
-	Show_Str(280+30,16+50+50+50+30,color2,color1,"us",16,mode);
-	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"us",16,mode);
+	Show_Str(280+30,16+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30,16+50+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30,16+50+50+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"ms",16,mode);
 	
-	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"us",16,mode);
+	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"ms",16,mode);
 	
 	POINT_COLOR=MY_DARKBLUE;
 	
@@ -64,7 +64,7 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 	}
 	
 	
-	Show_Str(206,70,color2,color1,"|  s  |ms|us|",16,mode);
+	Show_Str(206,70,color2,color1,"|    s   |ms|",16,mode);
 	LCD_DrawLine(210,70,210+12*8,70);
 	
 	LCD_DrawLine(80,86,80,122+50*3);
@@ -174,7 +174,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		else if(event == EVENT_SENER1_OUT)
 		{
 			sx670_parm.sensor1_us=time_us-times_us_old1;
-			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+			//sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
@@ -183,7 +183,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		else if(event == EVENT_SENER2_OUT)
 		{
 			sx670_parm.sensor2_us=time_us-times_us_old2;
-			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
+			//sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
@@ -192,7 +192,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		else if(event == EVENT_SENER4_OUT)
 		{
 			sx670_parm.sensor3_us=time_us-times_us_old3;
-			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
+			//sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
@@ -201,7 +201,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		else if(event == EVENT_SENER3_OUT)
 		{
 			sx670_parm.sensor4_us=time_us-times_us_old4;
-			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
+			//sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
 		}
 		
 		

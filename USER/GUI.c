@@ -244,10 +244,9 @@ void gui_circle(int xc, int yc,u16 c,int r, int fill)
 //******************************************************************  
 void LCD_ShowChar(u16 x,u16 y,u16 fc, u16 bc, u8 num,u8 size,u8 mode)
 {  
-    u8 temp,num_32;
+    u8 temp;
     u8 pos,t;
 	u16 colortemp=POINT_COLOR;      
-	num_32=num;   
 	num=num-' ';//得到偏移后的值
 	LCD_SetWindows(x,y,x+size/2-1,y+size-1);//设置单个文字显示窗口
 	if(!mode) //非叠加方式
@@ -257,7 +256,6 @@ void LCD_ShowChar(u16 x,u16 y,u16 fc, u16 bc, u8 num,u8 size,u8 mode)
 		{
 			if(size==12)temp=asc2_1206[num][pos];//调用1206字体
 			else if(size==16)temp=asc2_1608[num][pos];		 //调用1608字体
-			else if(size==32)temp=asc2_3216[num_32][pos];	
 			for(t=0;t<size/2;t++)
 		    {                 
 		        if(temp&0x01)LCD_DrawPoint_16Bit(fc); 
@@ -266,7 +264,8 @@ void LCD_ShowChar(u16 x,u16 y,u16 fc, u16 bc, u8 num,u8 size,u8 mode)
 				
 		    }			
 		}	
-	}else//叠加方式
+	}
+	else//叠加方式
 	{
 		for(pos=0;pos<size;pos++)
 		{
@@ -376,6 +375,25 @@ void LCD_ShowNum_Cover(u16 x,u16 y,u32 num,u8 len,u8 size)
 	}
 } 
 
+
+void LCD_ShowChar_32(u16 x,u16 y,u16 fc, u16 bc, u8 num)
+{
+	u8 i,j;
+
+
+	LCD_SetWindows(x,y,x+32/2-1,y+32-1);
+	for(i=0;i<32*2;i++)
+	{
+		for(j=0;j<8;j++)
+		{
+		
+				if(ascil_3216[num][i]&(0x80>>j))	LCD_DrawPoint_16Bit(fc);
+				else LCD_DrawPoint_16Bit(bc);
+		}
+	}
+}
+
+
 void LCD_ShowNum_32(u16 x,u16 y,u32 num,u8 len,u8 size)
 {         	
 	u8 t,temp;
@@ -387,12 +405,12 @@ void LCD_ShowNum_32(u16 x,u16 y,u32 num,u8 len,u8 size)
 		{
 			if(temp==0)
 			{
-				LCD_ShowChar(x+(size/2)*t,y,POINT_COLOR,BACK_COLOR,'0',size,0);
+				LCD_ShowChar_32(x+(size/2)*t,y,POINT_COLOR,BACK_COLOR,0);
 				continue;
 			}else enshow=1; 
 		 	 
 		}
-	 	LCD_ShowChar(x+(size/2)*t,y,POINT_COLOR,BACK_COLOR,temp+'0',size,0); 
+	 	LCD_ShowChar_32(x+(size/2)*t,y,POINT_COLOR,BACK_COLOR,temp); 
 	}
 } 
 

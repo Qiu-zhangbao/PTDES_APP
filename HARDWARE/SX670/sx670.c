@@ -34,6 +34,16 @@ void EE_SX670_DISENABLE(void)
 	sx670_parm.sensor2_us=0;
 	sx670_parm.sensor3_us=0;
 	sx670_parm.sensor4_us=0;
+	sx670_parm.sensor12_us=0;
+	sx670_parm.sensor34_us=0;
+	
+	sx670_parm.sensor12_v=0;
+	sx670_parm.sensor34_v=0;
+	sx670_parm.sensor1_v=0;
+	sx670_parm.sensor2_v=0;
+	sx670_parm.sensor3_v=0;
+	sx670_parm.sensor4_v=0;
+	
 }
 
 
@@ -78,19 +88,21 @@ void EE_SX670_INIT(void)
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
  
 }
-
+#include "lab6.h"
 uint8_t run_one=1;
 uint8_t num=0;
 //外部中断0服务程序 
 void EXTI2_IRQHandler(void)
 {
+	
 	if(sx670_enable)
 	{
+		
 		if(sensor1==1)	 //按键KEY0
 		{
 			event_establish(EVENT_SENER1_OUT);
 		}		 
-		else if(sensor1==0)	 //按键KEY0
+		else 	 //按键KEY0
 		{
 			event_establish(EVENT_SENER1_IN);
 		}	
@@ -109,7 +121,7 @@ void EXTI3_IRQHandler(void)
 		{
 			event_establish(EVENT_SENER2_OUT);
 		}		 
-		else if(sensor2==0)	 //按键KEY0
+		else	 //按键KEY0
 		{
 			event_establish(EVENT_SENER2_IN);
 		}
@@ -125,7 +137,7 @@ void EXTI4_IRQHandler(void)
 		{
 			event_establish(EVENT_SENER3_OUT);
 		}		 
-		else if(sensor3==0)	 //按键KEY0
+		else
 		{
 			event_establish(EVENT_SENER3_IN);
 		}
@@ -140,10 +152,8 @@ void EXTI9_5_IRQHandler(void)
 		if(sensor4==1)	 //按键KEY0
 		{
 			event_establish(EVENT_SENER4_OUT);
-			//sx670_parm.sensor3_us=time_us*10+(time_us/3)%10;
-			
 		}		 
-		else if(sensor4==0)	 //按键KEY0
+		else
 		{
 			event_establish(EVENT_SENER4_IN);
 		} 		

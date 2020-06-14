@@ -18,19 +18,18 @@ void Apc_InitFunCtrlSM(void)
 	Fun_Init_main_page();
 	Fun_Init_lab1_page();
 	Fun_Init_lab2_page();
-	Fun_Init_lab3_page();
+//	Fun_Init_lab3_page();
 	Fun_Init_lab4_page();
 	Fun_Init_lab5_page();
 	Fun_Init_lab6_page();
-	
-	
 }
 
 
 
 void Control_Init(void)
 {
-	page_state_now=lab5;
+	page_state_now=main_page;
+//	page_state_now=lab6;
 }
 
 void Control_state_machine(lab_list_t state)
@@ -53,7 +52,7 @@ void Control_state_machine(lab_list_t state)
 			break;
 		
 		case lab3:
-			Fun_Close_lab3_page();
+			Fun_Close_lab2_page();
 		
 			break;
 
@@ -94,7 +93,7 @@ void Control_state_machine(lab_list_t state)
 			break;
 		
 		case lab3:
-			Fun_Show_lab3_page();
+			Fun_Show_lab2_page();
 			break;
 
 		case lab4:
@@ -141,7 +140,7 @@ void Control_touch(void)
 			break;
 		
 		case lab3:
-			touch_lab3_page();
+			touch_lab2_page();
 			break;
 
 		case lab4:
@@ -171,7 +170,6 @@ void Control_touch(void)
 
 void main_control(void)
 {
-	KEY_Scan(0);	
 	tp_dev.scan(0); 
 	Control_state_machine(page_state_now);	
 	Control_touch();
