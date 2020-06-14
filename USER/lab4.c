@@ -59,7 +59,7 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 	}
 	
 
-	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
+	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
 void touch_lab4_page(void)

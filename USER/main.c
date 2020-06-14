@@ -60,7 +60,7 @@
 
 extern int8_t width;
 extern  uint8_t Tips;
-
+extern uint32_t lab5_times_num;
 
 
 
@@ -103,10 +103,10 @@ int main(void)
 		{
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
-			LCD_ShowNum_Cover(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
-			LCD_ShowNum_Cover(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
-			LCD_ShowNum_Cover(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
-			LCD_ShowNum_Cover(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
+			LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us,12,16);
+			LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us,12,16);
+			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us,12,16);
+			LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,12,16);
 			LCD_ShowNum(376,40,time_us,9,16);
 		}
 		else if(page_state_now == lab2  )
@@ -136,29 +136,39 @@ int main(void)
 			POINT_COLOR=MY_DARKBLUE;
 			BACK_COLOR=WHITE;
 		
+			LCD_ShowNum_32(x,y-40,lab5_times_num,7,32);
+			
 			LCD_ShowNum_32(x,y,time_us/1000,3,32);
 			LCD_ShowChar_32(x+3*16,y,POINT_COLOR,BACK_COLOR,11);
 			LCD_ShowNum_32(x+4*16,y,time_us%1000,3,32);
-//			LCD_ShowChar_32(x+7*16,y,POINT_COLOR,BACK_COLOR,11);
-//			LCD_ShowNum_32(x+8*16,y,(time_us%100)*10+time_us/3,3,32);
 		
 		}		
 		else if(page_state_now == lab6  )
 		{
+		
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 			lab6_parm.time_ms=time_us;
 			
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
-			lab6_parm.frequency=1000/lab6_parm.period;
+			lab6_parm.frequency=100000/lab6_parm.period;
 			
 			
 			LCD_ShowNum(150+64,80,lab6_parm.period_num,6,16);
 			LCD_ShowNum(150+64,80+50,lab6_parm.time_ms,6,16);
 			LCD_ShowNum(150+64,80+50+50,lab6_parm.period,6,16);
-			LCD_ShowNum(150+64,80+50+50+50,lab6_parm.frequency,6,16);
+			
+			
+			
+			LCD_ShowNum(150+64,80+50+50+50,lab6_parm.frequency/100,3,16);
+			LCD_ShowChar(150+64+3*8,80+50+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(150+64+4*8,80+50+50+50,lab6_parm.frequency%100,2,16);
 	
-		}			
+		}
+		POINT_COLOR=MY_DARKBLUE;
+		LCD_DrawLine(0,0,480,0);
+		LCD_DrawLine(0,1,480,1);		
+		POINT_COLOR=WHITE;		
 		
 	}				  
 	

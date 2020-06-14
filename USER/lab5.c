@@ -20,6 +20,7 @@ static uint32_t times_us_old4=0;
 
 static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | PAUSE/CONTINUE ";
 
+uint32_t lab5_times_num=0;
 
 
 
@@ -59,7 +60,7 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 	}
 	
 
-	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
+	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
 void touch_lab5_page(void)
@@ -109,6 +110,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 			Fun_lab5_show_text();
 			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
 			EE_SX670_DISENABLE();
+			lab5_times_num=0;
 		}
 		else if(event == EVENT_TUOCH_BACK)
 		{
@@ -119,6 +121,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 ////////////////////////////////////////////////////////chuanganqi/////////////
 		else if(event == EVENT_SENER1_IN)
 		{
+			lab5_times_num++;
 			times_us_old1=time_us;
 		}
 		else if(event == EVENT_SENER1_OUT)
@@ -128,6 +131,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
+			lab5_times_num++;
 			times_us_old2=time_us;
 		}
 		else if(event == EVENT_SENER2_OUT)
@@ -137,6 +141,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
+			lab5_times_num++;
 			times_us_old3=time_us;
 		}
 		else if(event == EVENT_SENER4_OUT)
@@ -146,6 +151,7 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
+			lab5_times_num++;
 			times_us_old4=time_us;
 		}
 		else if(event == EVENT_SENER3_OUT)
@@ -180,6 +186,7 @@ void Fun_Close_lab5_page(void)
 {
 	LCD_Clear(WHITE);
 	EE_SX670_DISENABLE();
+	lab5_times_num=0;
 }
 
 

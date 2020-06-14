@@ -54,8 +54,8 @@ void Fun_lab2_show_text(void)
 			hangju=30;
 			Show_Str(x,y+hangju*4,color2,color1,"a1:          (mm/s2)",16,mode);
 			Show_Str(x1+10,y+hangju*4,color2,color1,"a2:          (mm/s2)",16,mode);
-			LCD_ShowNum_Cover(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
-			LCD_ShowNum_Cover(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
+			LCD_ShowNum(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
+			LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
 		}
 		
 		
@@ -69,15 +69,15 @@ void Fun_lab2_show_text(void)
 		Show_Str(x1,y+hangju*2,color2,color1,"v3:          mm/s",16,mode);
 		Show_Str(x1,y+hangju*3,color2,color1,"v4:          mm/s",16,mode);
 		
-		LCD_ShowNum_Cover(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
-		LCD_ShowNum_Cover(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
-		LCD_ShowNum_Cover(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
-		LCD_ShowNum_Cover(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
+		LCD_ShowNum(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
+		LCD_ShowNum(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
+		LCD_ShowNum(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
+		LCD_ShowNum(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
 
-		LCD_ShowNum_Cover(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
-		LCD_ShowNum_Cover(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);
-		LCD_ShowNum_Cover(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
-		LCD_ShowNum_Cover(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
+		LCD_ShowNum(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
+		LCD_ShowNum(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);
+		LCD_ShowNum(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
+		LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
 		
 		Show_Str(x+30,y+40*5-18,color2,color1,"挡光片宽度:",16,mode);
 		POINT_COLOR=MY_DARKBLUE;
@@ -103,14 +103,14 @@ void Fun_lab2_show_text(void)
 		
 		Show_Str(x1,y+hangju*2,color2,color1,"v34:          mm/s",16,mode);
 		
-		LCD_ShowNum_Cover(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
+		LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
 				
-		LCD_ShowNum_Cover(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
+		LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
 		
 		
-		LCD_ShowNum_Cover(x1+33,y+hangju*0,sx670_parm.sensor12_v,9,16);
+		LCD_ShowNum(x1+33,y+hangju*0,sx670_parm.sensor12_v,9,16);
 	
-		LCD_ShowNum_Cover(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
+		LCD_ShowNum(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
 
 	
 		
@@ -118,7 +118,7 @@ void Fun_lab2_show_text(void)
 		if(page_state_now == lab3)
 		{
 			Show_Str(x+5,y+32*4,color2,color1,"a:            (mm/s2)",16,mode);
-			LCD_ShowNum_Cover(x+33,y+32*4,sx670_parm.sensor_tip2_a,9,16);
+			LCD_ShowNum(x+33,y+32*4,sx670_parm.sensor_tip2_a,9,16);
 		}
 		
 		Show_Str(x+50,y+hangju*6-8,color2,color1,"传感器距离:",16,mode);
@@ -167,7 +167,7 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 			LCD_DrawRectangle(420-xiankuangjiange,66+50*i-xiankuangjiange,420+16*2+xiankuangjiange,66+50*i+xiankuangjiange+16);
 		Show_Str(420-xiankuangjiange-16,66+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
-	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
+	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
 void touch_lab2_page(void)
@@ -304,8 +304,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			{
 				sx670_parm.sensor1_us=time_us-times_us_old1;
 				sx670_parm.sensor1_v=1000*width_s/sx670_parm.sensor1_us;
-				LCD_ShowNum_Cover(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
-				LCD_ShowNum_Cover(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
+				LCD_ShowNum(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
+				LCD_ShowNum(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
 			}
 			else 
 			{
@@ -327,8 +327,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 					res=0;
 					sx670_parm.sensor12_us=time_us-times_us_old1;
 					sx670_parm.sensor12_v=10000*dis/sx670_parm.sensor12_us;
-					LCD_ShowNum_Cover(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
-					LCD_ShowNum_Cover(x1+33,y+hangju*0,sx670_parm.sensor12_v,9,16);
+					LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
+					LCD_ShowNum(x1+33,y+hangju*0,sx670_parm.sensor12_v,9,16);
 					
 				}
 				
@@ -341,12 +341,12 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			{
 				sx670_parm.sensor2_us=time_us-times_us_old2;
 				sx670_parm.sensor2_v=1000*width_s/sx670_parm.sensor2_us;
-				LCD_ShowNum_Cover(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
-				LCD_ShowNum_Cover(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);	
+				LCD_ShowNum(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
+				LCD_ShowNum(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);	
 				if(page_state_now == lab3)
 				{
 					sx670_parm.sensor_tip1_a1=sx670_parm.sensor2_v-sx670_parm.sensor1_v;
-					LCD_ShowNum_Cover(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
+					LCD_ShowNum(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
 				}				
 			}
 			else 
@@ -375,8 +375,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			{
 				sx670_parm.sensor3_us=time_us-times_us_old3;
 				sx670_parm.sensor3_v=1000*width_s/sx670_parm.sensor3_us;
-				LCD_ShowNum_Cover(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
-				LCD_ShowNum_Cover(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
+				LCD_ShowNum(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
+				LCD_ShowNum(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
 			}
 			else 
 			{
@@ -397,8 +397,14 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 					res=0;
 					sx670_parm.sensor34_us=time_us-times_us_old3;
 					sx670_parm.sensor34_v=10000*dis/sx670_parm.sensor34_us;
-					LCD_ShowNum_Cover(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
-					LCD_ShowNum_Cover(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
+					LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
+					LCD_ShowNum(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
+					
+					if(page_state_now == lab3)
+					{
+						sx670_parm.sensor_tip2_a=sx670_parm.sensor34_v-sx670_parm.sensor12_v;
+						LCD_ShowNum(x+33,y+32*4,sx670_parm.sensor_tip2_a,9,16);
+					}	
 				}			
 			
 			}
@@ -410,17 +416,18 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			{
 				sx670_parm.sensor4_us=time_us-times_us_old4;
 				sx670_parm.sensor4_v=1000*width_s/sx670_parm.sensor4_us;
-				LCD_ShowNum_Cover(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
-				LCD_ShowNum_Cover(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
+				LCD_ShowNum(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
+				LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
 				
 				if(page_state_now == lab3)
 				{
 					sx670_parm.sensor_tip1_a2=sx670_parm.sensor4_v-sx670_parm.sensor3_v;
-					LCD_ShowNum_Cover(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
+					LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
 				}	
 			}
 			else 
 			{
+				
 			
 			
 			}

@@ -7,7 +7,7 @@ typedef struct
 {
 	uint32_t period_num;
 	uint32_t period;
-	uint32_t frequency;
+	uint32_t  frequency;
 	uint32_t time_ms;
 }lab6_parm_t;
 

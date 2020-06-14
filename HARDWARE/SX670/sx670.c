@@ -44,6 +44,10 @@ void EE_SX670_DISENABLE(void)
 	sx670_parm.sensor3_v=0;
 	sx670_parm.sensor4_v=0;
 	
+	sx670_parm.sensor_tip1_a1=0;
+	sx670_parm.sensor_tip1_a2=0;
+	sx670_parm.sensor_tip2_a=0;
+	
 }
 
 

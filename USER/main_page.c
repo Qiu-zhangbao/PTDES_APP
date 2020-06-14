@@ -64,7 +64,7 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 
 	LCD_DrawRectangle(410,y+line*6-xiankuangjiange,420+32+xiankuangjiange,y+line*6+xiankuangjiange+16);	
 
-	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
+	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 	
 	LCD_LED=1;//加载完之后点亮背光	
 }

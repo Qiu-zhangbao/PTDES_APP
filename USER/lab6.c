@@ -49,7 +49,7 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 	}
 	
 
-	Show_Str(0,308,WHITE,BLACK,KEY_MANUAL,12,0);//按键说明
+	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
 void touch_lab6_page(void)
@@ -110,38 +110,20 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 		{
 			lab6_parm.period_num++;
 		}
-//		else if(event == EVENT_SENER1_OUT)
-//		{
-//			sx670_parm.sensor1_us=time_us-times_us_old1;
-//			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
-//		}
-//		else if(event == EVENT_SENER2_IN)
-//		{
-//			times_us_old2=time_us;
-//		}
-//		else if(event == EVENT_SENER2_OUT)
-//		{
-//			sx670_parm.sensor2_us=time_us-times_us_old2;
-//			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
-//		}
-//		else if(event == EVENT_SENER4_IN)
-//		{
-//			times_us_old3=time_us;
-//		}
-//		else if(event == EVENT_SENER4_OUT)
-//		{
-//			sx670_parm.sensor3_us=time_us-times_us_old3;
-//			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
-//		}
-//		else if(event == EVENT_SENER3_IN)
-//		{
-//			times_us_old4=time_us;
-//		}
-//		else if(event == EVENT_SENER3_OUT)
-//		{
-//			sx670_parm.sensor4_us=time_us-times_us_old4;
-//			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
-//		}
+		else if(event == EVENT_SENER2_IN)
+		{
+			lab6_parm.period_num++;
+		}
+
+		else if(event == EVENT_SENER4_IN)
+		{
+			lab6_parm.period_num++;
+		}
+		else if(event == EVENT_SENER3_IN)
+		{
+			lab6_parm.period_num++;
+		}
+
 		
 		
 		
