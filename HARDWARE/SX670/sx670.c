@@ -4,7 +4,7 @@
 #include "event_queue.h"
 
 SX670_t sx670_parm;
-static uint8_t sx670_enable=0;
+ uint8_t sx670_enable=0;
 
 
 void EE_SX670_INIT_PIN(void) //IO≥ı ºªØ
