@@ -83,7 +83,7 @@ int main(void)
 	Apc_InitFunCtrlSM();
 	Control_Init();
 	time_us=0;
-	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	//SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
 	while(1)
 	{	
 		delay_ms(10);	 

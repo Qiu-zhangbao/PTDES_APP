@@ -281,8 +281,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);		
 			page_state_now=main_page;
 		}	
-////////////////////////////////////////////////////////chuanganqi/////////////
-		
+/////////////////////////////////////////////////传感器/////////////////////////////////////////////////////////
 		
 		
 		else if(event == EVENT_SENER1_IN)
@@ -302,15 +301,12 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor1_us=time_us-times_us_old1;
 				sx670_parm.sensor1_v=1000*width_s/sx670_parm.sensor1_us;
 				LCD_ShowNum(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
 				LCD_ShowNum(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
-			}
-			else 
-			{
-			
-			
 			}
 			
 		}
@@ -325,6 +321,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				if(res)
 				{
 					res=0;
+					POINT_COLOR=WHITE;
+					BACK_COLOR=MY_DARKBLUE;
 					sx670_parm.sensor12_us=time_us-times_us_old1;
 					sx670_parm.sensor12_v=10000*dis/sx670_parm.sensor12_us;
 					LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
@@ -339,20 +337,18 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor2_us=time_us-times_us_old2;
 				sx670_parm.sensor2_v=1000*width_s/sx670_parm.sensor2_us;
 				LCD_ShowNum(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
 				LCD_ShowNum(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);	
+				/*方法一的加速度在传感器退出的时候算*/
 				if(page_state_now == lab3)
 				{
 					sx670_parm.sensor_tip1_a1=sx670_parm.sensor2_v-sx670_parm.sensor1_v;
 					LCD_ShowNum(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
 				}				
-			}
-			else 
-			{
-			
-			
 			}
 
 		}
@@ -367,22 +363,19 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				res=1;
 				times_us_old3=time_us;
 			}
-			
 		}
 		else if(event == EVENT_SENER4_OUT)
 		{
 			if(Tips==1)
 			{
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor3_us=time_us-times_us_old3;
 				sx670_parm.sensor3_v=1000*width_s/sx670_parm.sensor3_us;
 				LCD_ShowNum(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
 				LCD_ShowNum(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
 			}
-			else 
-			{
-			
-			
-			}
+
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
@@ -395,11 +388,13 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				if(res)
 				{
 					res=0;
+					POINT_COLOR=WHITE;
+					BACK_COLOR=MY_DARKBLUE;
 					sx670_parm.sensor34_us=time_us-times_us_old3;
 					sx670_parm.sensor34_v=10000*dis/sx670_parm.sensor34_us;
 					LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
 					LCD_ShowNum(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
-					
+					/*方法二的加速度在进入最后一个传感器的时候算*/
 					if(page_state_now == lab3)
 					{
 						sx670_parm.sensor_tip2_a=sx670_parm.sensor34_v-sx670_parm.sensor12_v;
@@ -414,34 +409,33 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor4_us=time_us-times_us_old4;
 				sx670_parm.sensor4_v=1000*width_s/sx670_parm.sensor4_us;
 				LCD_ShowNum(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
 				LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
-				
+				/*方法一的加速度在传感器退出的时候算*/
 				if(page_state_now == lab3)
 				{
 					sx670_parm.sensor_tip1_a2=sx670_parm.sensor4_v-sx670_parm.sensor3_v;
 					LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
 				}	
 			}
-			else 
-			{
-				
-			
-			
-			}
+/////////////////////////////////////////////////传感器/////////////////////////////////////////////////////////
 			
 		}
 		else if(event == EVENT_TUOCH_TIP1)
 		{
 			Tips=1;
+			EE_SX670_DISENABLE();
 			LCD_Fill(x-30,y,370,lcddev.height-30,WHITE);
 			Fun_lab2_show_text();
 		}
 		else if(event == EVENT_TUOCH_TIP2)
 		{
 			Tips=2;
+			EE_SX670_DISENABLE();
 			LCD_Fill(x-30,y,370,lcddev.height-30,WHITE);
 			Fun_lab2_show_text();			
 		}
@@ -462,9 +456,7 @@ void Fun_Init_lab2_page(void)
 												|EVENT_SENER1_OUT| EVENT_SENER2_OUT|EVENT_SENER3_OUT|EVENT_SENER4_OUT\
 												
 												|EVENT_TUOCH_TIP1|EVENT_TUOCH_TIP2);
-	                                          
-	                              
-												
+	                                          												
 }
 
 
