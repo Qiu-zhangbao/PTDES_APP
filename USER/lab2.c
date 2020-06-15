@@ -129,7 +129,7 @@ void Fun_lab2_show_text(void)
 		BACK_COLOR=MY_DARKBLUE;
 		
 		
-		Show_Str(250,y+hangju*6-8,color2,color1,"cm",16,mode);
+		Show_Str(250,y+hangju*6-8,color2,color1,"m m",16,mode);
 	
 	}
 
