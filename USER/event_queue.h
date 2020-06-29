@@ -32,7 +32,6 @@ typedef enum
 	EVENT_SENER2_OUT	            = 0x02000000,
 	EVENT_SENER3_OUT	            = 0x04000000,
 	EVENT_SENER4_OUT	            = 0x08000000,
-	
 }event_type_t;
 
 

@@ -36,7 +36,7 @@ void Fun_main_page_show_text(void)
 	Show_Str(x,y+line+line+line+line,color2,color1,"实验5：计数",16,mode);
 	Show_Str(x,y+line+line+line+line+line,color2,color1,"实验6：测量周期和频率",16,mode);
 	
-	Show_Str(420,y+line+line+line+line+line,color2,color1,"设置",16,mode);	
+	//Show_Str(420,y+line+line+line+line+line,color2,color1,"设置",16,mode);	
 	Show_Str(420,y+line+line+line+line+line+line,RED,color1,"退出",16,mode);
 }
 
@@ -60,7 +60,7 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 		Show_Str(x-40,y+list*line,MY_DARKBLUE,color1,"魑",16,mode);
 	}
 	
-	LCD_DrawRectangle(410,y+line*5-xiankuangjiange,420+32+xiankuangjiange,y+line*5+xiankuangjiange+16);	
+	//LCD_DrawRectangle(410,y+line*5-xiankuangjiange,420+32+xiankuangjiange,y+line*5+xiankuangjiange+16);	
 
 	LCD_DrawRectangle(410,y+line*6-xiankuangjiange,420+32+xiankuangjiange,y+line*6+xiankuangjiange+16);	
 
@@ -108,7 +108,7 @@ void Fun_show_refsh_touch_key(lab_list_t res)
 	else if(page_state_select == seting)
 	{
 		exit_cnt=0;
-		Show_Str(420,y+line+line+line+line+line,WHITE,MY_DARKBLUE,"设置",16,mode);
+		//Show_Str(420,y+line+line+line+line+line,WHITE,MY_DARKBLUE,"设置",16,mode);
 	}
 	else if(page_state_select == exiting)
 	{

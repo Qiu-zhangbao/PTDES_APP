@@ -39,6 +39,9 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 	
 	Show_Str(20,40,color2,color1,"实验5：计数",16,mode);
 	
+	Show_Str(145,118,color2,color1,"计数：",16,mode);
+	
+	Show_Str(145,157,color2,color1,"计时：",16,mode);
 	
 //	for(uint8_t i=0;i<4;i++)
 //	{
@@ -95,9 +98,15 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 			static uint8_t tim=0;
 			tim++;
 			if(tim%2)
+			{
 				TIM_Cmd(TIM2, DISABLE); //暂停
+				sx670_enable=0;
+			}
 			else
-				TIM_Cmd(TIM2, ENABLE); //暂停
+			{
+				TIM_Cmd(TIM2, ENABLE); //继续
+				sx670_enable=1;
+			}
 		}
 		else if(event == EVENT_TUOCH_START)
 		{

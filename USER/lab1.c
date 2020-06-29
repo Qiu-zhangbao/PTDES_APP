@@ -64,8 +64,8 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 	}
 	
 	
-	Show_Str(206,70,color2,color1,"|    s   |ms|",16,mode);
-	LCD_DrawLine(210,70,210+12*8,70);
+//	Show_Str(206,70,color2,color1,"|    s   |ms|",16,mode);
+//	LCD_DrawLine(210,70,210+12*8,70);
 	
 	LCD_DrawLine(80,86,80,122+50*3);
 	LCD_DrawLine(376,86,376,122+50*3);

@@ -75,7 +75,7 @@ int main(void)
 	LED_Init();
 	EE_SX670_INIT();
 	TIM2_Int_Init(999,71);
-	TIM3_PWM_Init(899,0);//不分频。PWM频率=72000/(899+1)=80Khz
+	TIM3_PWM_Init(999,71);//不分频。PWM频率=72000/(899+1)=80Khz
 	TIM4_Int_Init(99,7199);
 	TP_Init();
 	KEY_Init();
@@ -83,14 +83,13 @@ int main(void)
 	Apc_InitFunCtrlSM();
 	Control_Init();
 	time_us=0;
-	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	//SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
 	while(1)
 	{	
-		delay_ms(10);	 
 		if(dir)led0pwmval++;
 		else led0pwmval--;
 
- 		if(led0pwmval>200)dir=0;
+ 		if(led0pwmval>300)dir=0;
 		if(led0pwmval==0)dir=1;										 
 		TIM_SetCompare2(TIM3,led0pwmval);	
 		
@@ -132,7 +131,7 @@ int main(void)
 		}
 		else if(page_state_now == lab5  )
 		{
-			uint8_t x=170,y=150;
+			uint8_t x=190,y=150;
 			POINT_COLOR=MY_DARKBLUE;
 			BACK_COLOR=WHITE;
 		

@@ -82,9 +82,15 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 			static uint8_t tim=0;
 			tim++;
 			if(tim%2)
+			{
 				TIM_Cmd(TIM2, DISABLE); //ÔÝÍ£
+				sx670_enable=0;
+			}
 			else
-				TIM_Cmd(TIM2, ENABLE); //ÔÝÍ£
+			{
+				TIM_Cmd(TIM2, ENABLE); //¼ÌÐø
+				sx670_enable=1;
+			}
 		}
 		else if(event == EVENT_TUOCH_START)
 		{

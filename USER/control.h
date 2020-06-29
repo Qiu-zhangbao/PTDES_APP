@@ -27,5 +27,7 @@ void main_control(void);
 
 void Control_state_machine(lab_list_t state);
 
+void Control_touch(void);
+
 #endif
 

@@ -17,16 +17,16 @@ static uint32_t times_us_old2=0;
 static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | + | - ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK |    +    |    -    ";
 
 static uint8_t hangju=32,x=50,y=80,x1=200;
 
-static uint8_t key_t1=1,key_t2=1;
+static uint8_t key_t1=1,key_t2=1,key_jia=1,key_jian=1;
 
 static uint8_t res=0;
 	
-int16_t width_s=10;
-int16_t dis=10;
+int16_t width_s=7;
+int16_t dis=7;
 
 
 uint8_t Tips=1;
@@ -80,11 +80,9 @@ void Fun_lab2_show_text(void)
 		LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
 		
 		Show_Str(x+30,y+40*5-18,color2,color1,"挡光片宽度:",16,mode);
-		POINT_COLOR=MY_DARKBLUE;
-		BACK_COLOR=WHITE;
-		LCD_ShowNum_32(220,y+40*5-28,width_s,2,32);
 		POINT_COLOR=WHITE;
 		BACK_COLOR=MY_DARKBLUE;
+		LCD_ShowNum_32(220,y+40*5-38,width_s,2,32);
 		Show_Str(280,y+40*5-18,color2,color1,"m m",16,mode);
 		
 	}
@@ -122,16 +120,19 @@ void Fun_lab2_show_text(void)
 		}
 		
 		Show_Str(x+50,y+hangju*6-8,color2,color1,"传感器距离:",16,mode);
-		POINT_COLOR=MY_DARKBLUE;
-		BACK_COLOR=WHITE;
-		LCD_ShowNum_32(x+50+100,y+hangju*6-18,dis,2,32);
 		POINT_COLOR=WHITE;
 		BACK_COLOR=MY_DARKBLUE;
+		LCD_ShowNum_32(x+50+100,y+hangju*6-28,dis,2,32);
+		
 		
 		
 		Show_Str(250,y+hangju*6-8,color2,color1,"m m",16,mode);
 	
 	}
+		POINT_COLOR=MY_DARKBLUE;
+		BACK_COLOR=WHITE;
+		LCD_DrawRectangle(164,285,244,320);
+		LCD_DrawRectangle(245,285,320,320);
 
 }
 
@@ -168,6 +169,7 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 		Show_Str(420-xiankuangjiange-16,66+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
+
 }
 
 void touch_lab2_page(void)
@@ -197,6 +199,34 @@ void touch_lab2_page(void)
 		key_t2=1;
 	}
 	
+	
+//		LCD_DrawRectangle(164,285,244,320);
+//		LCD_DrawRectangle(245,285,320,320);
+	
+	if((164<tp_dev.x)&&(tp_dev.x<244)&&\
+		(285<tp_dev.y)&&(tp_dev.y<320)&&key_jia)
+	{
+		key_jia=0;
+		event_establish(EVENT_KEY1_PRESSED);
+	}
+	else if(!((164<tp_dev.x)&&(tp_dev.x<244)&&\
+		(285<tp_dev.y)&&(tp_dev.y<320))||PEN==1)
+	{
+		key_jia=1;
+	}
+	
+		if((245<tp_dev.x)&&(tp_dev.x<320)&&\
+		(285<tp_dev.y)&&(tp_dev.y<320)&&key_jian)
+	{
+		key_jian=0;
+		event_establish(EVENT_KEY_UP_PRESSED);
+	}
+	else if(!((245<tp_dev.x)&&(tp_dev.x<320)&&\
+		(285<tp_dev.y)&&(tp_dev.y<320))||PEN==1)
+	{
+		key_jian=1;
+	}
+	
 
 }
 
@@ -219,22 +249,21 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			if(Tips==1)
 			{
 				width_s++;
-				POINT_COLOR=MY_DARKBLUE;
-				BACK_COLOR=WHITE;
-				if(width_s>99)width_s=200;
-				LCD_ShowNum_32(220,y+40*5-28,width_s,2,32);
+				
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
+				if(width_s>99)width_s=200;
+				LCD_ShowNum_32(220,y+40*5-38,width_s,2,32);
+				
 			}
 			else
 			{
 				dis++;
-				POINT_COLOR=MY_DARKBLUE;
-				BACK_COLOR=WHITE;
-				if(dis>99)dis=0;
-				LCD_ShowNum_32(x+50+100,y+hangju*6-18,dis,2,32);
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
+				if(dis>99)dis=0;
+				LCD_ShowNum_32(x+50+100,y+hangju*6-28,dis,2,32);
+				
 	
 			}
 		}
@@ -243,22 +272,20 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			if(Tips==1)
 			{
 				width_s--;
-				POINT_COLOR=MY_DARKBLUE;
-				BACK_COLOR=WHITE;
-				if(width_s<0)width_s=0;
-				LCD_ShowNum_32(220,y+40*5-28,width_s,2,32);
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
+				if(width_s<0)width_s=0;
+				LCD_ShowNum_32(220,y+40*5-38,width_s,2,32);
+				
 			}
 			else
 			{
 				dis--;
-				POINT_COLOR=MY_DARKBLUE;
-				BACK_COLOR=WHITE;
-				if(dis<0)dis=0;
-				LCD_ShowNum_32(x+50+100,y+hangju*6-18,dis,2,32);
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
+				if(dis<0)dis=0;
+				LCD_ShowNum_32(x+50+100,y+hangju*6-28,dis,2,32);
+				
 			}
 		}
 		else if(event == EVENT_TUOCH_START)
@@ -422,7 +449,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 					LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
 				}	
 			}
-/////////////////////////////////////////////////传感器/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////方法一/////////////////////////////////////////////////////////
 			
 		}
 		else if(event == EVENT_TUOCH_TIP1)
@@ -439,6 +466,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 			LCD_Fill(x-30,y,370,lcddev.height-30,WHITE);
 			Fun_lab2_show_text();			
 		}
+	
+		
 		
 		
 	}
