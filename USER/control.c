@@ -18,7 +18,7 @@ void Apc_InitFunCtrlSM(void)
 	Fun_Init_main_page();
 	Fun_Init_lab1_page();
 	Fun_Init_lab2_page();
-//	Fun_Init_lab3_page();
+//	Fun_Init_lab3_page();Œ¥ π”√
 	Fun_Init_lab4_page();
 	Fun_Init_lab5_page();
 	Fun_Init_lab6_page();
@@ -28,8 +28,11 @@ void Apc_InitFunCtrlSM(void)
 
 void Control_Init(void)
 {
-//	page_state_now=main_page;
-	page_state_now=lab2;
+
+		page_state_now=main_page;
+
+	//	page_state_now=lab3;
+
 }
 
 void Control_state_machine(lab_list_t state)

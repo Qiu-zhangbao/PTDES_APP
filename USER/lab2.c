@@ -17,9 +17,9 @@ static uint32_t times_us_old2=0;
 static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK |    +    |    -    ";
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK |    -    |    +    ";
 
-static uint8_t hangju=32,x=50,y=80,x1=200;
+static uint8_t hangju=32,x=50,y=80,y_tips1=54,x1=200;
 
 static uint8_t key_t1=1,key_t2=1,key_jia=1,key_jian=1;
 
@@ -30,8 +30,13 @@ int16_t dis=7;
 
 
 uint8_t Tips=1;
+uint32_t t_record1=0;
+uint32_t t_record2=0;
+uint32_t t_record3=0;
+uint32_t t_record4=0;
 
-
+uint32_t t12=0;
+uint32_t t34=0;
 
 
 void Fun_lab2_show_text(void)
@@ -52,32 +57,38 @@ void Fun_lab2_show_text(void)
 		else if(page_state_now == lab3)
 		{
 			hangju=30;
-			Show_Str(x,y+hangju*4,color2,color1,"a1:          (mm/s2)",16,mode);
-			Show_Str(x1+10,y+hangju*4,color2,color1,"a2:          (mm/s2)",16,mode);
-			LCD_ShowNum(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
-			LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
+			
+			Show_Str(x-8,y_tips1+hangju*4,color2,color1,"t12:          ms",16,mode);
+			Show_Str(x1+10-8,y_tips1+hangju*4,color2,color1,"t34:          ms",16,mode);
+			LCD_ShowNum(x+28,y_tips1+hangju*4,t12,9,16);
+			LCD_ShowNum(x1+28+10,y_tips1+hangju*4,t34,9,16);
+			
+			Show_Str(x,y_tips1+hangju*5,color2,color1,"a1:          mm/s2",16,mode);
+			Show_Str(x1+10,y_tips1+hangju*5,color2,color1,"a2:          mm/s2",16,mode);
+			LCD_ShowNum(x+28,y_tips1+hangju*5,t12,9,16);
+			LCD_ShowNum(x1+28+10,y_tips1+hangju*5,t34,9,16);
 		}
 		
 		
-		Show_Str(x,y,color2,color1,"t1:          ms",16,mode);
-		Show_Str(x,y+hangju*1,color2,color1,"t2:          ms",16,mode);
-		Show_Str(x,y+hangju*2,color2,color1,"t3:          ms",16,mode);
-		Show_Str(x,y+hangju*3,color2,color1,"t4:          ms",16,mode);
+		Show_Str(x,y_tips1,color2,color1,"t1:          ms",16,mode);
+		Show_Str(x,y_tips1+hangju*1,color2,color1,"t2:          ms",16,mode);
+		Show_Str(x,y_tips1+hangju*2,color2,color1,"t3:          ms",16,mode);
+		Show_Str(x,y_tips1+hangju*3,color2,color1,"t4:          ms",16,mode);
 
-		Show_Str(x1,y,color2,color1,"v1:          mm/s",16,mode);
-		Show_Str(x1,y+hangju*1,color2,color1,"v2:          mm/s",16,mode);
-		Show_Str(x1,y+hangju*2,color2,color1,"v3:          mm/s",16,mode);
-		Show_Str(x1,y+hangju*3,color2,color1,"v4:          mm/s",16,mode);
+		Show_Str(x1,y_tips1,color2,color1,"v1:          mm/s",16,mode);
+		Show_Str(x1,y_tips1+hangju*1,color2,color1,"v2:          mm/s",16,mode);
+		Show_Str(x1,y_tips1+hangju*2,color2,color1,"v3:          mm/s",16,mode);
+		Show_Str(x1,y_tips1+hangju*3,color2,color1,"v4:          mm/s",16,mode);
 		
-		LCD_ShowNum(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
-		LCD_ShowNum(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
-		LCD_ShowNum(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
-		LCD_ShowNum(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
+		LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us,9,16);
+		LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us,9,16);
+		LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us,9,16);
+		LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us,9,16);
 
-		LCD_ShowNum(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
-		LCD_ShowNum(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);
-		LCD_ShowNum(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
-		LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
+		LCD_ShowNum(x1+28,y_tips1+hangju*0,sx670_parm.sensor1_v,9,16);
+		LCD_ShowNum(x1+28,y_tips1+hangju*1,sx670_parm.sensor2_v,9,16);
+		LCD_ShowNum(x1+28,y_tips1+hangju*2,sx670_parm.sensor3_v,9,16);
+		LCD_ShowNum(x1+28,y_tips1+hangju*3,sx670_parm.sensor4_v,9,16);
 		
 		Show_Str(x+30,y+40*5-18,color2,color1,"挡光片宽度:",16,mode);
 		POINT_COLOR=WHITE;
@@ -150,7 +161,7 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 	}
 	else if(page_state_now == lab3)
 	{
-		Show_Str(20,40,color2,color1,"实验3：测量匀变速运动的加速度",16,mode);
+		Show_Str(20,22,color2,color1,"实验3：测量匀变速运动的加速度",16,mode);
 	}
 	
 	Show_Str(270,22,color2,color1,"系统计时时间:          ms",16,mode);
@@ -200,8 +211,7 @@ void touch_lab2_page(void)
 	}
 	
 	
-//		LCD_DrawRectangle(164,285,244,320);
-//		LCD_DrawRectangle(245,285,320,320);
+
 	
 	if((164<tp_dev.x)&&(tp_dev.x<244)&&\
 		(285<tp_dev.y)&&(tp_dev.y<320)&&key_jia)
@@ -248,6 +258,27 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
+				width_s--;
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
+				if(width_s<0)width_s=0;
+				LCD_ShowNum_32(220,y+40*5-38,width_s,2,32);
+				
+			}
+			else
+			{
+				dis--;
+				POINT_COLOR=WHITE;
+				BACK_COLOR=MY_DARKBLUE;
+				if(dis<0)dis=0;
+				LCD_ShowNum_32(x+50+100,y+hangju*6-28,dis,2,32);
+				
+			}
+		}
+		else if(event == EVENT_KEY_UP_PRESSED)
+		{
+			if(Tips==1)
+			{
 				width_s++;
 				
 				POINT_COLOR=WHITE;
@@ -266,27 +297,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				
 	
 			}
-		}
-		else if(event == EVENT_KEY_UP_PRESSED)
-		{
-			if(Tips==1)
-			{
-				width_s--;
-				POINT_COLOR=WHITE;
-				BACK_COLOR=MY_DARKBLUE;
-				if(width_s<0)width_s=0;
-				LCD_ShowNum_32(220,y+40*5-38,width_s,2,32);
-				
-			}
-			else
-			{
-				dis--;
-				POINT_COLOR=WHITE;
-				BACK_COLOR=MY_DARKBLUE;
-				if(dis<0)dis=0;
-				LCD_ShowNum_32(x+50+100,y+hangju*6-28,dis,2,32);
-				
-			}
+			
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
@@ -297,6 +308,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		else if(event == EVENT_TUOCH_STOP)
 		{
 			LCD_Clear(WHITE);
+			t12=0;
+			t34=0;
 			EE_SX670_DISENABLE();
 			Fun_lab2_page_Screen(0,0);
 			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
@@ -315,7 +328,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
-				times_us_old1=time_us;
+				t_record1=times_us_old1=time_us;
 			}
 			else 
 			{
@@ -332,8 +345,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor1_us=time_us-times_us_old1;
 				sx670_parm.sensor1_v=1000*width_s/sx670_parm.sensor1_us;
-				LCD_ShowNum(x+28,y+hangju*0,sx670_parm.sensor1_us,9,16);
-				LCD_ShowNum(x1+28,y+hangju*0,sx670_parm.sensor1_v,9,16);
+				LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us,9,16);
+				LCD_ShowNum(x1+28,y_tips1+hangju*0,sx670_parm.sensor1_v,9,16);
 			}
 			
 		}
@@ -341,7 +354,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
-				times_us_old2=time_us;
+				t_record2=times_us_old2=time_us;
+				t12=t_record2-t_record1;
 			}
 			else 
 			{
@@ -368,13 +382,14 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor2_us=time_us-times_us_old2;
 				sx670_parm.sensor2_v=1000*width_s/sx670_parm.sensor2_us;
-				LCD_ShowNum(x+28,y+hangju*1,sx670_parm.sensor2_us,9,16);
-				LCD_ShowNum(x1+28,y+hangju*1,sx670_parm.sensor2_v,9,16);	
+				LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us,9,16);
+				LCD_ShowNum(x1+28,y_tips1+hangju*1,sx670_parm.sensor2_v,9,16);	
 				/*方法一的加速度在传感器退出的时候算*/
 				if(page_state_now == lab3)
 				{
-					sx670_parm.sensor_tip1_a1=sx670_parm.sensor2_v-sx670_parm.sensor1_v;
-					LCD_ShowNum(x+28,y+hangju*4,sx670_parm.sensor_tip1_a1,9,16);
+					sx670_parm.sensor_tip1_a1=((sx670_parm.sensor2_v-sx670_parm.sensor1_v)*1000)/t12;
+					LCD_ShowNum(x+28,y_tips1+hangju*4,t12,9,16);
+					LCD_ShowNum(x+28,y_tips1+hangju*5,sx670_parm.sensor_tip1_a1,9,16);
 				}				
 			}
 
@@ -383,7 +398,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
-				times_us_old3=time_us;
+				t_record3=times_us_old3=time_us;
 			}
 			else 
 			{
@@ -399,8 +414,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor3_us=time_us-times_us_old3;
 				sx670_parm.sensor3_v=1000*width_s/sx670_parm.sensor3_us;
-				LCD_ShowNum(x+28,y+hangju*2,sx670_parm.sensor3_us,9,16);
-				LCD_ShowNum(x1+28,y+hangju*2,sx670_parm.sensor3_v,9,16);
+				LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us,9,16);
+				LCD_ShowNum(x1+28,y_tips1+hangju*2,sx670_parm.sensor3_v,9,16);
 			}
 
 		}
@@ -408,7 +423,8 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			if(Tips==1)
 			{
-				times_us_old4=time_us;
+				t_record4=times_us_old4=time_us;
+				t34=t_record4-t_record3;
 			}
 			else 
 			{
@@ -440,13 +456,15 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor4_us=time_us-times_us_old4;
 				sx670_parm.sensor4_v=1000*width_s/sx670_parm.sensor4_us;
-				LCD_ShowNum(x+28,y+hangju*3,sx670_parm.sensor4_us,9,16);
-				LCD_ShowNum(x1+28,y+hangju*3,sx670_parm.sensor4_v,9,16);
+				LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us,9,16);
+				LCD_ShowNum(x1+28,y_tips1+hangju*3,sx670_parm.sensor4_v,9,16);
 				/*方法一的加速度在传感器退出的时候算*/
 				if(page_state_now == lab3)
 				{
-					sx670_parm.sensor_tip1_a2=sx670_parm.sensor4_v-sx670_parm.sensor3_v;
-					LCD_ShowNum(x1+28+10,y+hangju*4,sx670_parm.sensor_tip1_a2,9,16);
+					sx670_parm.sensor_tip1_a2=((sx670_parm.sensor4_v-sx670_parm.sensor3_v)*1000)/t34;
+					LCD_ShowNum(x1+28+10,y_tips1+hangju*4,t34,9,16);
+					LCD_ShowNum(x1+28+10,y_tips1+hangju*5,sx670_parm.sensor_tip1_a2,9,16);
+					
 				}	
 			}
 /////////////////////////////////////////////////方法一/////////////////////////////////////////////////////////
@@ -456,14 +474,18 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 		{
 			Tips=1;
 			EE_SX670_DISENABLE();
-			LCD_Fill(x-30,y,370,lcddev.height-30,WHITE);
+			t12=0;
+			t34=0;
+			LCD_Fill(x-30,44,370,lcddev.height-30,WHITE);
 			Fun_lab2_show_text();
 		}
 		else if(event == EVENT_TUOCH_TIP2)
 		{
 			Tips=2;
 			EE_SX670_DISENABLE();
-			LCD_Fill(x-30,y,370,lcddev.height-30,WHITE);
+			t12=0;
+			t34=0;
+			LCD_Fill(x-30,44,370,lcddev.height-30,WHITE);
 			Fun_lab2_show_text();			
 		}
 	
@@ -499,6 +521,8 @@ void Fun_Close_lab2_page(void)
 	LCD_Clear(WHITE);
 	EE_SX670_DISENABLE();
 	Tips=1;
+	t12=0;
+	t34=0;
 }
 
 

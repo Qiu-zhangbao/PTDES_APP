@@ -8,7 +8,7 @@
 #include "touch.h" 
 
 
-static uint8_t VERSION_NUMBER[]="release:2.0";
+static uint8_t VERSION_NUMBER[]="release:2.3";
 
 static uint8_t KEY_MANUAL[]=" EXIT | BACK | UP | OK | DOWN ";
 

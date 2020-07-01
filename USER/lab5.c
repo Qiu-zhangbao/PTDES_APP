@@ -18,8 +18,8 @@ static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
 
-static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | PAUSE/CONTINUE ";
-
+static uint8_t KEY_MANUAL[]=" EXIT | NONE | PAUSE  | START | BACK ";
+static uint8_t  key_direct=1;
 uint32_t lab5_times_num=0;
 
 
@@ -27,6 +27,11 @@ uint32_t lab5_times_num=0;
 void Fun_lab5_show_text(void)
 {
 	Fun_lab1_show_text();
+	
+	POINT_COLOR=MY_DARKBLUE;
+	BACK_COLOR=WHITE;
+	
+	LCD_DrawRectangle(108,295,180,320);
 }
 
 static void Fun_lab5_page_Screen(uint16_t period,void* p)
@@ -62,7 +67,7 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 		Show_Str(420-xiankuangjiange-16,166+50*i,MY_DARKBLUE,color1,"魑",16,mode);
 	}
 	
-	Show_Str(13,100+40*3+16+16+16+5,color2,color1,"通过按键 KEY_UP 暂停和继续",16,mode);
+	Show_Str(145,100+40*3+16+16+5,color2,color1,"按键 KEY_0 暂停和继续",16,mode);
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
 }
 
@@ -70,7 +75,17 @@ void touch_lab5_page(void)
 {
 	
 	touch_lab1_page();
-	
+	if((108<tp_dev.x)&&(tp_dev.x<180)&&\
+		(295<tp_dev.y)&&(tp_dev.y<320)&&key_direct)
+	{
+		key_direct=0;
+		event_establish(EVENT_KEY0_PRESSED);
+	}
+	else if(!((108<tp_dev.x)&&(tp_dev.x<180)&&\
+		(295<tp_dev.y)&&(tp_dev.y<320))||PEN==1)
+	{
+		key_direct=1;
+	}
 }
 
 /**@brief 事件处理函数
@@ -82,18 +97,6 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 	if(page_state_now == lab5  )
 	{
 		if(event == EVENT_KEY0_PRESSED)
-		{
-			Fun_lab5_show_text();
-			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);		
-			page_state_now=main_page;
-		}
-		else if(event == EVENT_KEY1_PRESSED)
-		{
-			Fun_lab5_show_text();
-			Show_Str(420,166,WHITE,MY_PURPLE,"开始",16,mode);
-			EE_SX670_ENABLE();
-		}
-		else if(event == EVENT_KEY_UP_PRESSED)
 		{
 			static uint8_t tim=0;
 			tim++;
@@ -107,6 +110,19 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 				TIM_Cmd(TIM2, ENABLE); //继续
 				sx670_enable=1;
 			}
+			
+		}
+		else if(event == EVENT_KEY1_PRESSED)
+		{
+			Fun_lab5_show_text();
+			Show_Str(420,166,WHITE,MY_PURPLE,"开始",16,mode);
+			EE_SX670_ENABLE();
+		}
+		else if(event == EVENT_KEY_UP_PRESSED)
+		{
+			Fun_lab5_show_text();
+			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);		
+			page_state_now=main_page;
 		}
 		else if(event == EVENT_TUOCH_START)
 		{

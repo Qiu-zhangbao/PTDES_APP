@@ -49,6 +49,7 @@
 **************************************************************************************************/	
 
 
+
 //IAP配置
 //IROM1：0x20001000	0xC000
 //IRAM1：0x2000D000	0x3000
@@ -57,10 +58,6 @@
 //默认配置
 //IROM1：0x8000000	0x80000
 //IRAM1：0x20000000	0x10000
-
-extern int8_t width;
-extern  uint8_t Tips;
-extern uint32_t lab5_times_num;
 
 
 
@@ -83,7 +80,11 @@ int main(void)
 	Apc_InitFunCtrlSM();
 	Control_Init();
 	time_us=0;
-	//SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	
+
+	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	
+	
 	while(1)
 	{	
 		if(dir)led0pwmval++;
@@ -126,8 +127,6 @@ int main(void)
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 			LCD_ShowNum(376,40,time_us,9,16);
-		
-		
 		}
 		else if(page_state_now == lab5  )
 		{
@@ -144,25 +143,31 @@ int main(void)
 		}		
 		else if(page_state_now == lab6  )
 		{
+			static uint8_t x=80;
 		
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 			lab6_parm.time_ms=time_us;
 			
+			if(lab6_parm.cnt==0)
+				lab6_parm.period_num=lab6_parm.cnt;
+				else
+				lab6_parm.period_num=(lab6_parm.cnt-1)/lab6_parm.period_uint;
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
 			lab6_parm.frequency=100000/lab6_parm.period;
+		
+			LCD_ShowNum(x+64,80,lab6_parm.period_num,6,16);
+			LCD_ShowNum(x+64,80+50,lab6_parm.time_ms,6,16);
+			LCD_ShowNum(x+64,80+50+50,lab6_parm.period,6,16);
 			
-			
-			LCD_ShowNum(150+64,80,lab6_parm.period_num,6,16);
-			LCD_ShowNum(150+64,80+50,lab6_parm.time_ms,6,16);
-			LCD_ShowNum(150+64,80+50+50,lab6_parm.period,6,16);
-			
-			
-			
-			LCD_ShowNum(150+64,80+50+50+50,lab6_parm.frequency/100,3,16);
-			LCD_ShowChar(150+64+3*8,80+50+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(150+64+4*8,80+50+50+50,lab6_parm.frequency%100,2,16);
-	
+			LCD_ShowNum(x+64,80+50+50+50,lab6_parm.frequency/100,3,16);
+			LCD_ShowChar(x+64+3*8,80+50+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+4*8,80+50+50+50,lab6_parm.frequency%100,2,16);
+				
+			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
+			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	
+				
+				
 		}
 		POINT_COLOR=MY_DARKBLUE;
 		LCD_DrawLine(0,0,480,0);
