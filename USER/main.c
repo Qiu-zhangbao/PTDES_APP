@@ -63,8 +63,6 @@
 
 int main(void)
 {	
-	u16 led0pwmval=0;
-	u8 dir=1;	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
 	delay_init();//延时初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置NVIC中断分组2:2位抢占优先级，2位响应优先级
@@ -72,7 +70,6 @@ int main(void)
 	LED_Init();
 	EE_SX670_INIT();
 	TIM2_Int_Init(999,71);
-	TIM3_PWM_Init(999,71);//不分频。PWM频率=72000/(899+1)=80Khz
 	TIM4_Int_Init(99,7199);
 	TP_Init();
 	KEY_Init();
@@ -87,12 +84,6 @@ int main(void)
 	
 	while(1)
 	{	
-		if(dir)led0pwmval++;
-		else led0pwmval--;
-
- 		if(led0pwmval>300)dir=0;
-		if(led0pwmval==0)dir=1;										 
-		TIM_SetCompare2(TIM3,led0pwmval);	
 		
 		KEY_Scan(0);	
 		
@@ -165,9 +156,7 @@ int main(void)
 			LCD_ShowNum_Cover(x+64+4*8,80+50+50+50,lab6_parm.frequency%100,2,16);
 				
 			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
-			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	
-				
-				
+			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);					
 		}
 		POINT_COLOR=MY_DARKBLUE;
 		LCD_DrawLine(0,0,480,0);

@@ -7,7 +7,7 @@
 #define	BEBUG_MODE			0	//调试模式
 #define	OFFICIAL_MODE		1	//正式模式
 
-#define USER_MODE	BEBUG_MODE	//用户模式
+#define USER_MODE	OFFICIAL_MODE	//用户模式
 
 #if	( USER_MODE == BEBUG_MODE )
 

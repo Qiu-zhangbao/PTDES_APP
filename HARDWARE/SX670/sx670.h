@@ -10,15 +10,15 @@ typedef struct
 	uint32_t sensor3_us;
 	uint32_t sensor4_us;
 	
-	uint32_t sensor1_v;
-	uint32_t sensor2_v;
-	uint32_t sensor3_v;
-	uint32_t sensor4_v;
+	int32_t sensor1_v;
+	int32_t sensor2_v;
+	int32_t sensor3_v;
+	int32_t sensor4_v;
 	
 	uint32_t sensor12_us;
 	uint32_t sensor34_us;
-	uint32_t sensor12_v;
-	uint32_t sensor34_v;
+	int32_t sensor12_v;
+	int32_t sensor34_v;
 	
 	uint32_t sensor_tip1_a1;
 	uint32_t sensor_tip1_a2;

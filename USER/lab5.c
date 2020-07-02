@@ -69,6 +69,11 @@ static void Fun_lab5_page_Screen(uint16_t period,void* p)
 	
 	Show_Str(145,100+40*3+16+16+5,color2,color1,"按键 KEY_0 暂停和继续",16,mode);
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//按键说明
+	
+	POINT_COLOR=MY_DARKBLUE;
+	BACK_COLOR=WHITE;
+	
+	LCD_DrawRectangle(108,295,180,320);
 }
 
 void touch_lab5_page(void)

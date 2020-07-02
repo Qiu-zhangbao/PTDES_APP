@@ -48,7 +48,7 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 
 	LCD_Fill(0,0,lcddev.width,20,MY_DARKBLUE);
 	Gui_StrCenter(0,2,WHITE,BLUE,"光电计时数字实验系统",16,1);//居中显示
-	Show_Str(400,8,WHITE,BLACK,VERSION_NUMBER,12,1);//版本号
+	Show_Str(370,4,WHITE,BLACK,VERSION_NUMBER,16,1);//版本号
 	
 	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
 	Fun_main_page_show_text();

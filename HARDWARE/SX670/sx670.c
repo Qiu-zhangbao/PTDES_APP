@@ -4,7 +4,7 @@
 #include "event_queue.h"
 
 SX670_t sx670_parm;
- uint8_t sx670_enable=0;
+uint8_t sx670_enable=0;
 
 
 void EE_SX670_INIT_PIN(void) //IO初始化
@@ -103,10 +103,12 @@ void EXTI2_IRQHandler(void)
 		
 		if(sensor1==1)	 //按键KEY0
 		{
+			LED0=1;
 			event_establish(EVENT_SENER1_OUT);
 		}		 
 		else 	 //按键KEY0
 		{
+			LED0=0;
 			event_establish(EVENT_SENER1_IN);
 		}	
 	
@@ -122,10 +124,12 @@ void EXTI3_IRQHandler(void)
 	{
 		if(sensor2==1)	 //按键KEY0
 		{
+			LED0=1;
 			event_establish(EVENT_SENER2_OUT);
 		}		 
 		else	 //按键KEY0
 		{
+			LED0=0;
 			event_establish(EVENT_SENER2_IN);
 		}
 	}		
@@ -138,10 +142,12 @@ void EXTI4_IRQHandler(void)
 	{
 		if(sensor3==1)	 //按键KEY0
 		{
+			LED0=1;
 			event_establish(EVENT_SENER3_OUT);
 		}		 
 		else
 		{
+			LED0=0;
 			event_establish(EVENT_SENER3_IN);
 		}
 	}
@@ -154,10 +160,12 @@ void EXTI9_5_IRQHandler(void)
 	{
 		if(sensor4==1)	 //按键KEY0
 		{
+			LED0=1;
 			event_establish(EVENT_SENER4_OUT);
 		}		 
 		else
 		{
+			LED0=0;
 			event_establish(EVENT_SENER4_IN);
 		} 		
 	}
