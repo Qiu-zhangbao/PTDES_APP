@@ -388,6 +388,11 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
+              <FileName>global_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\global_config.h</FilePath>
+            </File>
+            <File>
               <FileName>test.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\test.c</FilePath>

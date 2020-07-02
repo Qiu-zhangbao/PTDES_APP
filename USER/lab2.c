@@ -25,18 +25,18 @@ static uint8_t key_t1=1,key_t2=1,key_jia=1,key_jian=1;
 
 static uint8_t res=0;
 	
-int16_t width_s=7;
-int16_t dis=7;
+static int16_t width_s=7;
+static int16_t dis=7;
 
 
-uint8_t Tips=1;
-uint32_t t_record1=0;
-uint32_t t_record2=0;
-uint32_t t_record3=0;
-uint32_t t_record4=0;
+static uint8_t Tips=1;
+static uint32_t t_record1=0;
+static uint32_t t_record2=0;
+static uint32_t t_record3=0;
+static uint32_t t_record4=0;
 
-uint32_t t12=0;
-uint32_t t34=0;
+static uint32_t t12=0;
+static uint32_t t34=0;
 
 
 void Fun_lab2_show_text(void)

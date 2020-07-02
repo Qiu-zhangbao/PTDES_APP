@@ -28,11 +28,12 @@ void Apc_InitFunCtrlSM(void)
 
 void Control_Init(void)
 {
-
+	#if	( USER_MODE == OFFICIAL_MODE )	//正式模式
 		page_state_now=main_page;
-
-	//	page_state_now=lab3;
-
+	#else
+		page_state_now=BEBUG_PAGE;
+	#endif
+		
 }
 
 void Control_state_machine(lab_list_t state)

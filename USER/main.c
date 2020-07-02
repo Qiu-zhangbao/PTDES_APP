@@ -51,13 +51,13 @@
 
 
 //IAP配置
-//IROM1：0x20001000	0xC000
-//IRAM1：0x2000D000	0x3000
-//SCB->VTOR = SRAM_BASE | 0x1000;	这句话要放中断初始化之后
+//	0x20001000	0xC000
+//	0x2000D000	0x3000
+
 
 //默认配置
-//IROM1：0x8000000	0x80000
-//IRAM1：0x20000000	0x10000
+//	0x8000000	0x80000
+//	0x20000000	0x10000
 
 
 
@@ -81,9 +81,9 @@ int main(void)
 	Control_Init();
 	time_us=0;
 	
-
-	SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
-	
+	#if	( USER_MODE == OFFICIAL_MODE )	//正式模式
+		SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
+	#endif
 	
 	while(1)
 	{	
