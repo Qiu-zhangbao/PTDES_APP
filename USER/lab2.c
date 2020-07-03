@@ -404,7 +404,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 					POINT_COLOR=WHITE;
 					BACK_COLOR=MY_DARKBLUE;
 					sx670_parm.sensor12_us=time_us-times_us_old1;
-					sx670_parm.sensor12_v=10000*dis/sx670_parm.sensor12_us;
+					sx670_parm.sensor12_v=1000*dis/sx670_parm.sensor12_us;
 					LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us,9,16);
 					LCD_ShowNum(x1+33,y+hangju*0,sx670_parm.sensor12_v,9,16);
 					
@@ -510,7 +510,7 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 					POINT_COLOR=WHITE;
 					BACK_COLOR=MY_DARKBLUE;
 					sx670_parm.sensor34_us=time_us-times_us_old3;
-					sx670_parm.sensor34_v=10000*dis/sx670_parm.sensor34_us;
+					sx670_parm.sensor34_v=1000*dis/sx670_parm.sensor34_us;
 					LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us,9,16);
 					LCD_ShowNum(x1+33,y+hangju*2,sx670_parm.sensor34_v,9,16);
 					/*方法二的加速度在进入最后一个传感器的时候算*/
