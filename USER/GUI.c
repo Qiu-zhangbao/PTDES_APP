@@ -547,7 +547,7 @@ void GUI_DrawFont24(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode)
 //****************************************************************** 
 void GUI_DrawFont32(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode)
 {
-	u8 i,j;
+	u16 i,j;
 	u16 k;
 	u16 HZnum;
 	u16 x0=x;
@@ -555,8 +555,8 @@ void GUI_DrawFont32(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode)
 	for (k=0;k<HZnum;k++) 
 			{
 			  if ((tfont32[k].Index[0]==*(s))&&(tfont32[k].Index[1]==*(s+1)))
-			  { 	LCD_SetWindows(x,y,x+32-1,y+32-1);
-				    for(i=0;i<32*4;i++)
+			  { 	LCD_SetWindows(x,y,x+64-1,y+64-1);
+				    for(i=0;i<64*8;i++)
 				    {
 						for(j=0;j<8;j++)
 				    	{
@@ -570,7 +570,7 @@ void GUI_DrawFont32(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode)
 								POINT_COLOR=fc;
 								if(tfont32[k].Msk[i]&(0x80>>j))	LCD_DrawPoint(x,y);//画一个点
 								x++;
-								if((x-x0)==32)
+								if((x-x0)==64)
 								{
 									x=x0;
 									y++;
@@ -690,8 +690,8 @@ void Gui_Drawbmp16(u16 x,u16 y,const unsigned char *p) //显示40*40 QQ图片
 {
   	int i; 
 	unsigned char picH,picL; 
-	LCD_SetWindows(x,y,x+80-1,y+80-1);//窗口设置
-    for(i=0;i<80*80;i++)
+	LCD_SetWindows(x,y,x+40-1,y+40-1);//窗口设置
+    for(i=0;i<40*40;i++)
 	{	
 	 	picL=*(p+i*2);	//数据低位在前
 		picH=*(p+i*2+1);				

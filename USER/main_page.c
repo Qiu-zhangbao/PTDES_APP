@@ -41,16 +41,17 @@ void Fun_main_page_show_text(void)
 }
 
 
+
 static void Fun_main_page_Screen(uint16_t period,void* p)
 {	
 	//Gu_Drawbmp16_320X480(0,0,gImage_480X320);
-	//Gui_Drawbmp16(0,0,gImage_80X80);
-
+	//Gui_Drawbmp16(10,30,gImage_77777);
 	LCD_Fill(0,0,lcddev.width,20,MY_DARKBLUE);
 	Gui_StrCenter(0,2,WHITE,BLUE,"光电计时数字实验系统",16,1);//居中显示
 	Show_Str(370,4,WHITE,BLACK,VERSION_NUMBER,16,1);//版本号
-	
 	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
+	GUI_DrawFont32(30,100,MY_DARKBLUE,WHITE,"徽",0);
+	Show_Str(30,100+70,WHITE,MY_DARKBLUE,"平川中学",16,mode);
 	Fun_main_page_show_text();
 	for(uint8_t list=0;list<6;list++)
 	{	

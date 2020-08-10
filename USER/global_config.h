@@ -11,17 +11,21 @@
 
 #if	( USER_MODE == BEBUG_MODE )
 
-	#define BEBUG_PAGE	lab3	//调试页面选择
+	#define BEBUG_PAGE	main_page	//调试页面选择
 
 #endif
 
 
 
-#define VERSION "release:2.5"	//版本号
+#define VERSION "release:2.6"	//版本号
 
 
 /*
 版本记录
+
+2.6-20200810
+1、实验2方法2的速度加方向判断
+2、增加主页校徽显示
 
 2.5-20200703
 1、实验3方法2的速度减小一个数量级
