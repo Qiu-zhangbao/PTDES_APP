@@ -50,8 +50,8 @@ static void Fun_main_page_Screen(uint16_t period,void* p)
 	Gui_StrCenter(0,2,WHITE,BLUE,"光电计时数字实验系统",16,1);//居中显示
 	Show_Str(370,4,WHITE,BLACK,VERSION_NUMBER,16,1);//版本号
 	LCD_Fill(0,20,lcddev.width,lcddev.height-20,WHITE);
-	GUI_DrawFont32(30,100,MY_DARKBLUE,WHITE,"徽",0);
-	Show_Str(30,100+70,WHITE,MY_DARKBLUE,"平川中学",16,mode);
+	//GUI_DrawFont32(30,100,MY_DARKBLUE,WHITE,"徽",0);
+	//Show_Str(30,100+70,WHITE,MY_DARKBLUE,"平川中学",16,mode);
 	Fun_main_page_show_text();
 	for(uint8_t list=0;list<6;list++)
 	{	
