@@ -50,27 +50,44 @@ static void Fun_lab4_page_Screen(uint16_t period,void* p)
 	
 	POINT_COLOR=WHITE;
 	BACK_COLOR=MY_DARKBLUE;
+<<<<<<< HEAD
 	Show_Str(lab4_x,lab4_y,color2,color1,"经过光电传感器的12的瞬时速度V12:(单位: m m/s)",16,mode);
 	Show_Str(lab4_x,lab4_y+lab4_line,color2,color1,"第1次:",16,mode);
 	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
 
 	Show_Str(lab4_x+130,lab4_y+lab4_line,color2,color1,"第2次:",16,mode);
 	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
+=======
+	Show_Str(lab4_x,lab4_y,color2,color1,"经过光电传感器的12的瞬时速度V12:(单位: m/s)",16,mode);
+	Show_Str(lab4_x,lab4_y+lab4_line,color2,color1,"第2次:",16,mode);
+	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1/10000,6,16);
+
+	Show_Str(lab4_x+130,lab4_y+lab4_line,color2,color1,"第1次:",16,mode);
+	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2/10000,6,16);
+>>>>>>> 110ad0a99afdda83df157faf00c6d308da389b44
 	
 	Show_Str(lab4_x+260,lab4_y+lab4_line,color2,color1,"第3次:",16,mode);
-	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
+	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3/10000,6,16);
 	
 
-	Show_Str(lab4_x,lab4_y+lab4_line*2,color2,color1,"经过光电传感器的34的瞬时速度V34:(单位: m m/s)",16,mode);
+	Show_Str(lab4_x,lab4_y+lab4_line*2,color2,color1,"经过光电传感器的34的瞬时速度V34:(单位: m/s)",16,mode);
 	
+<<<<<<< HEAD
 	Show_Str(lab4_x,lab4_y+lab4_line*3,color2,color1,"第1次:",16,mode);
 	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1,6,16);
 
 	Show_Str(lab4_x+130,lab4_y+lab4_line*3,color2,color1,"第2次:",16,mode);
 	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2,6,16);
+=======
+	Show_Str(lab4_x,lab4_y+lab4_line*3,color2,color1,"第2次:",16,mode);
+	LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1/10000,6,16);
+
+	Show_Str(lab4_x+130,lab4_y+lab4_line*3,color2,color1,"第1次:",16,mode);
+	LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2/10000,6,16);
+>>>>>>> 110ad0a99afdda83df157faf00c6d308da389b44
 	
 	Show_Str(lab4_x+260,lab4_y+lab4_line*3,color2,color1,"第3次:",16,mode);
-	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3,6,16);
+	LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3/10000,6,16);
 	
 	Show_Str(232,273,color2,color1,"传感器距离：",16,mode);
 	LCD_ShowNum_Cover(280+16*3,273,lab4_distance,2,16);//传感器距离
@@ -289,7 +306,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1/10000,6,16);
 				}
 				else if(sener1_cnt==2)
 				{
@@ -298,7 +315,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
+					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2/10000,6,16);
 				}
 				else if(sener1_cnt==3)
 				{
@@ -307,7 +324,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
+					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3/10000,6,16);
 				}
 			
 			}
@@ -325,7 +342,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1,6,16);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_1/10000,6,16);
 				}
 				else if(sener1_cnt==2)
 				{
@@ -334,7 +351,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2,6,16);
+					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_2/10000,6,16);
 				}
 				else if(sener1_cnt==3)
 				{
@@ -343,7 +360,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3,6,16);
+					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line,lab4_param_v.v12_times_3/10000,6,16);
 				}
 			}
 		}
@@ -365,7 +382,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1,6,16);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1/10000,6,16);
 				}
 				else if(sener3_cnt==2)
 				{
@@ -374,7 +391,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2,6,16);
+					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2/10000,6,16);
 				}
 				else if(sener3_cnt==3)
 				{
@@ -383,7 +400,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
 					else
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
-					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3,6,16);
+					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3/10000,6,16);
 				}
 			}
 			else
@@ -400,7 +417,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1,6,16);
+					LCD_ShowNum(lab4_x+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_1/10000,6,16);
 				}
 				else if(sener3_cnt==2)
 				{
@@ -409,7 +426,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+130+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2,6,16);
+					LCD_ShowNum(lab4_x+130+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_2/10000,6,16);
 				}
 				else if(sener3_cnt==3)
 				{
@@ -418,7 +435,7 @@ event_type_t Fun_lab4_page_Handle(event_type_t event)
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,' ',16,0);
 					else
 						LCD_ShowChar(lab4_x+260+16*4-8,lab4_y+lab4_line*3,POINT_COLOR,BACK_COLOR,'-',16,0);
-					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3,6,16);
+					LCD_ShowNum(lab4_x+260+16*4,lab4_y+lab4_line*3,lab4_param_v.v34_times_3/10000,6,16);
 				}
 			}
 		}
