@@ -12,7 +12,7 @@
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;
-static uint8_t x=60;
+static uint8_t x=40;
 
 static uint8_t KEY_MANUAL[]=" EXIT | NONE | PAUSE  |    -    |    +    ";
 static uint8_t key_direct=1,key_jia=1,key_jian=1;
@@ -42,13 +42,15 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 	Show_Str(20,40,color2,color1,"实验6：测量周期和频率",16,mode);
 	
 	
-	Show_Str(x,80,color2,color1,"魑周期数：       ",16,mode);
-	Show_Str(x,80+50,color2,color1,"魑时间 t=         ms",16,mode);
-	Show_Str(x,80+50+50,color2,color1,"魑周期 T=         ms",16,mode);
-	Show_Str(x,80+50+50+50,color2,color1,"魑频率 f=         Hz",16,mode);
+//	Show_Str(x,80,color2,color1,"魑周期数：       ",16,mode);
+	Show_Str(x,80,color2,color1,"魑时间 t=         ms",16,mode);
+	Show_Str(x,80+50,color2,color1,"魑周期 T=         ms",16,mode);
+	Show_Str(x,80+50+50,color2,color1,"魑频率 f=         Hz",16,mode);
+	
 	Show_Str(x+200,80,color2,color1,"魑触发        次为1周期",16,mode);
 	Show_Str(x+200,80+50,color2,color1,"魑次数",16,mode);
-	
+	Show_Str(x+200,80+50+50,color2,color1,"魑周期数：       ",16,mode);
+	 
 	
 	POINT_COLOR=WHITE;
 	BACK_COLOR=MY_DARKBLUE;

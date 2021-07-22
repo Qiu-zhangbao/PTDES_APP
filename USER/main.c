@@ -134,7 +134,7 @@ int main(void)
 		}		
 		else if(page_state_now == lab6  )
 		{
-			static uint8_t x=80;
+			static uint8_t x=60;
 		
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
@@ -147,16 +147,17 @@ int main(void)
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
 			lab6_parm.frequency=100000/lab6_parm.period;
 		
-			LCD_ShowNum(x+64,80,lab6_parm.period_num,6,16);
-			LCD_ShowNum(x+64,80+50,lab6_parm.time_ms,6,16);
-			LCD_ShowNum(x+64,80+50+50,lab6_parm.period,6,16);
-			
-			LCD_ShowNum(x+64,80+50+50+50,lab6_parm.frequency/100,3,16);
-			LCD_ShowChar(x+64+3*8,80+50+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+4*8,80+50+50+50,lab6_parm.frequency%100,2,16);
+			//LCD_ShowNum(x+64,80,lab6_parm.period_num,6,16);
+			LCD_ShowNum(x+64,80,lab6_parm.time_ms,6,16);
+			LCD_ShowNum(x+64,80+50,lab6_parm.period,6,16);
+			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/100,3,16);
+			LCD_ShowChar(x+64+3*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+4*8,80+50+50,lab6_parm.frequency%100,2,16);
 				
 			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
-			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);					
+			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	
+
+			LCD_ShowNum(x+180+55+24,80+50+50,lab6_parm.period_num,6,16);
 		}
 		POINT_COLOR=MY_DARKBLUE;
 		LCD_DrawLine(0,0,480,0);
