@@ -7,7 +7,7 @@
 #define	BEBUG_MODE			0	//调试模式
 #define	OFFICIAL_MODE		1	//正式模式
 
-#define USER_MODE	OFFICIAL_MODE	//用户模式
+#define USER_MODE	BEBUG_MODE	//用户模式
 
 #if	( USER_MODE == BEBUG_MODE )
 
@@ -17,11 +17,15 @@
 
 
 
-#define VERSION "release:2.9"	//版本号
+#define VERSION "release:3.0"	//版本号
 
 
 /*
 版本记录
+
+3.0-20210725
+1、系统计时时间0.01ms
+2、实验一和实验二方法一精确到0.01ms
 
 2.9-20210719
 1、除了第一条精度改为0.1ms，其他都改好了

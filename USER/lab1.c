@@ -41,19 +41,20 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 	
 	Show_Str(20,40,color2,color1,"实验1：测量挡光时间",16,mode);
 	
-	Show_Str(270,40,color2,color1,"系统计时时间:          ms",16,mode);
+	Show_Str(270,40,color2,color1,"系统计时时间:           ms",16,mode);
 	
 	Show_Str(100+30,16+50+30,color2,color1,"传感器1:",16,mode);
 	Show_Str(100+30,16+50+50+30,color2,color1,"传感器2:",16,mode);
 	Show_Str(100+30,16+50+50+50+30,color2,color1,"传感器3:",16,mode);
 	Show_Str(100+30,16+50+50+50+50+30,color2,color1,"传感器4:",16,mode);
+
 	
-	Show_Str(280+30,16+50+30,color2,color1,"ms",16,mode);
-	Show_Str(280+30,16+50+50+30,color2,color1,"ms",16,mode);
-	Show_Str(280+30,16+50+50+50+30,color2,color1,"ms",16,mode);
-	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30+8,16+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30+8,16+50+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30+8,16+50+50+50+30,color2,color1,"ms",16,mode);
+	Show_Str(280+30+8,16+50+50+50+50+30,color2,color1,"ms",16,mode);
 	
-	Show_Str(280+30,16+50+50+50+50+30,color2,color1,"ms",16,mode);
+	
 	
 	POINT_COLOR=MY_DARKBLUE;
 	
