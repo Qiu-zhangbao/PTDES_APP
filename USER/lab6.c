@@ -43,9 +43,9 @@ static void Fun_lab6_page_Screen(uint16_t period,void* p)
 	
 	
 //	Show_Str(x,80,color2,color1,"魑周期数：       ",16,mode);
-	Show_Str(x,80,color2,color1,"魑时间 t=         ms",16,mode);
-	Show_Str(x,80+50,color2,color1,"魑周期 T=         ms",16,mode);
-	Show_Str(x,80+50+50,color2,color1,"魑频率 f=         Hz",16,mode);
+	Show_Str(x,80,color2,color1,"魑时间 t=            ms",16,mode);
+	Show_Str(x,80+50,color2,color1,"魑周期 T=            ms",16,mode);
+	Show_Str(x,80+50+50,color2,color1,"魑频率 f=            Hz",16,mode);
 	
 	Show_Str(x+200,80,color2,color1,"魑触发        次为1周期",16,mode);
 	Show_Str(x+200,80+50,color2,color1,"魑次数",16,mode);
@@ -131,14 +131,15 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 			static uint8_t tim=0;
 			tim++;
 			if(tim%2)
-			{
-				TIM_Cmd(TIM2, DISABLE); //暂停
+			{	
 				sx670_enable=0;
+				TIM_Cmd(TIM2, DISABLE); //暂停
+				
 			}
 			else
 			{
-				TIM_Cmd(TIM2, ENABLE); //继续
 				sx670_enable=1;
+				TIM_Cmd(TIM2, ENABLE); //继续
 			}
 		}
 		else if(event == EVENT_KEY1_PRESSED)
@@ -153,8 +154,8 @@ event_type_t Fun_lab6_page_Handle(event_type_t event)
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
 			lab6_parm.period_uint++;
-			if(lab6_parm.period_uint>999)
-				lab6_parm.period_uint=999;
+			if(lab6_parm.period_uint>65535)
+				lab6_parm.period_uint=65535;
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 			LCD_ShowNum(x+200+55,80,lab6_parm.period_uint,6,16);

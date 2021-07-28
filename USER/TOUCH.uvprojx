@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\WDG;..\HARDWARE\TIMER;..\HARDWARE\PWM;..\HARDWARE\LCD;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\TSensor;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\LED;..\HARDWARE\SX670</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\WDG;..\HARDWARE\TIMER;..\HARDWARE\PWM;..\HARDWARE\LCD;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\TSensor;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\LED;..\HARDWARE\SX670;..\SYSTEM\usart</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -502,6 +502,11 @@
               <FileName>Bsl_ScreenMgr.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\LCD\Bsl_ScreenMgr.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\usart\usart.c</FilePath>
             </File>
           </Files>
         </Group>

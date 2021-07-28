@@ -2,7 +2,7 @@
 #include "led.h"
 #include "timer.h"
 #include "event_queue.h"
-
+#include "delay.h"
 SX670_t sx670_parm;
 uint8_t sx670_enable=0;
 
@@ -21,15 +21,15 @@ void EE_SX670_INIT_PIN(void) //IO初始化
 
 void EE_SX670_ENABLE(void)
 {
-	TIM_Cmd(TIM2, ENABLE);  //使能TIMx
 	sx670_enable=1;
+	TIM_Cmd(TIM2, ENABLE);  //使能TIMx
 }
 
 void EE_SX670_DISENABLE(void)
 {
 	TIM_Cmd(TIM2, DISABLE);  //使能TIMx
-	time_us=0;
 	sx670_enable=0;
+	time_us=0;
 	sx670_parm.sensor1_us=0;
 	sx670_parm.sensor2_us=0;
 	sx670_parm.sensor3_us=0;
@@ -97,79 +97,112 @@ uint8_t num=0;
 //外部中断0服务程序 
 void EXTI2_IRQHandler(void)
 {
-	
-	if(sx670_enable)
+	if(EXTI_GetITStatus(GPIO_Pin_2) != RESET)
 	{
+		if(sx670_enable)
+		{
+//			delay_ms(1);
+			if(sensor1==1)	 //按键KEY0
+			{
+				printf("1_OUT\r\n");
+				LED0=1;
+				event_establish(EVENT_SENER1_OUT);
+			}		 
+			else 	 //按键KEY0
+			{
+				printf("1_IN\r\n");
+				LED0=0;
+				event_establish(EVENT_SENER1_IN);
+			}	
 		
-		if(sensor1==1)	 //按键KEY0
-		{
-			LED0=1;
-			event_establish(EVENT_SENER1_OUT);
-		}		 
-		else 	 //按键KEY0
-		{
-			LED0=0;
-			event_establish(EVENT_SENER1_IN);
-		}	
+		}
 	
+		EXTI_ClearFlag(EXTI_Line2);
+		EXTI_ClearITPendingBit(EXTI_Line2);  //清除LINE3上的中断标志位  
 	}
-	EXTI_ClearITPendingBit(EXTI_Line2);  //清除LINE3上的中断标志位  
 }
  
 
 //外部中断3服务程序
 void EXTI3_IRQHandler(void)
 {
-	if(sx670_enable)
+	
+	if(EXTI_GetITStatus(GPIO_Pin_3) != RESET)
 	{
-		if(sensor2==1)	 //按键KEY0
+		if(sx670_enable)
 		{
-			LED0=1;
-			event_establish(EVENT_SENER2_OUT);
-		}		 
-		else	 //按键KEY0
-		{
-			LED0=0;
-			event_establish(EVENT_SENER2_IN);
-		}
-	}		
-	EXTI_ClearITPendingBit(EXTI_Line3);  //清除LINE3上的中断标志位  
+//			delay_ms(1);
+			if(sensor2==1)	 //按键KEY0
+			{
+				printf("2_OUT\r\n");
+				LED0=1;
+				event_establish(EVENT_SENER2_OUT);
+			}		 
+			else	 //按键KEY0
+			{
+				printf("2_IN\r\n");
+				LED0=0;
+				event_establish(EVENT_SENER2_IN);
+			}
+		}		
+
+		EXTI_ClearFlag(EXTI_Line3);
+		EXTI_ClearITPendingBit(EXTI_Line3);  //清除LINE3上的中断标志位  
+	}
+	
 }
 
 void EXTI4_IRQHandler(void)
 {
-	if(sx670_enable)
+	
+	if(EXTI_GetITStatus(GPIO_Pin_4) != RESET)
 	{
-		if(sensor3==1)	 //按键KEY0
+		if(sx670_enable)
 		{
-			LED0=1;
-			event_establish(EVENT_SENER3_OUT);
-		}		 
-		else
-		{
-			LED0=0;
-			event_establish(EVENT_SENER3_IN);
+//			delay_ms(1);
+			if(sensor3==1)	 //按键KEY0
+			{
+				printf("4_OUT\r\n");
+				LED0=1;
+				event_establish(EVENT_SENER3_OUT);
+			}		 
+			else
+			{
+				printf("4_IN\r\n");
+				LED0=0;
+				event_establish(EVENT_SENER3_IN);
+			}
 		}
+		EXTI_ClearFlag(EXTI_Line4);
+		EXTI_ClearITPendingBit(EXTI_Line4);  //清除LINE3上的中断标志位  
 	}
-	EXTI_ClearITPendingBit(EXTI_Line4);  //清除LINE4上的中断标志位  
+	
 }
 
 void EXTI9_5_IRQHandler(void)
 {
-	if(sx670_enable)
+	if(EXTI_GetITStatus(GPIO_Pin_5) != RESET)
 	{
-		if(sensor4==1)	 //按键KEY0
+		if(sx670_enable)
 		{
-			LED0=1;
-			event_establish(EVENT_SENER4_OUT);
-		}		 
-		else
-		{
-			LED0=0;
-			event_establish(EVENT_SENER4_IN);
-		} 		
-	}
-	EXTI_ClearITPendingBit(EXTI_Line5);  //清除LINE4上的中断标志位  
+//			delay_ms(1);
+			if(sensor4==1)	 //按键KEY0
+			{
+				printf("3_OUT\r\n");
+				LED0=1;
+				event_establish(EVENT_SENER4_OUT);
+			}		 
+			else
+			{
+				printf("3_IN\r\n");
+				LED0=0;
+				event_establish(EVENT_SENER4_IN);
+			} 		
+		}
+		EXTI_ClearFlag(EXTI_Line5);
+		EXTI_ClearITPendingBit(EXTI_Line5);  //清除LINE3上的中断标志位  
+	
+	}		
 }
 
 

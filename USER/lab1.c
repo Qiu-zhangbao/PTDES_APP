@@ -134,37 +134,43 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		if(event == EVENT_KEY0_PRESSED)
 		{
 			Fun_lab1_show_text();
-			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);		
+			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);
+			printf("lab1_key_back\r\n");
 			page_state_now=main_page;
 		}
 		else if(event == EVENT_KEY1_PRESSED)
 		{
 			Fun_lab1_show_text();
 			Show_Str(420,166,WHITE,MY_PURPLE,"开始",16,mode);
+			printf("lab1_key_strat\r\n");
 			EE_SX670_ENABLE();
 		}
 		else if(event == EVENT_KEY_UP_PRESSED)
 		{
 			Fun_lab1_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
+			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);	
+			printf("lab1_key_clear\r\n");
 			EE_SX670_DISENABLE();
 		}
 		else if(event == EVENT_TUOCH_START)
 		{
 			Fun_lab1_show_text();
 			Show_Str(420,166,WHITE,MY_PURPLE,"开始",16,mode);
+			printf("lab1_touch_strat\r\n");
 			EE_SX670_ENABLE();
 		}
 		else if(event == EVENT_TUOCH_STOP)
 		{
 			Fun_lab1_show_text();
-			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);		
+			Show_Str(420,166+50,WHITE,MY_PURPLE,"清零",16,mode);
+			printf("lab1_touch_clear\r\n");
 			EE_SX670_DISENABLE();
 		}
 		else if(event == EVENT_TUOCH_BACK)
 		{
 			Fun_lab1_show_text();
-			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);		
+			Show_Str(420,166+50+50,WHITE,MY_PURPLE,"返回",16,mode);	
+			printf("lab1_touch_back\r\n");
 			page_state_now=main_page;
 		}	
 ////////////////////////////////////////////////////////chuanganqi/////////////
@@ -205,9 +211,6 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 			//sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
 		}
 		
-		
-		
-		
 	}
 	return event;
 }
@@ -229,11 +232,13 @@ void Fun_Init_lab1_page(void)
 
 void Fun_Show_lab1_page(void)
 {
+	printf("lab1_init\r\n");
 	Fun_lab1_page_Screen(0,0);
 }
 
 void Fun_Close_lab1_page(void)
 {
+	printf("lab1_close\r\n");
 	LCD_Clear(WHITE);
 	EE_SX670_DISENABLE();
 	start=stop=back=1;//按键标志

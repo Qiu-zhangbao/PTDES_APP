@@ -1,6 +1,8 @@
 #include "timer.h"
 #include "led.h"
 #include "control.h"
+#include "sx670.h"
+#include "usart.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK精英STM32开发板
@@ -56,8 +58,10 @@ void TIM2_IRQHandler(void)   //TIM2中断
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)  //检查TIM2更新中断发生与否
 		{
-			TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
+			if(sx670_enable)
 			time_us++;	
+			TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
+			
 		}
 }
 

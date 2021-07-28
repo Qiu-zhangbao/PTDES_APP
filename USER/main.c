@@ -20,7 +20,7 @@
 #include "lab4.h"
 #include "lab5.h"
 #include "lab6.h"
-
+#include "usart.h"
 
 /****************************************************************************************************
 //=======================================液晶屏数据线接线==========================================//
@@ -76,7 +76,9 @@ int main(void)
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
 	Control_Init();
+	uart_init(115200);
 	time_us=0;
+	printf("systen start\r\n");
 	
 	#if	( USER_MODE == OFFICIAL_MODE )	//正式模式
 		SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
@@ -152,9 +154,11 @@ int main(void)
 		
 			LCD_ShowNum_32(x,y-40,lab5_times_num,7,32);
 			
-			LCD_ShowNum_32(x,y,time_us/1000,3,32);
+			LCD_ShowNum_32(x,y,(time_us/100)/1000,3,32);
 			LCD_ShowChar_32(x+3*16,y,POINT_COLOR,BACK_COLOR,11);
-			LCD_ShowNum_32(x+4*16,y,time_us%1000,3,32);
+			LCD_ShowNum_32(x+4*16,y,(time_us/100)%1000,3,32);
+			LCD_ShowChar_32(x+7*16,y,POINT_COLOR,BACK_COLOR,11);
+			LCD_ShowNum_32(x+8*16,y,time_us%100,2,32);
 		
 		}		
 		else if(page_state_now == lab6  )
@@ -165,19 +169,27 @@ int main(void)
 			BACK_COLOR=MY_DARKBLUE;
 			lab6_parm.time_ms=time_us;
 			
-			if(lab6_parm.cnt==0)
-				lab6_parm.period_num=lab6_parm.cnt;
-				else
-				lab6_parm.period_num=(lab6_parm.cnt-1)/lab6_parm.period_uint;
+//			if(lab6_parm.cnt==0)
+//				lab6_parm.period_num=lab6_parm.cnt;
+//			else
+				lab6_parm.period_num=lab6_parm.cnt/lab6_parm.period_uint;
+			
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
-			lab6_parm.frequency=100000/lab6_parm.period;
+			lab6_parm.frequency=100000*1000*100/lab6_parm.period;
 		
-			//LCD_ShowNum(x+64,80,lab6_parm.period_num,6,16);
-			LCD_ShowNum(x+64,80,lab6_parm.time_ms,6,16);
-			LCD_ShowNum(x+64,80+50,lab6_parm.period,6,16);
-			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/100,3,16);
-			LCD_ShowChar(x+64+3*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+4*8,80+50+50,lab6_parm.frequency%100,2,16);
+			
+			LCD_ShowNum(x+64,80,lab6_parm.time_ms/100,7,16);
+			LCD_ShowChar(x+64+7*8,80,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+8*8,80,lab6_parm.time_ms%100,2,16);
+			
+			LCD_ShowNum(x+64,80+50,lab6_parm.period/100,7,16);
+			LCD_ShowChar(x+64+7*8,80+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+8*8,80+50,lab6_parm.period%100,2,16);
+		
+			
+			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/100000,4,16);
+			LCD_ShowChar(x+64+4*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+5*8,80+50+50,lab6_parm.frequency%100000,5,16);
 				
 			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
 			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	

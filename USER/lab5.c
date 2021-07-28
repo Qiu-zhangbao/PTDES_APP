@@ -12,10 +12,10 @@
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;
-static uint32_t times_us_old1=0;
-static uint32_t times_us_old2=0;
-static uint32_t times_us_old3=0;
-static uint32_t times_us_old4=0;
+//static uint32_t times_us_old1=0;
+//static uint32_t times_us_old2=0;
+//static uint32_t times_us_old3=0;
+//static uint32_t times_us_old4=0;
 
 
 static uint8_t KEY_MANUAL[]=" EXIT | NONE | PAUSE  | START | BACK ";
@@ -152,42 +152,44 @@ event_type_t Fun_lab5_page_Handle(event_type_t event)
 		else if(event == EVENT_SENER1_IN)
 		{
 			lab5_times_num++;
-			times_us_old1=time_us;
+//			times_us_old1=time_us;
+//			printf("times_us_old1:%d\r\n",times_us_old1);
 		}
 		else if(event == EVENT_SENER1_OUT)
 		{
-			sx670_parm.sensor1_us=time_us-times_us_old1;
-			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+//			sx670_parm.sensor1_us=time_us-times_us_old1;
+//			sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+//			printf("sx670_parm.sensor1_us:%d\r\n",sx670_parm.sensor1_us);
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
 			lab5_times_num++;
-			times_us_old2=time_us;
+//			times_us_old2=time_us;
 		}
 		else if(event == EVENT_SENER2_OUT)
 		{
-			sx670_parm.sensor2_us=time_us-times_us_old2;
-			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
+//			sx670_parm.sensor2_us=time_us-times_us_old2;
+//			sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
 			lab5_times_num++;
-			times_us_old3=time_us;
+//			times_us_old3=time_us;
 		}
 		else if(event == EVENT_SENER4_OUT)
 		{
-			sx670_parm.sensor3_us=time_us-times_us_old3;
-			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
+//			sx670_parm.sensor3_us=time_us-times_us_old3;
+//			sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
 			lab5_times_num++;
-			times_us_old4=time_us;
+//			times_us_old4=time_us;
 		}
 		else if(event == EVENT_SENER3_OUT)
 		{
-			sx670_parm.sensor4_us=time_us-times_us_old4;
-			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
+//			sx670_parm.sensor4_us=time_us-times_us_old4;
+//			sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
 		}
 
 	}
