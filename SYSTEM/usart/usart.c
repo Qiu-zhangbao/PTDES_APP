@@ -35,6 +35,7 @@ FILE __stdout;
 int _sys_exit(int x) 
 { 
 	x = x; 
+	return 0;
 } 
 //重定义fputc函数 
 int fputc(int ch, FILE *f)
@@ -70,7 +71,9 @@ u8 USART_RX_BUF[64];     //接收缓冲,最大64个字节.
 //bit5~0，接收到的有效字节数目
 u8 USART_RX_STA=0;       //接收状态标记
 
-void uart_init(u32 bound){
+void uart_init(u32 bound)
+{
+	
     //GPIO端口设置
     GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
@@ -112,6 +115,8 @@ void uart_init(u32 bound){
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启中断
    
     USART_Cmd(USART1, ENABLE);                    //使能串口 
+	
+	printf("usart init\r\n");
 
 }
 

@@ -8,6 +8,7 @@
 #include "led.h"
 #include "touch.h" 
 #include "timer.h"
+#include "delay.h"
 
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
@@ -41,7 +42,7 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 	
 	Show_Str(20,40,color2,color1,"实验1：测量挡光时间",16,mode);
 	
-	Show_Str(270,40,color2,color1,"系统计时时间:           ms",16,mode);
+	Show_Str(270-2*8,40,color2,color1,"系统计时时间:             ms",16,mode);
 	
 	Show_Str(100+30,16+50+30,color2,color1,"传感器1:",16,mode);
 	Show_Str(100+30,16+50+50+30,color2,color1,"传感器2:",16,mode);
@@ -176,38 +177,38 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 ////////////////////////////////////////////////////////chuanganqi/////////////
 		else if(event == EVENT_SENER1_IN)
 		{
-			times_us_old1=time_us;
+			times_us_old1=systime.get_time_us();
 		}
 		else if(event == EVENT_SENER1_OUT)
 		{
-			sx670_parm.sensor1_us=time_us-times_us_old1;
+			sx670_parm.sensor1_us=systime.get_time_us()-times_us_old1;
 			//sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
-			times_us_old2=time_us;
+			times_us_old2=systime.get_time_us();
 		}
 		else if(event == EVENT_SENER2_OUT)
 		{
-			sx670_parm.sensor2_us=time_us-times_us_old2;
+			sx670_parm.sensor2_us=systime.get_time_us()-times_us_old2;
 			//sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
-			times_us_old3=time_us;
+			times_us_old3=systime.get_time_us();
 		}
 		else if(event == EVENT_SENER4_OUT)
 		{
-			sx670_parm.sensor3_us=time_us-times_us_old3;
+			sx670_parm.sensor3_us=systime.get_time_us()-times_us_old3;
 			//sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
-			times_us_old4=time_us;
+			times_us_old4=systime.get_time_us();
 		}
 		else if(event == EVENT_SENER3_OUT)
 		{
-			sx670_parm.sensor4_us=time_us-times_us_old4;
+			sx670_parm.sensor4_us=systime.get_time_us()-times_us_old4;
 			//sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
 		}
 		

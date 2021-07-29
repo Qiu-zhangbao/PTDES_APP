@@ -18,6 +18,22 @@ void delay_init(void);
 void delay_ms(u16 nms);
 void delay_us(u32 nus);
 
+
+/** 
+  * @brief 一个系统时间结构体
+  */
+typedef struct
+{	
+	void (* init) (void);  
+	uint32_t (* get_time_us) (void);
+	uint32_t (* get_time_ms) (void);
+	void (* delay_us)(uint32_t);
+	void (* delay_ms)(uint32_t);
+}systime_t;
+
+/** 声明 systime */
+extern systime_t  systime;
+
 #endif
 
 

@@ -9,6 +9,7 @@
 #include "touch.h" 
 #include "timer.h"
 #include "lab1.h"
+#include "delay.h"
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;

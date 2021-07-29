@@ -9,6 +9,7 @@
 #include "touch.h" 
 #include "timer.h"
 #include "lab1.h"
+#include "delay.h"
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;
@@ -69,21 +70,21 @@ void Fun_lab2_show_text(void)
 			Show_Str(x1,y_tips1+hangju*2,color2,color1,"v3:           m/s",16,mode);
 			Show_Str(x1,y_tips1+hangju*3,color2,color1,"v4:           m/s",16,mode);
 			
-			LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us/100,7,16);
-			LCD_ShowChar(x+28+8*7,y_tips1+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
-			LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*0,sx670_parm.sensor1_us%100,2,16);
+			LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us/1000,6,16);
+			LCD_ShowChar(x+28+8*6,y_tips1+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
+			LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*0,sx670_parm.sensor1_us%1000,3,16);
 			
-			LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us/100,7,16);
-			LCD_ShowChar(x+28+8*7,y_tips1+hangju*1,POINT_COLOR,BACK_COLOR,'.',16,mode);
-			LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*1,sx670_parm.sensor2_us%100,2,16);
+			LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us/1000,6,16);
+			LCD_ShowChar(x+28+8*6,y_tips1+hangju*1,POINT_COLOR,BACK_COLOR,'.',16,mode);
+			LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*1,sx670_parm.sensor2_us%1000,3,16);
 			
-			LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us/100,7,16);
-			LCD_ShowChar(x+28+8*7,y_tips1+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
-			LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*2,sx670_parm.sensor3_us%100,2,16);
+			LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us/1000,6,16);
+			LCD_ShowChar(x+28+8*6,y_tips1+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
+			LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*2,sx670_parm.sensor3_us%1000,3,16);
 			
-			LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us/100,7,16);
-			LCD_ShowChar(x+28+8*7,y_tips1+hangju*3,POINT_COLOR,BACK_COLOR,'.',16,mode);
-			LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*3,sx670_parm.sensor4_us%100,2,16);
+			LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us/1000,6,16);
+			LCD_ShowChar(x+28+8*6,y_tips1+hangju*3,POINT_COLOR,BACK_COLOR,'.',16,mode);
+			LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*3,sx670_parm.sensor4_us%1000,3,16);
 			
 
 			LCD_ShowNum(x1+28,y_tips1+hangju*0,sx670_parm.sensor1_v/1000,6,16);
@@ -172,14 +173,14 @@ void Fun_lab2_show_text(void)
 		
 		Show_Str(x1,y+hangju*2,color2,color1,"v34:           m/s",16,mode);
 		
-		LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/100,7,16);
-		LCD_ShowChar(x+33+7*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
-		LCD_ShowNum_Cover(x+33+8*8,y+hangju*0,sx670_parm.sensor12_us%100,2,16);
+		LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/1000,6,16);
+		LCD_ShowChar(x+33+6*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
+		LCD_ShowNum_Cover(x+33+7*8,y+hangju*0,sx670_parm.sensor12_us%1000,3,16);
 				
 
-		LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/100,7,16);
-		LCD_ShowChar(x+33+7*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
-		LCD_ShowNum_Cover(x+33+8*8,y+hangju*2,sx670_parm.sensor34_us%100,2,16);
+		LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/1000,6,16);
+		LCD_ShowChar(x+33+6*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
+		LCD_ShowNum_Cover(x+33+7*8,y+hangju*2,sx670_parm.sensor34_us%1000,3,16);
 		
 		
 		LCD_ShowNum(x1+33,y+hangju*0,sx670_parm.sensor12_v/1000,6,16);
@@ -239,7 +240,7 @@ static void Fun_lab2_page_Screen(uint16_t period,void* p)
 		Show_Str(20,22,color2,color1,"实验3：测量匀变速运动的加速度",16,mode);
 	}
 	
-	Show_Str(270,22,color2,color1,"系统计时时间:           ms",16,mode);
+	Show_Str(270-2*8,22,color2,color1,"系统计时时间:             ms",16,mode);
 	
 
 
@@ -554,11 +555,11 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor1_us=time_us-times_us_old1;
 	
-				LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us/100,7,16);
-				LCD_ShowChar(x+28+8*7,y_tips1+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*0,sx670_parm.sensor1_us%100,2,16);
+				LCD_ShowNum(x+28,y_tips1+hangju*0,sx670_parm.sensor1_us/1000,6,16);
+				LCD_ShowChar(x+28+8*6,y_tips1+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*0,sx670_parm.sensor1_us%1000,3,16);
 				
-				sx670_parm.sensor1_v=1000*100*width_s/sx670_parm.sensor1_us;
+				sx670_parm.sensor1_v=1000*1000*width_s/sx670_parm.sensor1_us;
 				
 				LCD_ShowNum(x1+28,y_tips1+hangju*0,sx670_parm.sensor1_v/1000,6,16);
 				LCD_ShowChar(x1+28+6*8,y_tips1+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
@@ -610,11 +611,11 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor2_us=time_us-times_us_old2;
 				
-				LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us/100,7,16);
-				LCD_ShowChar(x+28+8*7,y_tips1+hangju*1,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*1,sx670_parm.sensor2_us%100,2,16);
+				LCD_ShowNum(x+28,y_tips1+hangju*1,sx670_parm.sensor2_us/1000,6,16);
+				LCD_ShowChar(x+28+8*6,y_tips1+hangju*1,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*1,sx670_parm.sensor2_us%1000,3,16);
 				
-				sx670_parm.sensor2_v=1000*100*width_s/sx670_parm.sensor2_us;
+				sx670_parm.sensor2_v=1000*1000*width_s/sx670_parm.sensor2_us;
 				
 				LCD_ShowNum(x1+28,y_tips1+hangju*1,sx670_parm.sensor2_v/1000,6,16);
 				LCD_ShowChar(x1+28+6*8,y_tips1+hangju*1,POINT_COLOR,BACK_COLOR,'.',16,mode);
@@ -697,12 +698,12 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				}
 				else
 				{
-					LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us/100,7,16);
-					LCD_ShowChar(x+28+8*7,y_tips1+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
-					LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*2,sx670_parm.sensor3_us%100,2,16);
+					LCD_ShowNum(x+28,y_tips1+hangju*2,sx670_parm.sensor3_us/1000,6,16);
+					LCD_ShowChar(x+28+8*6,y_tips1+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
+					LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*2,sx670_parm.sensor3_us%1000,3,16);
 					
 					
-					sx670_parm.sensor3_v=1000*100*width_s/sx670_parm.sensor3_us;
+					sx670_parm.sensor3_v=1000*1000*width_s/sx670_parm.sensor3_us;
 				
 					LCD_ShowNum(x1+28,y_tips1+hangju*2,sx670_parm.sensor3_v/1000,6,16);
 					LCD_ShowChar(x1+28+6*8,y_tips1+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
@@ -824,11 +825,11 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				}	
 				else
 				{
-					LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us/100,7,16);
-					LCD_ShowChar(x+28+8*7,y_tips1+hangju*3,POINT_COLOR,BACK_COLOR,'.',16,mode);
-					LCD_ShowNum_Cover(x+28+8*8,y_tips1+hangju*3,sx670_parm.sensor4_us%100,2,16);
+					LCD_ShowNum(x+28,y_tips1+hangju*3,sx670_parm.sensor4_us/1000,6,16);
+					LCD_ShowChar(x+28+8*6,y_tips1+hangju*3,POINT_COLOR,BACK_COLOR,'.',16,mode);
+					LCD_ShowNum_Cover(x+28+8*7,y_tips1+hangju*3,sx670_parm.sensor4_us%1000,3,16);
 					
-					sx670_parm.sensor4_v=1000*100*width_s/sx670_parm.sensor4_us;
+					sx670_parm.sensor4_v=1000*1000*width_s/sx670_parm.sensor4_us;
 				
 					LCD_ShowNum(x1+28,y_tips1+hangju*3,sx670_parm.sensor4_v/1000,6,16);
 					LCD_ShowChar(x1+28+6*8,y_tips1+hangju*3,POINT_COLOR,BACK_COLOR,'.',16,mode);
@@ -885,11 +886,11 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor12_us=tip2_time2_cnt-tip2_time1_cnt;
-				sx670_parm.sensor12_v=1000*100*dis/sx670_parm.sensor12_us;
+				sx670_parm.sensor12_v=1000*1000*dis/sx670_parm.sensor12_us;
 			
-				LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/100,7,16);
-				LCD_ShowChar(x+33+7*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+33+8*8,y+hangju*0,sx670_parm.sensor12_us%100,2,16);
+				LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/1000,6,16);
+				LCD_ShowChar(x+33+6*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+33+8*7,y+hangju*0,sx670_parm.sensor12_us%1000,3,16);
 				
 				if(lab2_direct == 0)//1234为正
 					LCD_ShowChar(x1+33,y+hangju*0,POINT_COLOR,BACK_COLOR,' ',16,0);
@@ -906,10 +907,10 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor12_us=tip2_time1_cnt-tip2_time2_cnt;
-				sx670_parm.sensor12_v=1000*100*dis/sx670_parm.sensor12_us;
-				LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/100,7,16);
-				LCD_ShowChar(x+33+7*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+33+8*8,y+hangju*0,sx670_parm.sensor12_us%100,2,16);
+				sx670_parm.sensor12_v=1000*1000*dis/sx670_parm.sensor12_us;
+				LCD_ShowNum(x+33,y+hangju*0,sx670_parm.sensor12_us/1000,6,16);
+				LCD_ShowChar(x+33+6*8,y+hangju*0,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+33+7*8,y+hangju*0,sx670_parm.sensor12_us%1000,3,16);
 				if(lab2_direct == 1)//1234为正
 					LCD_ShowChar(x1+33,y+hangju*0,POINT_COLOR,BACK_COLOR,' ',16,0);
 				else
@@ -929,10 +930,10 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor34_us=tip2_time4_cnt-tip2_time3_cnt;
-				sx670_parm.sensor34_v=1000*100*dis/sx670_parm.sensor34_us;
-				LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/100,7,16);
-				LCD_ShowChar(x+33+7*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+33+8*8,y+hangju*2,sx670_parm.sensor34_us%100,2,16);
+				sx670_parm.sensor34_v=1000*1000*dis/sx670_parm.sensor34_us;
+				LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/1000,6,16);
+				LCD_ShowChar(x+33+6*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+33+7*8,y+hangju*2,sx670_parm.sensor34_us%1000,3,16);
 				
 				if(lab2_direct == 0)//1234为正
 					LCD_ShowChar(x1+33,y+hangju*2,POINT_COLOR,BACK_COLOR,' ',16,0);
@@ -947,11 +948,11 @@ event_type_t Fun_lab2_page_Handle(event_type_t event)
 				POINT_COLOR=WHITE;
 				BACK_COLOR=MY_DARKBLUE;
 				sx670_parm.sensor34_us=tip2_time3_cnt-tip2_time4_cnt;
-				sx670_parm.sensor34_v=1000*100*dis/sx670_parm.sensor34_us;
+				sx670_parm.sensor34_v=1000*1000*dis/sx670_parm.sensor34_us;
 				
-				LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/100,7,16);
-				LCD_ShowChar(x+33+7*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
-				LCD_ShowNum_Cover(x+33+8*8,y+hangju*2,sx670_parm.sensor34_us%100,2,16);
+				LCD_ShowNum(x+33,y+hangju*2,sx670_parm.sensor34_us/1000,6,16);
+				LCD_ShowChar(x+33+6*8,y+hangju*2,POINT_COLOR,BACK_COLOR,'.',16,mode);
+				LCD_ShowNum_Cover(x+33+7*8,y+hangju*2,sx670_parm.sensor34_us%1000,3,16);
 				
 				if(lab2_direct == 1)//1234为正
 					LCD_ShowChar(x1+33,y+hangju*2,POINT_COLOR,BACK_COLOR,' ',16,0);

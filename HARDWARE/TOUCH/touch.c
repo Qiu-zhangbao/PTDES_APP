@@ -6,6 +6,7 @@
 #include "gui.h"	    
 #include "event_queue.h"
 #include "control.h"
+#include "led.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //测试硬件：单片机STM32F103RBT6,主频72M  单片机工作电压3.3V
@@ -194,6 +195,7 @@ u8 TP_Scan(u8 tp)
 {			   
 	if(PEN==0)//有按键按下
 	{
+		LED1=0;
 		if(tp)TP_Read_XY2(&tp_dev.x,&tp_dev.y);//读取物理坐标
 		else if(TP_Read_XY2(&tp_dev.x,&tp_dev.y))//读取屏幕坐标
 		{
@@ -206,8 +208,10 @@ u8 TP_Scan(u8 tp)
 			tp_dev.x0=tp_dev.x;//记录第一次按下时的坐标
 			tp_dev.y0=tp_dev.y;  	   			 
 		}			   
-	}else
+	}
+	else
 	{
+		LED1=1;
 		if(tp_dev.sta&TP_PRES_DOWN)//之前是被按下的
 		{
 			tp_dev.sta&=~(1<<7);//标记按键松开	
@@ -283,6 +287,7 @@ u8 TP_Init(void)
   	TP_Read_XY(&tp_dev.x,&tp_dev.y);//第一次读取初始化	 
 		
 	TP_Get_Adjdata();	
+	printf("touch init\r\n");
 	return 1; 									 
 }
 

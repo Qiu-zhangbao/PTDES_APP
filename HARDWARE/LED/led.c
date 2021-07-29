@@ -1,6 +1,6 @@
 #include "stm32f10x.h"
 #include "led.h"
-
+#include "usart.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //Mini STM32开发板
@@ -19,22 +19,22 @@
 void LED_Init(void)
 {
  
-	 GPIO_InitTypeDef  GPIO_InitStructure;
-		
-	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOE, ENABLE);	 //使能PA端口时钟
-		
-	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;				 //LED0-->PA.8 端口配置
-	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
-	 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	 GPIO_Init(GPIOB, &GPIO_InitStructure);
-	 GPIO_SetBits(GPIOB,GPIO_Pin_5);						 //PA.8 输出高
+	GPIO_InitTypeDef  GPIO_InitStructure;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOE, ENABLE);	 //使能PA端口时钟
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;				 //LED0-->PA.8 端口配置
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_SetBits(GPIOB,GPIO_Pin_5);						 //PA.8 输出高
 
 
-	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;	    		 //LED1-->PD.2 端口配置
-	 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
-	 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
-	 GPIO_Init(GPIOE, &GPIO_InitStructure);	
-	 GPIO_SetBits(GPIOE,GPIO_Pin_5); 						 //PD.2 输出高 
-	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;	    		 //LED1-->PD.2 端口配置
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
+	GPIO_Init(GPIOE, &GPIO_InitStructure);	
+	GPIO_SetBits(GPIOE,GPIO_Pin_5); 						 //PD.2 输出高 
+	printf("led init\r\n");
 }
  

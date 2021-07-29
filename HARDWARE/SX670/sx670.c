@@ -5,7 +5,7 @@
 #include "delay.h"
 SX670_t sx670_parm;
 uint8_t sx670_enable=0;
-
+int time_us_reset_flag=0;
 
 void EE_SX670_INIT_PIN(void) //IO初始化
 { 
@@ -22,12 +22,13 @@ void EE_SX670_INIT_PIN(void) //IO初始化
 void EE_SX670_ENABLE(void)
 {
 	sx670_enable=1;
-	TIM_Cmd(TIM2, ENABLE);  //使能TIMx
+	time_us_reset_flag=1;
+
 }
 
 void EE_SX670_DISENABLE(void)
 {
-	TIM_Cmd(TIM2, DISABLE);  //使能TIMx
+
 	sx670_enable=0;
 	time_us=0;
 	sx670_parm.sensor1_us=0;
@@ -67,28 +68,30 @@ void EE_SX670_INIT(void)
   	EXTI_Init(&EXTI_InitStructure);	  	//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
 	
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI2_IRQn;			//使能按键WK_UP所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2， 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;	//抢占优先级2， 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;					//子优先级3
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure); 
 
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI3_IRQn;			//使能按键KEY1所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x02;					//子优先级1 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 
   	NVIC_InitStructure.NVIC_IRQChannel = EXTI4_IRQn;			//使能按键KEY0所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;					//子优先级0 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 	
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;			//使能按键KEY0所在的外部中断通道
-  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;	//抢占优先级2 
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;	//抢占优先级2 
   	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x04;					//子优先级0 
   	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;								//使能外部中断通道
   	NVIC_Init(&NVIC_InitStructure);  	  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
+	
+	printf("sx670 init\r\n");
  
 }
 #include "lab6.h"
@@ -101,16 +104,16 @@ void EXTI2_IRQHandler(void)
 	{
 		if(sx670_enable)
 		{
-//			delay_ms(1);
+//			systime.delay_us(200);
 			if(sensor1==1)	 //按键KEY0
 			{
-				printf("1_OUT\r\n");
+//				printf("1_OUT\r\n");
 				LED0=1;
 				event_establish(EVENT_SENER1_OUT);
 			}		 
 			else 	 //按键KEY0
 			{
-				printf("1_IN\r\n");
+//				printf("1_IN\r\n");
 				LED0=0;
 				event_establish(EVENT_SENER1_IN);
 			}	
@@ -131,16 +134,16 @@ void EXTI3_IRQHandler(void)
 	{
 		if(sx670_enable)
 		{
-//			delay_ms(1);
+//			systime.delay_us(200);
 			if(sensor2==1)	 //按键KEY0
 			{
-				printf("2_OUT\r\n");
+//				printf("2_OUT\r\n");
 				LED0=1;
 				event_establish(EVENT_SENER2_OUT);
 			}		 
 			else	 //按键KEY0
 			{
-				printf("2_IN\r\n");
+//				printf("2_IN\r\n");
 				LED0=0;
 				event_establish(EVENT_SENER2_IN);
 			}
@@ -159,16 +162,16 @@ void EXTI4_IRQHandler(void)
 	{
 		if(sx670_enable)
 		{
-//			delay_ms(1);
+//			systime.delay_us(200);
 			if(sensor3==1)	 //按键KEY0
 			{
-				printf("4_OUT\r\n");
+//				printf("4_OUT\r\n");
 				LED0=1;
 				event_establish(EVENT_SENER3_OUT);
 			}		 
 			else
 			{
-				printf("4_IN\r\n");
+//				printf("4_IN\r\n");
 				LED0=0;
 				event_establish(EVENT_SENER3_IN);
 			}
@@ -185,16 +188,16 @@ void EXTI9_5_IRQHandler(void)
 	{
 		if(sx670_enable)
 		{
-//			delay_ms(1);
+//			systime.delay_us(200);
 			if(sensor4==1)	 //按键KEY0
 			{
-				printf("3_OUT\r\n");
+//				printf("3_OUT\r\n");
 				LED0=1;
 				event_establish(EVENT_SENER4_OUT);
 			}		 
 			else
 			{
-				printf("3_IN\r\n");
+//				printf("3_IN\r\n");
 				LED0=0;
 				event_establish(EVENT_SENER4_IN);
 			} 		

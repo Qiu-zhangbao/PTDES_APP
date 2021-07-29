@@ -27,8 +27,8 @@
 //V1.1修改说明
 //加入横屏显示代码，直接在初始化中切换横竖屏模式
 ////////////////////////////////////////////////////////////////////////////////// 
-static u8  fac_us=0;//us延时倍乘数
-static u16 fac_ms=0;//ms延时倍乘数
+//static u8  fac_us=0;//us延时倍乘数
+//static u16 fac_ms=0;//ms延时倍乘数
 #ifdef OS_CRITICAL_METHOD 	//如果OS_CRITICAL_METHOD定义了,说明使用ucosII了.
 //systick中断服务函数,使用ucos时用到
 void SysTick_Handler(void)
@@ -38,6 +38,24 @@ void SysTick_Handler(void)
     OSIntExit();        //触发任务切换软中断
 }
 #endif
+
+
+#define EACH_PER_MS    1   /*!<每隔 25 ms 中断一次  systick 定时器是24位向下计数的定时器  最大装载值16777215 */ 
+
+/** 
+  * @brief 一个时间结构体
+  * @note  内部调用
+  */
+struct time{
+	
+    uint32_t fac_us;                  /*!<us分频系数         */
+	uint32_t fac_ms;                  /*!<ms分频系数         */
+	volatile uint32_t millisecond;    /*!<当前ms值           */
+	uint8_t ms_per_tick;              /*!<每隔多少ms中断一次 */
+	
+}timer;
+
+
 
 //初始化延迟函数
 //当使用ucos的时候,此函数会初始化ucos的时钟节拍
@@ -49,8 +67,8 @@ void delay_init(void)
 #ifdef OS_CRITICAL_METHOD 	//如果OS_CRITICAL_METHOD定义了,说明使用ucosII了.
 	u32 reload;
 #endif
-	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);	//选择外部时钟  HCLK/8
-	fac_us=SystemCoreClock/8000000;	//为系统时钟的1/8  
+	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);	//选择外部时钟  HCLK/8
+	timer.fac_us=SystemCoreClock/1000000;	//为系统时钟的1/8  
 	 
 #ifdef OS_CRITICAL_METHOD 	//如果OS_CRITICAL_METHOD定义了,说明使用ucosII了.
 	reload=SystemCoreClock/8000000;		//每秒钟的计数次数 单位为K	   
@@ -61,8 +79,18 @@ void delay_init(void)
 	SysTick->LOAD=reload; 	//每1/OS_TICKS_PER_SEC秒中断一次	
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;   	//开启SYSTICK    
 #else
-	fac_ms=(u16)fac_us*1000;//非ucos下,代表每个ms需要的systick时钟数   
+	timer.fac_ms=(u16)timer.fac_us*1000;//非ucos下,代表每个ms需要的systick时钟数   
 #endif
+	
+	timer.ms_per_tick = EACH_PER_MS;
+    timer.millisecond = 0;
+	
+	SysTick_Config((SystemCoreClock / 1000) * timer.ms_per_tick );   //开启systick中断
+    
+    //优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
+    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,0));
+	
+	
 }								    
 
 #ifdef OS_CRITICAL_METHOD	//使用了ucos
@@ -107,17 +135,17 @@ void delay_ms(u16 nms)
 //nus为要延时的us数.		    								   
 void delay_us(u32 nus)
 {		
-	u32 temp;	    	 
-	SysTick->LOAD=nus*fac_us; //时间加载	  		 
-	SysTick->VAL=0x00;        //清空计数器
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;          //开始倒数	 
-	do
-	{
-		temp=SysTick->CTRL;
-	}
-	while(temp&0x01&&!(temp&(1<<16)));//等待时间到达   
-	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;       //关闭计数器
-	SysTick->VAL =0X00;       //清空计数器	 
+//	u32 temp;	    	 
+//	SysTick->LOAD=nus*fac_us; //时间加载	  		 
+//	SysTick->VAL=0x00;        //清空计数器
+//	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;          //开始倒数	 
+//	do
+//	{
+//		temp=SysTick->CTRL;
+//	}
+//	while(temp&0x01&&!(temp&(1<<16)));//等待时间到达   
+//	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;       //关闭计数器
+//	SysTick->VAL =0X00;       //清空计数器	 
 }
 //延时nms
 //注意nms的范围
@@ -127,17 +155,119 @@ void delay_us(u32 nus)
 //对72M条件下,nms<=1864 
 void delay_ms(u16 nms)
 {	 		  	  
-	u32 temp;		   
-	SysTick->LOAD=(u32)nms*fac_ms;//时间加载(SysTick->LOAD为24bit)
-	SysTick->VAL =0x00;           //清空计数器
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;          //开始倒数  
-	do
-	{
-		temp=SysTick->CTRL;
-	}
-	while(temp&0x01&&!(temp&(1<<16)));//等待时间到达   
-	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;       //关闭计数器
-	SysTick->VAL =0X00;       //清空计数器	  	    
+//	u32 temp;		   
+//	SysTick->LOAD=(u32)nms*fac_ms;//时间加载(SysTick->LOAD为24bit)
+//	SysTick->VAL =0x00;           //清空计数器
+//	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk ;          //开始倒数  
+//	do
+//	{
+//		temp=SysTick->CTRL;
+//	}
+//	while(temp&0x01&&!(temp&(1<<16)));//等待时间到达   
+//	SysTick->CTRL&=~SysTick_CTRL_ENABLE_Msk;       //关闭计数器
+//	SysTick->VAL =0X00;       //清空计数器	  	    
 } 
 #endif
+
+
+
+
+/////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+void systime_init(void)
+{
+	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
+	timer.fac_us = SystemCoreClock / 1000000;
+	timer.fac_ms = SystemCoreClock / 1000;
+	timer.ms_per_tick = EACH_PER_MS;
+    timer.millisecond = 0;
+	SysTick_Config((SystemCoreClock / 1000) * timer.ms_per_tick );   //开启systick中断
+    
+    //优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
+    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0,0));
+}
+
+
+
+void SysTick_Handler(void)
+{
+	timer.millisecond += timer.ms_per_tick;
+}
+
+
+uint32_t systime_get_current_time_ms(void)
+{
+    register uint32_t val, ms;
+    do
+    {
+        ms  = timer.millisecond;
+        val = SysTick->VAL; 
+    }while(ms != timer.millisecond);
+    
+	return ms  -  val/timer.fac_ms;
+}
+
+
+
+uint32_t systime_get_current_time_us(void)
+{
+    register uint32_t val, ms;
+    do
+    {
+        ms  = timer.millisecond;
+        val = SysTick->VAL;
+    }while(ms != timer.millisecond);
+	return (uint32_t)((uint32_t)(ms * 1000) -  val / timer.fac_us);
+}
+
+
+void systime_delay_us(uint32_t us)     
+{
+    uint32_t now = systime.get_time_us();
+	uint32_t end_time = now + us - 3;
+	while( systime.get_time_us() <= end_time)
+    {
+        ;
+    }
+}
+
+
+
+
+void systime_delay_ms(uint32_t ms) 
+{
+    while(ms--)
+    {
+        systime.delay_us(1000);
+    }
+	
+}
+
+systime_t  systime = 
+{
+	systime_init,
+	systime_get_current_time_us,
+	systime_get_current_time_ms,
+	systime_delay_us,
+	systime_delay_ms
+};
+
+
+
+
+
+
+
+
+
+
 

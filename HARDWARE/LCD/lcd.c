@@ -334,13 +334,14 @@ void LCD_Init(void)
 	LCD_WR_REG(0x11);
 	LCD_WR_REG(0x36);
 	LCD_WR_DATA(0xC8);
-	delay_ms(120);
+	systime.delay_ms(50);
 	LCD_WR_REG(0x29);
 
 	LCD_SetParam();//设置LCD参数	 
 	LCD_Clear(WHITE);
 	
 	LCD_LED=1;//加载完之后点亮背光	
+	printf("lcd init\r\n");
 }
   		  
 //******************************************************************

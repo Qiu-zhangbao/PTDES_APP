@@ -59,27 +59,30 @@
 //	0x8000000	0x80000
 //	0x20000000	0x10000
 
+u32 main_init_time_us=0;
 
 
 int main(void)
 {	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
-	delay_init();//延时初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-	LCD_Init();//液晶屏初始化 
+	systime.init();
+	
+	uart_init(115200);
 	LED_Init();
-	EE_SX670_INIT();
-	TIM2_Int_Init(9,71);
-	TIM4_Int_Init(99,7199);
+	LCD_Init();//液晶屏初始化 
 	TP_Init();
 	KEY_Init();
+	EE_SX670_INIT();
+
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
 	Control_Init();
-	uart_init(115200);
-	time_us=0;
-	printf("systen start\r\n");
+	TIM4_Int_Init(99,7199);
 	
+	main_init_time_us=systime.get_time_us();
+	printf("\r\nSYSTEM INIT TIME:%d.%d\r\n",main_init_time_us/1000,main_init_time_us%1000);
+
 	#if	( USER_MODE == OFFICIAL_MODE )	//正式模式
 		SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
 	#endif
@@ -87,35 +90,44 @@ int main(void)
 	while(1)
 	{	
 		
-		KEY_Scan(0);	
-		
-		if(PEN)LED1=1;
-		else LED1=0;
-		
+		if(sx670_enable)
+		{
+			if(time_us_reset_flag==1)
+			{
+				time_us_old=systime.get_time_us();
+				time_us_reset_flag=0;
+			}
+			time_us=systime.get_time_us()-time_us_old;
+			if(time_us>4294967295)
+			{
+				time_us=4294967295;
+			}
+		}
+
 		if(page_state_now == lab1  )
 		{
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
-			LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us/100,10,16);
-			LCD_ShowChar(180+30+8*10,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*11,16+50+30,sx670_parm.sensor1_us%100,2,16);
+			LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us/1000,9,16);
+			LCD_ShowChar(180+30+8*9,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(180+30+8*10,16+50+30,sx670_parm.sensor1_us%1000,3,16);
 			
-			LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us/100,10,16);
-			LCD_ShowChar(180+30+8*10,16+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*11,16+50+50+30,sx670_parm.sensor2_us%100,2,16);
+			LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us/1000,9,16);
+			LCD_ShowChar(180+30+8*9,16+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(180+30+8*10,16+50+50+30,sx670_parm.sensor2_us%1000,3,16);
 			
-			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us/100,10,16);
-			LCD_ShowChar(180+30+8*10,16+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*11,16+50+50+50+30,sx670_parm.sensor3_us%100,2,16);
+			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us/1000,9,16);
+			LCD_ShowChar(180+30+8*9,16+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+30,sx670_parm.sensor3_us%1000,3,16);
 			
-			LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us/100,10,16);
-			LCD_ShowChar(180+30+8*10,16+50+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*11,16+50+50+50+50+30,sx670_parm.sensor4_us%100,2,16);
+			LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us/1000,9,16);
+			LCD_ShowChar(180+30+8*9,16+50+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+50+30,sx670_parm.sensor4_us%1000,3,16);
 
 			
-			LCD_ShowNum(376,40,time_us/100,7,16);
-			LCD_ShowChar(376+8*7,40,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(376+8*8,40,time_us%100,2,16);
+			LCD_ShowNum(376-2*8,40,time_us/1000,8,16);
+			LCD_ShowChar(376+8*6,40,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(376+8*7,40,time_us%1000,3,16);
 			
 		}
 		else if(page_state_now == lab2  )
@@ -123,9 +135,9 @@ int main(void)
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 
-			LCD_ShowNum(376,22,time_us/100,7,16);
-			LCD_ShowChar(376+8*7,22,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(376+8*8,22,time_us%100,2,16);
+			LCD_ShowNum(376-2*8,22,time_us/1000,8,16);
+			LCD_ShowChar(376+8*6,22,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(376+8*7,22,time_us%1000,3,16);
 		}
 		else if(page_state_now == lab3  )
 		{
@@ -152,13 +164,13 @@ int main(void)
 			POINT_COLOR=MY_DARKBLUE;
 			BACK_COLOR=WHITE;
 		
-			LCD_ShowNum_32(x,y-40,lab5_times_num,7,32);
+			LCD_ShowNum_32(x+24,y-40,lab5_times_num,7,32);
 			
-			LCD_ShowNum_32(x,y,(time_us/100)/1000,3,32);
+			LCD_ShowNum_32(x,y,time_us/1000000,3,32);//s
 			LCD_ShowChar_32(x+3*16,y,POINT_COLOR,BACK_COLOR,11);
-			LCD_ShowNum_32(x+4*16,y,(time_us/100)%1000,3,32);
+			LCD_ShowNum_32(x+4*16,y,(time_us/1000)%1000,3,32);//ms
 			LCD_ShowChar_32(x+7*16,y,POINT_COLOR,BACK_COLOR,11);
-			LCD_ShowNum_32(x+8*16,y,time_us%100,2,32);
+			LCD_ShowNum_32(x+8*16,y,time_us%1000,3,32);//us
 		
 		}		
 		else if(page_state_now == lab6  )
@@ -169,27 +181,25 @@ int main(void)
 			BACK_COLOR=MY_DARKBLUE;
 			lab6_parm.time_ms=time_us;
 			
-//			if(lab6_parm.cnt==0)
-//				lab6_parm.period_num=lab6_parm.cnt;
-//			else
-				lab6_parm.period_num=lab6_parm.cnt/lab6_parm.period_uint;
+
+			lab6_parm.period_num=lab6_parm.cnt/lab6_parm.period_uint;
 			
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
-			lab6_parm.frequency=100000*1000*100/lab6_parm.period;
+			lab6_parm.frequency=1000*1000*1000/lab6_parm.period;
 		
 			
-			LCD_ShowNum(x+64,80,lab6_parm.time_ms/100,7,16);
-			LCD_ShowChar(x+64+7*8,80,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+8*8,80,lab6_parm.time_ms%100,2,16);
+			LCD_ShowNum(x+64,80,lab6_parm.time_ms/1000,6,16);
+			LCD_ShowChar(x+64+6*8,80,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+7*8,80,lab6_parm.time_ms%1000,3,16);
 			
-			LCD_ShowNum(x+64,80+50,lab6_parm.period/100,7,16);
-			LCD_ShowChar(x+64+7*8,80+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+8*8,80+50,lab6_parm.period%100,2,16);
+			LCD_ShowNum(x+64,80+50,lab6_parm.period/1000,6,16);
+			LCD_ShowChar(x+64+6*8,80+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+7*8,80+50,lab6_parm.period%1000,3,16);
 		
 			
-			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/100000,4,16);
-			LCD_ShowChar(x+64+4*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+5*8,80+50+50,lab6_parm.frequency%100000,5,16);
+			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/1000,6,16);
+			LCD_ShowChar(x+64+6*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
+			LCD_ShowNum_Cover(x+64+7*8,80+50+50,lab6_parm.frequency%1000,3,16);
 				
 			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
 			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	

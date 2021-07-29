@@ -17,6 +17,7 @@ EVENT_HANDLE_ITEM Event_HandlerList[EVENT_HANDLE_LIST_CNT];
 void Init_event_queue(void)
 {
 	memset(Event_HandlerList,0,sizeof(Event_HandlerList));
+	printf("event queue init\r\n");
 }
 
 void resgister_event_handle(event_handle handle,int	interest_event_mask)
