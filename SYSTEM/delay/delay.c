@@ -187,26 +187,38 @@ void systime_init(void)
 {
 	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 	timer.fac_us = SystemCoreClock / 1000000;
-	timer.fac_ms = SystemCoreClock / 1000;
+	timer.fac_ms = timer.fac_us*1000;
 	timer.ms_per_tick = EACH_PER_MS;
     timer.millisecond = 0;
-	SysTick_Config((SystemCoreClock / 1000) * timer.ms_per_tick );   //开启systick中断
+	SysTick_Config(timer.fac_ms * timer.ms_per_tick );   //开启systick中断
     
     //优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
     NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0,0));
 }
 
+extern uint8_t open_exti_flag;
+extern uint16_t open_exti_delay_ms;
 
 
 void SysTick_Handler(void)
 {
 	timer.millisecond += timer.ms_per_tick;
+	
+	if(open_exti_flag==DISABLE)
+	open_exti_delay_ms--;
+	if(open_exti_delay_ms==0)
+	{
+		open_exti_flag=ENABLE;
+		open_exti_delay_ms=0xff;
+	}
+
+	
 }
 
 
 uint32_t systime_get_current_time_ms(void)
 {
-    register uint32_t val, ms;
+    register uint32_t val=0, ms=0;
     do
     {
         ms  = timer.millisecond;
@@ -220,7 +232,7 @@ uint32_t systime_get_current_time_ms(void)
 
 uint32_t systime_get_current_time_us(void)
 {
-    register uint32_t val, ms;
+    register uint32_t val=0, ms=0;
     do
     {
         ms  = timer.millisecond;

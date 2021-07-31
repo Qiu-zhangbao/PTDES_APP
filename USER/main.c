@@ -62,6 +62,13 @@
 u32 main_init_time_us=0;
 
 
+extern u32 sensor1_in_time_us;
+
+extern  u32 sensor1_out_time_us;
+
+
+u32 us_oldd=0;
+
 int main(void)
 {	
 	SystemInit();//初始化RCC 设置系统主频为72MHZ
@@ -74,7 +81,8 @@ int main(void)
 	TP_Init();
 	KEY_Init();
 	EE_SX670_INIT();
-
+//	TIM2_Int_Init(999,71);
+//	TIM3_PWM_Init(9999,71); 
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
 	Control_Init();
@@ -88,8 +96,16 @@ int main(void)
 	#endif
 	
 	while(1)
-	{	
+	{
+//		TIM_SetCompare2(TIM3,5000);
+//		systime.delay_ms(100);
+//		TIM_SetCompare2(TIM3,6000);
+//		systime.delay_ms(100);
+//		TIM_SetCompare2(TIM3,7000);
+//		systime.delay_ms(100);
+//	
 		
+		KEY_Scan(0);			
 		if(sx670_enable)
 		{
 			if(time_us_reset_flag==1)
@@ -108,6 +124,29 @@ int main(void)
 		{
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
+//			
+//			sx670_parm.sensor1_us=sensor1_out_time_us-sensor1_in_time_us;
+//			
+////			if(us_oldd!=sx670_parm.sensor1_us)
+////			{
+////				us_oldd=sx670_parm.sensor1_us;
+////				printf("sensor1_us:%d\r\n",us_oldd);
+////			}
+//			
+//			LCD_ShowNum(180+30,16+50+30,sensor1_out_time_us/1000,9,16);
+//			LCD_ShowChar(180+30+8*9,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+//			LCD_ShowNum_Cover(180+30+8*10,16+50+30,sensor1_out_time_us%1000,3,16);
+//			
+//			LCD_ShowNum(180+30,16+50+50+30,sensor1_in_time_us/1000,9,16);
+//			LCD_ShowChar(180+30+8*9,16+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+//			LCD_ShowNum_Cover(180+30+8*10,16+50+50+30,sensor1_in_time_us%1000,3,16);
+//			
+//			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor1_us/1000,9,16);
+//			LCD_ShowChar(180+30+8*9,16+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
+//			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+30,sx670_parm.sensor1_us%1000,3,16);
+//			
+//			
+			
 			LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us/1000,9,16);
 			LCD_ShowChar(180+30+8*9,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
 			LCD_ShowNum_Cover(180+30+8*10,16+50+30,sx670_parm.sensor1_us%1000,3,16);

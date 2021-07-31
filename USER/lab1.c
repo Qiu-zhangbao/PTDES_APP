@@ -18,6 +18,8 @@ static uint32_t times_us_old2=0;
 static uint32_t times_us_old3=0;
 static uint32_t times_us_old4=0;
 
+u8 lab1_us_err=8;
+
 
 static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
 
@@ -181,8 +183,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER1_OUT)
 		{
-			sx670_parm.sensor1_us=systime.get_time_us()-times_us_old1;
-			//sx670_parm.sensor1_us=sx670_parm.sensor1_us*10+(sx670_parm.sensor1_us/3)%10;
+			sx670_parm.sensor1_us=systime.get_time_us()-times_us_old1-lab1_us_err;
 		}
 		else if(event == EVENT_SENER2_IN)
 		{
@@ -190,8 +191,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER2_OUT)
 		{
-			sx670_parm.sensor2_us=systime.get_time_us()-times_us_old2;
-			//sx670_parm.sensor2_us=sx670_parm.sensor2_us*10+(sx670_parm.sensor2_us/3)%10;
+			sx670_parm.sensor2_us=systime.get_time_us()-times_us_old2-lab1_us_err;
 		}
 		else if(event == EVENT_SENER4_IN)
 		{
@@ -199,8 +199,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER4_OUT)
 		{
-			sx670_parm.sensor3_us=systime.get_time_us()-times_us_old3;
-			//sx670_parm.sensor3_us=sx670_parm.sensor3_us*10+(sx670_parm.sensor3_us/3)%10;
+			sx670_parm.sensor3_us=systime.get_time_us()-times_us_old3-lab1_us_err;
 		}
 		else if(event == EVENT_SENER3_IN)
 		{
@@ -208,8 +207,7 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 		}
 		else if(event == EVENT_SENER3_OUT)
 		{
-			sx670_parm.sensor4_us=systime.get_time_us()-times_us_old4;
-			//sx670_parm.sensor4_us=sx670_parm.sensor4_us*10+(sx670_parm.sensor4_us/3)%10;
+			sx670_parm.sensor4_us=systime.get_time_us()-times_us_old4-lab1_us_err;
 		}
 		
 	}
