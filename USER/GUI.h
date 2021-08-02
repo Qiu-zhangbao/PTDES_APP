@@ -11,6 +11,7 @@ void LCD_ShowChar(u16 x,u16 y,u16 fc, u16 bc, u8 num,u8 size,u8 mode);
 void LCD_ShowNum(u16 x,u16 y,u32 num,u8 len,u8 size);
 void LCD_Show2Num(u16 x,u16 y,u16 num,u8 len,u8 size,u8 mode);
 void LCD_ShowString(u16 x,u16 y,u8 size,u8 *p,u8 mode);
+void LCD_Show_Num_Float(u16 x,u16 y,u32 mun,u8 big,u8 small,u8 size);
 void GUI_DrawFont16(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode);
 void GUI_DrawFont24(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode);
 void GUI_DrawFont32(u16 x, u16 y, u16 fc, u16 bc, u8 *s,u8 mode);

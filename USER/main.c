@@ -82,11 +82,11 @@ int main(void)
 	KEY_Init();
 	EE_SX670_INIT();
 //	TIM2_Int_Init(999,71);
-//	TIM3_PWM_Init(9999,71); 
+//	TIM3_PWM_Init(20000-1,7199); 
 	Init_event_queue();
 	Apc_InitFunCtrlSM();
 	Control_Init();
-	TIM4_Int_Init(99,7199);
+//	TIM4_Int_Init(99,7199);
 	
 	main_init_time_us=systime.get_time_us();
 	printf("\r\nSYSTEM INIT TIME:%d.%d\r\n",main_init_time_us/1000,main_init_time_us%1000);
@@ -94,17 +94,12 @@ int main(void)
 	#if	( USER_MODE == OFFICIAL_MODE )	//正式模式
 		SCB->VTOR = SRAM_BASE | 0x1000;	//中断向量表偏移
 	#endif
-	
+//	TIM_SetCompare2(TIM3,10000);
 	while(1)
 	{
-//		TIM_SetCompare2(TIM3,5000);
-//		systime.delay_ms(100);
-//		TIM_SetCompare2(TIM3,6000);
-//		systime.delay_ms(100);
-//		TIM_SetCompare2(TIM3,7000);
-//		systime.delay_ms(100);
-//	
-		
+//		LED0=1;
+		main_control();
+
 		KEY_Scan(0);			
 		if(sx670_enable)
 		{
@@ -122,70 +117,24 @@ int main(void)
 
 		if(page_state_now == lab1  )
 		{
-			POINT_COLOR=WHITE;
-			BACK_COLOR=MY_DARKBLUE;
-//			
-//			sx670_parm.sensor1_us=sensor1_out_time_us-sensor1_in_time_us;
-//			
-////			if(us_oldd!=sx670_parm.sensor1_us)
-////			{
-////				us_oldd=sx670_parm.sensor1_us;
-////				printf("sensor1_us:%d\r\n",us_oldd);
-////			}
-//			
-//			LCD_ShowNum(180+30,16+50+30,sensor1_out_time_us/1000,9,16);
-//			LCD_ShowChar(180+30+8*9,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-//			LCD_ShowNum_Cover(180+30+8*10,16+50+30,sensor1_out_time_us%1000,3,16);
-//			
-//			LCD_ShowNum(180+30,16+50+50+30,sensor1_in_time_us/1000,9,16);
-//			LCD_ShowChar(180+30+8*9,16+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-//			LCD_ShowNum_Cover(180+30+8*10,16+50+50+30,sensor1_in_time_us%1000,3,16);
-//			
-//			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor1_us/1000,9,16);
-//			LCD_ShowChar(180+30+8*9,16+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-//			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+30,sx670_parm.sensor1_us%1000,3,16);
-//			
-//			
-			
-			LCD_ShowNum(180+30,16+50+30,sx670_parm.sensor1_us/1000,9,16);
-			LCD_ShowChar(180+30+8*9,16+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*10,16+50+30,sx670_parm.sensor1_us%1000,3,16);
-			
-			LCD_ShowNum(180+30,16+50+50+30,sx670_parm.sensor2_us/1000,9,16);
-			LCD_ShowChar(180+30+8*9,16+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*10,16+50+50+30,sx670_parm.sensor2_us%1000,3,16);
-			
-			LCD_ShowNum(180+30,16+50+50+50+30,sx670_parm.sensor3_us/1000,9,16);
-			LCD_ShowChar(180+30+8*9,16+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+30,sx670_parm.sensor3_us%1000,3,16);
-			
-			LCD_ShowNum(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us/1000,9,16);
-			LCD_ShowChar(180+30+8*9,16+50+50+50+50+30,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(180+30+8*10,16+50+50+50+50+30,sx670_parm.sensor4_us%1000,3,16);
-
-			
-			LCD_ShowNum(376-2*8,40,time_us/1000,8,16);
-			LCD_ShowChar(376+8*6,40,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(376+8*7,40,time_us%1000,3,16);
+			lab1_show_data();
 			
 		}
 		else if(page_state_now == lab2  )
 		{	
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
+			
+			LCD_Show_Num_Float(376-2*8,22,time_us,8,3,16);
 
-			LCD_ShowNum(376-2*8,22,time_us/1000,8,16);
-			LCD_ShowChar(376+8*6,22,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(376+8*7,22,time_us%1000,3,16);
 		}
 		else if(page_state_now == lab3  )
 		{
 			POINT_COLOR=WHITE;
 			BACK_COLOR=MY_DARKBLUE;
 			
-			LCD_ShowNum(376,22,time_us/100,7,16);
-			LCD_ShowChar(376+8*7,22,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(376+8*8,22,time_us%100,2,16);
+			LCD_Show_Num_Float(376,22,time_us,8,3,16);
+			
 
 		}
 		else if(page_state_now == lab4  )
@@ -225,21 +174,13 @@ int main(void)
 			
 			lab6_parm.period=lab6_parm.time_ms/lab6_parm.period_num;
 			lab6_parm.frequency=1000*1000*1000/lab6_parm.period;
+			
+			LCD_Show_Num_Float(x+64,80,lab6_parm.time_ms,6,3,16);
+			
+			LCD_Show_Num_Float(x+64,80+50,lab6_parm.period,6,3,16);
+			LCD_Show_Num_Float(x+64,80+50+50,lab6_parm.frequency,6,3,16);
 		
-			
-			LCD_ShowNum(x+64,80,lab6_parm.time_ms/1000,6,16);
-			LCD_ShowChar(x+64+6*8,80,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+7*8,80,lab6_parm.time_ms%1000,3,16);
-			
-			LCD_ShowNum(x+64,80+50,lab6_parm.period/1000,6,16);
-			LCD_ShowChar(x+64+6*8,80+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+7*8,80+50,lab6_parm.period%1000,3,16);
-		
-			
-			LCD_ShowNum(x+64,80+50+50,lab6_parm.frequency/1000,6,16);
-			LCD_ShowChar(x+64+6*8,80+50+50,POINT_COLOR,BACK_COLOR,'.',16,0);
-			LCD_ShowNum_Cover(x+64+7*8,80+50+50,lab6_parm.frequency%1000,3,16);
-				
+
 			LCD_ShowNum(x+180+55,80,lab6_parm.period_uint,6,16);
 			LCD_ShowNum(x+180+55,80+50,lab6_parm.cnt,6,16);	
 
@@ -249,6 +190,9 @@ int main(void)
 		LCD_DrawLine(0,0,480,0);
 		LCD_DrawLine(0,1,480,1);		
 		POINT_COLOR=WHITE;		
+		
+//		LED0=0;
+//		systime.delay_ms(1);
 		
 	}				  
 	

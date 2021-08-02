@@ -394,6 +394,19 @@ void LCD_ShowChar_32(u16 x,u16 y,u16 fc, u16 bc, u8 num)
 }
 
 
+void LCD_Show_Num_Float(u16 x,u16 y,u32 mun,u8 big,u8 small,u8 size)
+{
+
+	POINT_COLOR=WHITE;
+	BACK_COLOR=MY_DARKBLUE;
+	
+	LCD_ShowNum(x,y,mun/mypow(10,small),big,size);
+	LCD_ShowChar(x+(size/2)*big,y,POINT_COLOR,BACK_COLOR,'.',size,0);
+	LCD_ShowNum_Cover(x+(size/2)*(big+1),y,mun%mypow(10,small),small,size);
+
+}
+
+
 void LCD_ShowNum_32(u16 x,u16 y,u32 num,u8 len,u8 size)
 {         	
 	u8 t,temp;

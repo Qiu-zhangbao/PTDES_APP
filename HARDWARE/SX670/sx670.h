@@ -26,7 +26,24 @@ typedef struct
 
 }SX670_t;
 
+typedef struct
+{
+	uint32_t sensor1_in_time_point_us;
+	uint32_t sensor1_out_time_point_us;
+	uint32_t sensor2_in_time_point_us;
+	uint32_t sensor2_out_time_point_us;
+	uint32_t sensor3_in_time_point_us;
+	uint32_t sensor3_out_time_point_us;
+	uint32_t sensor4_in_time_point_us;
+	uint32_t sensor4_out_time_point_us;
+
+
+}SX670_EXIT_POINT_T;
+
+
+
 extern SX670_t sx670_parm;
+extern SX670_EXIT_POINT_T sx670_time_point;
 extern uint8_t sx670_enable;
 extern int time_us_reset_flag;
 #define sensor1  GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2)//¶ÁÈ¡´«¸ÐÆ÷

@@ -4,6 +4,9 @@
 #include "event_queue.h"
 #include "delay.h"
 SX670_t sx670_parm;
+
+SX670_EXIT_POINT_T sx670_time_point;
+
 uint8_t sx670_enable=0;
 
 uint8_t open_exti_flag=1;
@@ -125,12 +128,12 @@ void EXTI2_IRQHandler(void)
 			if(sensor1==1)	 //按键KEY0
 			{
 				LED0=1;
-				event_establish(EVENT_SENER1_OUT);
+				sx670_time_point.sensor1_out_time_point_us=systime.get_time_us();
 			}		 
 			else	 //按键KEY0
 			{
 				LED0=0;
-				event_establish(EVENT_SENER1_IN);
+				sx670_time_point.sensor1_in_time_point_us=systime.get_time_us();
 			}
 		}		
 		EXTI_ClearFlag(EXTI_Line2);
@@ -151,12 +154,12 @@ void EXTI3_IRQHandler(void)
 			if(sensor2==1)	 //按键KEY0
 			{
 				LED0=1;
-				event_establish(EVENT_SENER2_OUT);
+				sx670_time_point.sensor2_out_time_point_us=systime.get_time_us();
 			}		 
 			else	 //按键KEY0
 			{
 				LED0=0;
-				event_establish(EVENT_SENER2_IN);
+				sx670_time_point.sensor2_in_time_point_us=systime.get_time_us();
 			}
 		}		
 
@@ -177,12 +180,12 @@ void EXTI4_IRQHandler(void)
 			if(sensor3==1)	 //按键KEY0
 			{
 				LED0=1;
-				event_establish(EVENT_SENER3_OUT);
+				sx670_time_point.sensor4_out_time_point_us=systime.get_time_us();
 			}		 
-			else
+			else	 //按键KEY0
 			{
 				LED0=0;
-				event_establish(EVENT_SENER3_IN);
+				sx670_time_point.sensor4_in_time_point_us=systime.get_time_us();
 			}
 		}
 		EXTI_ClearFlag(EXTI_Line4);
@@ -201,13 +204,13 @@ void EXTI9_5_IRQHandler(void)
 			if(sensor4==1)	 //按键KEY0
 			{
 				LED0=1;
-				event_establish(EVENT_SENER4_OUT);
+				sx670_time_point.sensor3_out_time_point_us=systime.get_time_us();
 			}		 
-			else
+			else	 //按键KEY0
 			{
 				LED0=0;
-				event_establish(EVENT_SENER4_IN);
-			} 		
+				sx670_time_point.sensor3_in_time_point_us=systime.get_time_us();
+			}	
 		}
 		EXTI_ClearFlag(EXTI_Line5);
 		EXTI_ClearITPendingBit(EXTI_Line5);  //清除LINE3上的中断标志位  

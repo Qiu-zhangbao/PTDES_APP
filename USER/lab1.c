@@ -13,12 +13,12 @@
 static uint16_t color1=WHITE,color2=BLACK;
 static uint8_t  xiankuangjiange=5;
 static uint8_t mode=0;
-static uint32_t times_us_old1=0;
-static uint32_t times_us_old2=0;
-static uint32_t times_us_old3=0;
-static uint32_t times_us_old4=0;
+//static uint32_t times_us_old1=0;
+//static uint32_t times_us_old2=0;
+//static uint32_t times_us_old3=0;
+//static uint32_t times_us_old4=0;
 
-u8 lab1_us_err=8;
+u8 lab1_us_err=0;
 
 
 static uint8_t KEY_MANUAL[]=" EXIT | NONE | BACK | START | CLEAR ";
@@ -67,9 +67,7 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 		LCD_DrawLine(80,122+50*i,376,122+50*i);
 	}
 	
-	
-//	Show_Str(206,70,color2,color1,"|    s   |ms|",16,mode);
-//	LCD_DrawLine(210,70,210+12*8,70);
+
 	
 	LCD_DrawLine(80,86,80,122+50*3);
 	LCD_DrawLine(376,86,376,122+50*3);
@@ -85,6 +83,40 @@ static void Fun_lab1_page_Screen(uint16_t period,void* p)
 
 	Show_Str(0,304,WHITE,BLACK,KEY_MANUAL,16,0);//°´¼üËµÃ÷
 }
+
+
+
+void lab1_show_data(void)
+{
+	POINT_COLOR=WHITE;
+	BACK_COLOR=MY_DARKBLUE;
+	
+	if(sx670_time_point.sensor1_out_time_point_us>sx670_time_point.sensor1_in_time_point_us)
+	sx670_parm.sensor1_us=sx670_time_point.sensor1_out_time_point_us-sx670_time_point.sensor1_in_time_point_us;
+	
+	if(sx670_time_point.sensor2_out_time_point_us>sx670_time_point.sensor2_in_time_point_us)
+	sx670_parm.sensor2_us=sx670_time_point.sensor2_out_time_point_us-sx670_time_point.sensor2_in_time_point_us;
+	
+	if(sx670_time_point.sensor3_out_time_point_us>sx670_time_point.sensor3_in_time_point_us)
+	sx670_parm.sensor3_us=sx670_time_point.sensor3_out_time_point_us-sx670_time_point.sensor3_in_time_point_us;
+	
+	if(sx670_time_point.sensor4_out_time_point_us>sx670_time_point.sensor4_in_time_point_us)
+	sx670_parm.sensor4_us=sx670_time_point.sensor4_out_time_point_us-sx670_time_point.sensor4_in_time_point_us;
+
+	LCD_Show_Num_Float(180+30,16+50+30,sx670_parm.sensor1_us,9,3,16);
+	
+	LCD_Show_Num_Float(180+30,16+50+50+30,sx670_parm.sensor2_us,9,3,16);
+	
+	LCD_Show_Num_Float(180+30,16+50+50+50+30,sx670_parm.sensor3_us,9,3,16);
+	
+	LCD_Show_Num_Float(180+30,16+50+50+50+50+30,sx670_parm.sensor4_us,9,3,16);
+	
+	LCD_Show_Num_Float(376-2*8,40,time_us,8,3,16);
+	
+}
+		
+		
+		
 
 void touch_lab1_page(void)
 {
@@ -177,38 +209,38 @@ event_type_t Fun_lab1_page_Handle(event_type_t event)
 			page_state_now=main_page;
 		}	
 ////////////////////////////////////////////////////////chuanganqi/////////////
-		else if(event == EVENT_SENER1_IN)
-		{
-			times_us_old1=systime.get_time_us();
-		}
-		else if(event == EVENT_SENER1_OUT)
-		{
-			sx670_parm.sensor1_us=systime.get_time_us()-times_us_old1-lab1_us_err;
-		}
-		else if(event == EVENT_SENER2_IN)
-		{
-			times_us_old2=systime.get_time_us();
-		}
-		else if(event == EVENT_SENER2_OUT)
-		{
-			sx670_parm.sensor2_us=systime.get_time_us()-times_us_old2-lab1_us_err;
-		}
-		else if(event == EVENT_SENER4_IN)
-		{
-			times_us_old3=systime.get_time_us();
-		}
-		else if(event == EVENT_SENER4_OUT)
-		{
-			sx670_parm.sensor3_us=systime.get_time_us()-times_us_old3-lab1_us_err;
-		}
-		else if(event == EVENT_SENER3_IN)
-		{
-			times_us_old4=systime.get_time_us();
-		}
-		else if(event == EVENT_SENER3_OUT)
-		{
-			sx670_parm.sensor4_us=systime.get_time_us()-times_us_old4-lab1_us_err;
-		}
+//		else if(event == EVENT_SENER1_IN)
+//		{
+//			times_us_old1=systime.get_time_us();
+//		}
+//		else if(event == EVENT_SENER1_OUT)
+//		{
+//			sx670_parm.sensor1_us=systime.get_time_us()-times_us_old1-lab1_us_err;
+//		}
+//		else if(event == EVENT_SENER2_IN)
+//		{
+//			times_us_old2=systime.get_time_us();
+//		}
+//		else if(event == EVENT_SENER2_OUT)
+//		{
+//			sx670_parm.sensor2_us=systime.get_time_us()-times_us_old2-lab1_us_err;
+//		}
+//		else if(event == EVENT_SENER4_IN)
+//		{
+//			times_us_old3=systime.get_time_us();
+//		}
+//		else if(event == EVENT_SENER4_OUT)
+//		{
+//			sx670_parm.sensor3_us=systime.get_time_us()-times_us_old3-lab1_us_err;
+//		}
+//		else if(event == EVENT_SENER3_IN)
+//		{
+//			times_us_old4=systime.get_time_us();
+//		}
+//		else if(event == EVENT_SENER3_OUT)
+//		{
+//			sx670_parm.sensor4_us=systime.get_time_us()-times_us_old4-lab1_us_err;
+//		}
 		
 	}
 	return event;
